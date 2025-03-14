@@ -98,11 +98,28 @@ vim.keymap.set("n", "<leader>of", ":%s/^# \\(\\w\\+\\)/# \\u\\1/<cr>", { desc = 
 vim.keymap.set("n", "<leader>on", ":ObsidianTemplate New Note<cr>", { desc = "Use New Note Template" })
 vim.keymap.set(
 	"n",
-	"<leader>ok",
+	"<leader>omk",
 	":!mv '%:p' '/home/cylis/Documents/Main/04 - Main Notes'<cr>:bd<cr>",
 	{ desc = "Move Note to Main Notes" }
 )
-vim.keymap.set("n", "<leader>ot", ":!mv '%:p' '/home/cylis/Documents/Main/05 - Tags'<cr>:bd<cr>", { desc = "Move Tag" })
+vim.keymap.set(
+	"n",
+	"<leader>omp",
+	":!mv '%:p' '/home/cylis/Documents/Main/02 - Projects'<cr>:bd<cr>",
+	{ desc = "Move Note to Projects" }
+)
+vim.keymap.set(
+	"n",
+	"<leader>oms",
+	":!mv '%:p' '/home/cylis/Documents/Main/03 - Source Material'<cr>:bd<cr>",
+	{ desc = "Move Note to Source Material" }
+)
+vim.keymap.set(
+	"n",
+	"<leader>omt",
+	":!mv '%:p' '/home/cylis/Documents/Main/05 - Tags'<cr>:bd<cr>",
+	{ desc = "Move Tag" }
+)
 vim.keymap.set("n", "<leader>odd", ":!rm '%:p'<cr>:bd<cr>", { desc = "Delete currently open file" })
 vim.keymap.set("n", "<leader>os", function()
 	require("telescope.builtin").find_files({

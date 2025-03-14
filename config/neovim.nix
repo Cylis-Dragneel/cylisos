@@ -1,4 +1,10 @@
 { pkgs, inputs, ... }:
+{
+  pkgs,
+  inputs,
+  lib,
+  ...
+}:
 let
   finecmdline = pkgs.vimUtils.buildVimPlugin {
     name = "fine-cmdline";
@@ -35,6 +41,8 @@ in
         #Misc.
         codeium
         # Formatters
+        rustfmt
+        clippy
         gofumpt
         golines
         goimports-reviser
@@ -43,6 +51,7 @@ in
         nixfmt-rfc-style
       ];
       plugins = with pkgs.vimPlugins; [
+        cord-nvim
         none-ls-nvim
         vim-wakatime
         codeium-nvim
@@ -108,6 +117,7 @@ in
           ${builtins.readFile ./nvim/plugins/obsidian.lua}
           ${builtins.readFile ./nvim/plugins/none.lua}
           ${builtins.readFile ./nvim/plugins/lualine.lua}
+          ${builtins.readFile ./nvim/plugins/presence.lua}
           require("ibl").setup()
           require("colorizer").setup()
           -- require("codeium").setup()

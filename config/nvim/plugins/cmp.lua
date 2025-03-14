@@ -1,8 +1,26 @@
 local cmp = require("cmp")
-local luasnip = require("luasnip")
+local ls = require("luasnip")
 local lspkind = require("lspkind")
+local s = ls.snippet
+local i = ls.insert_node
+local t = ls.text_node
 
 require("luasnip.loaders.from_vscode").lazy_load()
+
+ls.add_snippets("go", {
+	s("errf", {
+		t("if err != nil {"),
+		t({ "", "\t" }),
+		i({ 1, "return err" }),
+		t({ "", "}" }),
+	}),
+	s("errlog", {
+		t("if err != nil {"),
+		t({ "", '\tlog.Fatal("Error: ", err)' }),
+		t({ "", "\treturn" }),
+		t({ "", "}" }),
+	}),
+})
 
 cmp.setup({
 	completion = {
@@ -10,7 +28,7 @@ cmp.setup({
 	},
 	snippet = {
 		expand = function(args)
-			luasnip.lsp_expand(args.body)
+			ls.lsp_expand(args.body)
 		end,
 	},
 	window = {
@@ -27,9 +45,9 @@ cmp.setup({
 		["<CR>"] = cmp.mapping.confirm({ select = true }),
 	}),
 	sources = cmp.config.sources({
-		{ name = "nvim_lsp" },
-		{ name = "luasnip" },
 		{ name = "path" },
+		{ name = "luasnip" },
+		{ name = "nvim_lsp" },
 		{ name = "buffer" },
 		-- { name = "codeium" },
 	}),
