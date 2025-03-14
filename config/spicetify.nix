@@ -17,8 +17,13 @@ in
     history
     keyboardShortcut
     shuffle
+    phraseToPlaylist
+    betterGenres
+    lastfm
   ];
-  theme = spicePkgs.themes.nightlight;
+  # theme = spicePkgs.themes.nightlight;
+  theme = spicePkgs.themes.ziro;
+  colorScheme = "rose-pine-moon";
   # theme = {
   #   name = "Retro";
   #   src = pkgs.fetchFromGitHub {

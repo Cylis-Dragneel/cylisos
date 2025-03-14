@@ -234,7 +234,6 @@
     file-roller
     swaynotificationcenter
     imv
-    mpv
     pavucontrol
     tree
     neovide
@@ -265,13 +264,10 @@
     amberol
     obs-studio
     pass
-    wezterm
     rmpc
     xournalpp
     scrot
     thefuck # Favorite package btw
-    # aseprite
-    # libresprite
     # redis
     exercism
     tldr
@@ -336,6 +332,32 @@
     goverlay
     gpu-screen-recorder-gtk
     youtube-music
+    redshift
+    hyprpaper
+    godot_4
+    kdenlive
+    aseprite
+    libresprite
+    audacity
+    nitch
+    nodejs_18
+    geoclue2
+    gammastep
+    varia
+    cartridges
+    mgba
+    mpv
+    dav1d
+    ani-cli
+    ani-skip
+    mangal
+    python3
+    ueberzugpp
+    chafa
+    code-cursor
+    nitrogen
+    distrobox
+    podman
     (emacsWithPackagesFromUsePackage {
       package = pkgs.emacs-git;
       config = ../../config/emacs/init.el;
@@ -355,7 +377,6 @@
         epkgs.ivy
         epkgs.ivy-rich
         epkgs.all-the-icons-ivy-rich
-        # epkgs.elcord
         epkgs.eshell-syntax-highlighting
         epkgs.vterm
         epkgs.vterm-toggle
@@ -369,6 +390,7 @@
         epkgs.lua-mode
         epkgs.nix-mode
         # epkgs.haskell-mode
+        # epkgs.elcord
         epkgs.go-mode
         epkgs.zig-mode
         epkgs.projectile
@@ -430,6 +452,7 @@
     CYLISOS_VERSION = "1.0";
     CYLISOS = "true";
     ROC_ENABLE_PRE_VEGA = "1";
+    HSA_OVERRIDE_GFX_VERSION = "8.0.0";
   };
 
   environment.pathsToLink = [ "/share/zsh" ];
@@ -438,27 +461,28 @@
   xdg.portal = {
     enable = true;
     wlr.enable = true;
-    extraPortals = [
-      pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal
-      pkgs.xdg-desktop-portal-hyprland
-      pkgs.xdg-desktop-portal-wlr
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal
+      xdg-desktop-portal-hyprland
+      xdg-desktop-portal-wlr
     ];
-    configPackages = [
-      pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal-hyprland
-      pkgs.xdg-desktop-portal-wlr
-      pkgs.xdg-desktop-portal
+    configPackages = with pkgs; [
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-hyprland
+      xdg-desktop-portal-wlr
+      xdg-desktop-portal
     ];
   };
 
   # Services to start
   services = {
+    dbus.packages = [ pkgs.gcr ];
     timesyncd.enable = true;
     cloudflare-warp.enable = true;
-    emacs.enable = false;
+    emacs.enable = true;
     kanata = {
-      enable = true;
+      enable = false;
       keyboards = {
         main = {
           config = ''
@@ -482,6 +506,12 @@
       };
     };
     tailscale.enable = true;
+    libinput = {
+      enable = true;
+      mouse = {
+        accelProfile = "flat";
+      };
+    };
     xserver = {
       enable = true;
       videoDrivers = [ "amdgpu" ];
@@ -515,7 +545,6 @@
       enable = false;
       autodetect = true;
     };
-    libinput.enable = true;
     fstrim.enable = true;
     gvfs.enable = true;
     openssh = {
@@ -527,7 +556,9 @@
     printing = {
       enable = true;
     };
-    gnome.gnome-keyring.enable = true;
+    gnome.gnome-keyring = {
+      enable = true;
+    };
     avahi = {
       enable = true;
       nssmdns4 = true;
@@ -551,22 +582,85 @@
     pipewire = {
       enable = true;
       pulse.enable = true;
+      extraConfig.pipewire = {
+        "context.properties" = {
+          "bluez5.enable-sbc-xq" = true;
+          "bluez5.enable-msbc" = true;
+          "bluez5.enable-hw-volume" = true;
+          "bluez5.default.profile" = "a2dp-duplex";
+          "bluez5.auto-profile-switch" = false;
+          "bluez5.headset-roles" = [
+            "hsp_hs"
+            "hsp_ag"
+            "hfp_hf"
+            "hfp_ag"
+          ];
+        };
+        "context.modules" = [
+          {
+            name = "libpipewire-module-filter-chain";
+            args = {
+              "node.description" = "Noise Canceling source";
+              "media.name" = "Noise Canceling source";
+              "filter.graph" = {
+                nodes = [
+                  {
+                    type = "ladspa";
+                    name = "rnnoise";
+                    plugin = "librnnoise_ladspa";
+                    label = "noise_suppressor_mono";
+                    control = {
+                      "VAD Threshold (%)" = 50.0;
+                      "VAD Grace Period (ms)" = 200;
+                      "Retroactive VAD Grace (ms)" = 0;
+                    };
+                  }
+                ];
+              };
+              "capture.props" = {
+                "node.name" = "capture.rnnoise_source";
+                "node.passive" = true;
+              };
+              "playback.props" = {
+                "node.name" = "rnnoise_source";
+                "media.class" = "Audio/Source";
+              };
+            };
+          }
+        ];
+      };
     };
     rpcbind.enable = false;
     nfs.server.enable = false;
   };
-  systemd.services.flatpak-repo = {
-    path = [ pkgs.flatpak ];
-    script = ''
-      flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-    '';
-  };
-  systemd.services.mpd.environment = {
-    XDG_RUNTIME_DIR = "/run/user/${toString config.users.users.cylis.uid}";
-  };
   systemd.user.services.xdg-desktop-portal = {
     environment = {
       XDG_CURRENT_DESKTOP = "KDE";
+    };
+  };
+  systemd.services = {
+    flatpak-repo = {
+      path = [ pkgs.flatpak ];
+      script = ''flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo'';
+    };
+    warp-log-cleanup = {
+      description = "Clean up Cloudflare WARP logs";
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "${pkgs.bash}/bin/bash -c 'find /var/lib/cloudflare-warp/qlogs -type f -mtime +7 -delete'";
+      };
+    };
+    cloudflare-warp.environment = {
+      WARP_DEBUG_LEVEL = "error";
+    };
+  };
+  systemd.timers = {
+    warp-log-cleanup = {
+      wantedBy = [ "timers.target" ];
+      timerConfig = {
+        OnCalendar = "weekly";
+        Persistent = true;
+      };
     };
   };
   hardware.sane = {
@@ -576,8 +670,19 @@
   };
 
   # Bluetooth Support
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true;
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+    settings = {
+      General = {
+        Enable = "Source,Sink,Media,Socket";
+        Experimental = true;
+      };
+      Policy = {
+        AutoEnable = true;
+      };
+    };
+  };
   services.blueman.enable = true;
 
   # Security / Polkit
@@ -619,6 +724,7 @@
         "https://niri.cachix.org"
         "https://hyprland.cachix.org"
         "https://nix-community.cachix.org"
+        "https://ezkea.cachix.org"
       ];
       trusted-public-keys = [
         "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
@@ -626,6 +732,7 @@
         "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
+        "ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI="
       ];
     };
     gc = {
@@ -649,11 +756,22 @@
     extraPackages = with pkgs; [
       rocmPackages.clr.icd
       amdvlk
+      vaapiVdpau
+      libvdpau-va-gl
     ];
   };
+  hardware.amdgpu.opencl.enable = true;
+  hardware.i2c.enable = true;
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 53317 ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [
+    53317
+    22050
+  ];
+  networking.firewall.allowedUDPPorts = [ 49152 ];
+  networking.networkmanager.insertNameservers = [
+    "1.1.1.1"
+    "1.0.0.1"
+  ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
   system.stateVersion = "23.11";

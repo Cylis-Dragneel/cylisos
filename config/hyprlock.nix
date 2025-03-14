@@ -1,16 +1,16 @@
 { username, ... }:
 {
-  enable = false;
+  enable = true;
   settings = {
     general = {
       disable_loading_bar = true;
-      grace = 10;
+      grace = 5;
       hide_cursor = true;
       no_fade_in = false;
     };
     background = [
       {
-        path = "/home/${username}/Pictures/Wallpapers/elden ring-mohg.png";
+        path = "/home/${username}/Pictures/Wallpapers/elden-ring-mohg.png";
         blur_passes = 3;
         blur_size = 8;
       }

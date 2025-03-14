@@ -23,6 +23,7 @@ let
 in
 {
   enable = true;
+  mouse = true;
   aggressiveResize = true; # temp
   baseIndex = 1;
   disableConfirmationPrompt = true;
@@ -64,9 +65,6 @@ in
     set -g @tokyo-night-tmux_show_datetime 1
     set -g @tokyo-night-tmux_date_format DMY
     set -g @tokyo-night-tmux_time_format 24H
-    set -g @tokyo-night-tmux_show_battery_widget 1
-    set -g @tokyo-night-tmux_battery_name "BAT0"
-    set -g @tokyo-night-tmux_battery_low_threshold 25
     set -g @tokyo-night-tmux_show_path 0
     set -g @tokyo-night-tmux_show_git 1
 

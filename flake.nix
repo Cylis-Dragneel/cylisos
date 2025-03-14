@@ -19,10 +19,7 @@
       url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    zen.url = "github:MarceColl/zen-browser-flake";
-    pollymc = {
-      url = "github:fn2006/PollyMC";
-    };
+    zen.url = "github:0xc000022070/zen-browser-flake";
     fine-cmdline = {
       url = "github:VonHeikemen/fine-cmdline.nvim";
       flake = false;
@@ -32,7 +29,23 @@
       url = "git+https://github.com/Open-Wine-Components/umu-launcher/?dir=packaging\/nix&submodules=1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # base16.url = "github:SenchoPens/base16.nix";
+    yt-x.url = "github:Benexl/yt-x";
+    curd = {
+      url = "github:Wraient/curd";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    astal = {
+      url = "github:aylur/astal";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    aagl = {
+      url = "github:ezKEa/aagl-gtk-on-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    ags = {
+      url = "github:aylur/ags/v1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     hyprpanel.url = "github:jas-singhfsu/hyprpanel";
     hyprpanel.inputs.nixpkgs.follows = "nixpkgs";
     # This is required for plugin support.
@@ -76,10 +89,12 @@
                   inputs.niri.overlays.niri
                 ];
                 environment.systemPackages = [
-                  ghostty.packages.x86_64-linux.default
+                  ghostty.packages."${system}".default
                   inputs.zen.packages.x86_64-linux.default
                   pkgs.niri-unstable
                   inputs.umu.packages.${pkgs.system}.umu
+                  inputs.yt-x.packages."${system}".default
+                  inputs.curd.packages.${pkgs.system}.default
                 ];
               }
             )
@@ -98,6 +113,9 @@
         modules = [
           {
             nixpkgs.overlays = [
+            ];
+            home.packages = [
+              inputs.astal.packages.${system}.default
             ];
           }
           ./hosts/${host}/home.nix

@@ -21,25 +21,77 @@ with lib;
         layer = "top";
         position = "top";
         modules-center = [
-          "hyprland/workspaces"
+          # "cava"
+          "mpris"
         ];
         modules-left = [
           "custom/startmenu"
           "pulseaudio"
-          "cpu"
-          "memory"
-          "hyprland/window"
+          # "cpu"
+          # "memory"
           "idle_inhibitor"
         ];
         modules-right = [
-          "custom/hyprbindings"
+          # "custom/hyprbindings"
           "tray"
-          "battery"
+          # "battery"
           "custom/notification"
           "custom/exit"
           "clock"
         ];
 
+        "cava" = {
+          framerate = 30;
+          autosens = 1;
+          bars = 24;
+          lower-cutoff-freq = 50;
+          higher-cutoff-freq = 1400;
+          method = "pipewire";
+          source = "auto";
+          stereo = true;
+          reverse = false;
+          bar-delimiter = 0;
+          monstercat = false;
+          waves = false;
+          hide-on-silence = true;
+          noise-reduction = 0.33;
+          input-delay = 2;
+          format-icons = [
+            "▁"
+            "▂"
+            "▃"
+            "▄"
+            "▅"
+            "▆"
+            "▇"
+            "█"
+          ];
+          actions = {
+            on-click = "playerctl play-pause";
+          };
+        };
+        mpris = {
+          dynamic-order = [
+            "artist"
+            "title"
+          ];
+          dynamic-importance-order = [
+            "artist"
+            "title"
+            "position"
+            "length"
+            "album"
+          ];
+          dynamic-len = 88;
+          interval = 1;
+          format = "{status_icon}{dynamic}";
+          tooltip-format = "{player}: {artist} - {title} - {album}";
+          status-icons = {
+            playing = "";
+            paused = " ";
+            stopped = " ";
+          };
+        };
         "hyprland/workspaces" = {
           format = "{name}";
           format-icons = {
@@ -291,6 +343,25 @@ with lib;
           margin: 0px;
           padding: 0px 15px 0px 30px;
           border-radius: 0px 0px 0px 40px;
+        }
+        #mpris {
+          border-radius: 16px;
+          padding-left: 12px;
+          padding-right: 4px;
+          margin-right: 8px;
+          margin-top: 2px;
+          margin-bottom: 2px;
+          padding-top: 2px;
+          color: #17191e;
+          background-color: #8CF6D4;
+          font-weight: 700;
+        }
+
+        #cava {
+          margin-top: 2px;
+          padding-left: 16px;
+          padding-right: 4px;
+          color: #8e2444;
         }
       ''
     ];

@@ -21,13 +21,13 @@ in
         "lp"
         "gamemode"
         "uinput"
+        "i2c"
+        "podman"
       ];
       shell = pkgs.zsh;
       ignoreShellProgramCheck = true;
-      packages =
-        with pkgs;
-        [
-        ];
+      packages = with pkgs; [
+      ];
     };
     # "newuser" = {
     #   homeMode = "755";

@@ -23,8 +23,6 @@
     host = "nvim ~/cylisos/hosts/${host}/";
     config = "nvim ~/cylisos/config/";
     py-server = "python -m http.server 8040";
-    py-virt = "source .venv/bin/activate";
-    py-virtc = "python3 -m venv .venv";
     rl = "source ~/.zshrc";
     cmc = "cmus-remote -C 'clear'";
     cma = "cmus-remote -C 'add ~/Music";

@@ -19,15 +19,15 @@ in
       if [ -f "/home/${username}/.config/emacs/config.el" ]; then
         rm /home/${username}/.config/emacs/config.el
       fi
-      if [[ "$0" == *zsh ]]; then
-        source ~/.zshrc
-      fi
-      if [[ "$0" == *bash ]]; then
-        source ~/.bashrc
-      fi
-      if [[ "$0" == *nushell ]]; then
-        source ~/.config/nushell/config.nu
-      fi
+      # if [[ "$0" == *zsh ]]; then
+      #   source ~/.zshrc
+      # fi
+      # if [[ "$0" == *bash ]]; then
+      #   source ~/.bashrc
+      # fi
+      # if [[ "$0" == *nushell ]]; then
+      #   source ~/.config/nushell/config.nu
+      # fi
     '';
   };
 
@@ -126,6 +126,23 @@ in
       enable = true;
       createDirectories = true;
     };
+    configFile."mpv/mpv.conf".text = ''
+      --input-ipc-server=/tmp/mpvsocket
+      --save-position-on-quit
+      ytdl-raw-options=cookies-from-browser=firefox
+
+      # --- bonus mpv tips ---
+
+      # define the quality for mpv to use
+      ytdl-format="bestvideo[vcodec^=avc1]+bestaudio/best[vcodec^=avc1]/best"
+
+      # defines where screenshots will be saved
+      screenshot-directory=~/Pictures/Screenshots/
+
+      # enable hardware accelaration
+      hwdec=vaapi
+      vo=gpu
+    '';
   };
 
   nixpkgs.config = {
@@ -157,11 +174,12 @@ in
     neovim.enable = false;
     tmux.enable = false;
     vesktop.enable = false;
+    hyprlock.enable = false;
   };
 
   stylix = {
     enable = true;
-    image = ../../config/wallpapers/law.jpg;
+    image = ../../config/wallpapers/elden-ring-mohg.png;
     base16Scheme = {
       # base00 = "1e1e2e"; # base
       # base01 = "181825"; # mantle
@@ -277,8 +295,30 @@ in
     client.default_app.use_magnet = true;
     source.nyaa.default_sort = "Seeders";
   };
+  programs.ags.enable = true;
+  systemd.user.services.ags = {
+    Unit = {
+      Description = "Aylur's Gtk Shell";
+      PartOf = [
+        "tray.target"
+        "graphical-session.target"
+      ];
+    };
+    Service = {
+      Environment = "PATH=/run/wrappers/bin:${lib.makeBinPath dependencies}";
+      ExecStart = "${cfg.package}/bin/ags -c ${config.xdg.configHome}/ags/config.js";
+      Restart = "on-failure";
+    };
+    Install.WantedBy = [ "graphical-session.target" ];
+  };
 
   services = {
+    gammastep = {
+      enable = true;
+      provider = "manual";
+      latitude = 31.4;
+      longitude = 74.2;
+    };
     flameshot = {
       enable = true;
       package = pkgs.flameshot;
@@ -344,8 +384,17 @@ in
     #   hyprland.enable = true;
     #   # overwrite.enable = true;
     # };
-    carapace = {
+    mpv = {
       enable = true;
+      scripts = with pkgs.mpvScripts; [
+        uosc
+        thumbfast
+        mpris
+        sponsorblock
+      ];
+    };
+    carapace = {
+      enable = false;
       enableNushellIntegration = true;
     };
     yazi = {
@@ -359,7 +408,7 @@ in
       enableZshIntegration = true;
     };
     atuin = {
-      enable = true;
+      enable = false;
       settings = {
         style = "compact";
       };
@@ -371,39 +420,10 @@ in
       enableNushellIntegration = true;
       nix-direnv.enable = true;
     };
-    spicetify =
-      let
-        spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.system};
-      in
-      {
-        enable = true;
-        enabledExtensions = with spicePkgs.extensions; [
-          adblock
-          fullScreen
-          volumePercentage
-          showQueueDuration
-          goToSong
-          powerBar
-          skipOrPlayLikedSongs
-          volumeProfiles
-          playNext
-          history
-          keyboardShortcut
-          shuffle
         ];
-        theme = spicePkgs.themes.nightlight;
-        # theme = {
-        #   name = "Retro";
-        #   src = pkgs.fetchFromGitHub {
-        #     owner = "Motschen";
-        #     repo = "Retroblur";
-        #     rev = "685cf3aea4ed1a4d82f687293f0efb5baa1aec06";
-        #     hash = "sha256-YAOmeSAxD0qR8Y7t+HOBoTCJtiJNfveJCmiptfg25OE=";
-        #   };
-        # };
-        # theme = spicePkgs.themes.catppuccin;
-        # colorScheme = "macchiato";
       };
+    };
+    spicetify = import ../../config/spicetify.nix { inherit pkgs inputs; };
     wezterm = {
       enable = false;
       enableZshIntegration = true;
@@ -423,6 +443,8 @@ in
         }
       '';
     };
+    zsh = import ../../config/zsh.nix { inherit pkgs host username; };
+    bash = import ../../config/bash.nix { inherit host username; };
     zoxide = {
       enable = true;
       enableZshIntegration = true;
@@ -438,7 +460,7 @@ in
       };
     };
     kitty = {
-      enable = false;
+      enable = true;
       package = pkgs.kitty;
       settings = {
         scrollback_lines = 2000;
@@ -447,197 +469,16 @@ in
         confirm_os_window_close = 0;
       };
       extraConfig = ''
+        font_family Maple Mono
+        font_size 11.3
+        font_features +calt +cv01 +cv02 +cv03 +cv31 +ss03
         tab_bar_style fade
         tab_fade 1
         active_tab_font_style   bold
         inactive_tab_font_style bold
       '';
     };
-    bash = {
-      enable = true;
-      enableCompletion = true;
-      profileExtra = ''
-        #if [ -z "$DISPLAY" ]; then
-        #  exec awesome
-        #fi
-      '';
-      initExtra = ''
-        fastfetch
-        if [ -f $HOME/.bashrc-personal ]; then
-          source $HOME/.bashrc-personal
-        fi
-      '';
-      shellAliases = {
-        sv = "sudo nvim";
-        fr = "nh os switch --hostname ${host} /home/${username}/cylisos";
-        fu = "nh os switch --hostname ${host} --update /home/${username}/cylisos";
-        hms = "nh home switch /home/${username}/cylisos/";
-        ncg = "nix-collect-garbage --delete-old && sudo nix-collect-garbage -d && sudo /run/current-system/bin/switch-to-configuration boot";
-        v = "nvim";
-        cat = "bat";
-        ls = "eza --icons";
-        ll = "eza -lh --icons --grid --group-directories-first";
-        la = "eza -lah --icons --grid --group-directories-first";
-        ".." = "cd ..";
-        host = "nvim ~/cylisos/hosts/${host}/";
-        config = "nvim ~/cylisos/config/";
-        rl = "source /home/${username}/.bashrc";
-        oo = "cd /home/${username}/Documents/Main/";
-        orv = "nvim '/home/${username}/Documents/Main/01 - Rough Notes/'*";
-        lz = "lazygit";
-      };
-    };
-    zsh = {
-      enable = true;
-      autosuggestion.enable = true;
-      enableCompletion = true;
-      syntaxHighlighting.enable = true;
-      shellAliases = {
-        sv = "sudo nvim";
-        fr = "nh os switch --hostname ${host} /home/${username}/cylisos";
-        fu = "nh os switch --hostname ${host} --update /home/${username}/cylisos";
-        hms = "nh home switch /home/${username}/cylisos/";
-        ncg = "nix-collect-garbage --delete-old && sudo nix-collect-garbage -d && sudo /run/current-system/bin/switch-to-configuration boot";
-        v = "nvim";
-        cat = "bat";
-        ls = "eza --icons";
-        ll = "eza -lh --icons --grid --group-directories-first";
-        la = "eza -lah --icons --grid --group-directories-first";
-        host = "nvim ~/cylisos/hosts/${host}/";
-        config = "nvim ~/cylisos/config/";
-        py-server = "python -m http.server 8040";
-        py-virt = "source .venv/bin/activate";
-        py-virtc = "python3 -m venv .venv";
-        rl = "source ~/.zshrc";
-        cmc = "cmus-remote -C 'clear'";
-        cma = "cmus-remote -C 'add ~/Music";
-        cmu = "cmus-remote -C 'update-cache -f'";
-        nix-shell = "nix-shell --command zsh";
-        nix-develop = "nix develop --command zsh";
-        ytmd = "yt-dlp --embed-metadata -x $(ytfzf -I l | grep 'https://')";
-        spotd = "spotdl download $1";
-        oo = "cd /home/${username}/Documents/Main/";
-        orv = "nvim '/home/${username}/Documents/Main/01 - Rough Notes/'*";
-        lz = "lazygit";
-        emd = "emacs --daemon";
-        emc = "emacsclient -c .";
-        zed = "zeditor --foreground ./";
-      };
-      defaultKeymap = "emacs";
-      history = {
-        ignoreAllDups = true;
-        path = "$HOME/.zsh_history";
-        save = 10000;
-        size = 10000;
-      };
-      profileExtra = ''
-        # if [ -z "$DISPLAY" ]; then
-        #  exec awesome
-        # fi
-      '';
-      initExtra = ''
-        bindkey -e
-
-        # [[ ! -f ${../../config/.p10k.zsh} ]] || source ${../../config/.p10k.zsh}
-        krabby random
-        # OMP
-        # eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/dracula.omp.json)"
-        zstyle ':completion:*:git-checkout:*' sort false
-        zstyle ':completion:*:descriptions' format '[%d]'
-        zstyle ':completion:*' list-colours ''${(s.:.)LS_COLORS}
-        zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
-        zstyle ':completion:*' menu no
-        zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza -1 --color=always $realpath'
-        zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
-        eval "$(fzf --zsh)"
-        eval $(thefuck --alias tf)
-        export MANPAGER='nvim +Man!'
-      '';
-      oh-my-zsh = {
-        enable = true;
-        plugins = [
-          "git"
-          "sudo"
-          "golang"
-          "rust"
-          "command-not-found"
-          "pass"
-          "direnv"
-        ];
-      };
-      plugins = [
-        {
-          name = "zsh-autosuggestions";
-          src = pkgs.zsh-autosuggestions;
-          file = "share/zsh-autosuggestions/zsh-autosuggestions.zsh";
-        }
-        {
-          name = "zsh-completions";
-          src = pkgs.zsh-completions;
-          file = "share/zsh-completions/zsh-completions.zsh";
-        }
-        {
-          name = "zsh-syntax-highlighting";
-          src = pkgs.zsh-syntax-highlighting;
-          file = "share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh";
-        }
-        # {
-        #   name = "powerlevel10k";
-        #   src = pkgs.zsh-powerlevel10k;
-        #   file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
-        # }
-        {
-          name = "fzf-tab";
-          src = pkgs.zsh-fzf-tab;
-          file = "share/fzf-tab/fzf-tab.plugin.zsh";
-        }
-      ];
-    };
     home-manager.enable = true;
-    hyprlock = {
-      enable = false;
-      settings = {
-        general = {
-          disable_loading_bar = true;
-          grace = 10;
-          hide_cursor = true;
-          no_fade_in = false;
-        };
-        background = [
-          {
-            path = "/home/${username}/Pictures/Wallpapers/elden ring-mohg.png";
-            blur_passes = 3;
-            blur_size = 8;
-          }
-        ];
-        image = [
-          {
-            path = "/home/${username}/.config/face.jpg";
-            size = 150;
-            border_size = 4;
-            border_color = "rgb(0C96F9)";
-            rounding = -1; # Negative means circle
-            position = "0, 200";
-            halign = "center";
-            valign = "center";
-          }
-        ];
-        input-field = [
-          {
-            size = "200, 50";
-            position = "0, -80";
-            monitor = "";
-            dots_center = true;
-            fade_on_empty = false;
-            font_color = "rgb(CFE6F4)";
-            inner_color = "rgb(657DC2)";
-            outer_color = "rgb(0D0E15)";
-            outline_thickness = 5;
-            placeholder_text = "Password...";
-            shadow_passes = 2;
-          }
-        ];
-      };
-    };
+    hyprlock = import ../../config/hyprlock.nix { inherit username; };
   };
 }

@@ -9,7 +9,6 @@ pkgs.writeShellScriptBin "startup" # bash
     nm-applet --indicator & disown
     blueman-applet & disown
     lxqt-policykit-agent & disown
-    # swww img /home/${username}/Pictures/Wallpapers/law.jpg
     waypaper --restore
     playerctld daemon & disown
     wl-paste --type text --watch cliphist store & disown
