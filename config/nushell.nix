@@ -5,7 +5,7 @@
 }:
 {
   programs.nushell = {
-    enable = true;
+    enable = false;
     shellAliases = {
       sv = "sudo nvim";
       fr = "nh os switch --hostname ${host} /home/${username}/cylisos/";

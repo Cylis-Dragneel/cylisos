@@ -25,27 +25,27 @@
       flake = false;
     };
     niri.url = "github:sodiboo/niri-flake";
-    umu = {
-      url = "git+https://github.com/Open-Wine-Components/umu-launcher/?dir=packaging\/nix&submodules=1";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # umu = {
+    #   url = "git+https://github.com/Open-Wine-Components/umu-launcher/?dir=packaging\/nix&submodules=1";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     yt-x.url = "github:Benexl/yt-x";
     curd = {
       url = "github:Wraient/curd";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    astal = {
-      url = "github:aylur/astal";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    aagl = {
-      url = "github:ezKEa/aagl-gtk-on-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    ags = {
-      url = "github:aylur/ags/v1";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # astal = {
+    #   url = "github:aylur/astal";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+    # aagl = {
+    #   url = "github:ezKEa/aagl-gtk-on-nix";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+    # ags = {
+    #   url = "github:aylur/ags/v1";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     hyprpanel.url = "github:jas-singhfsu/hyprpanel";
     hyprpanel.inputs.nixpkgs.follows = "nixpkgs";
     # This is required for plugin support.
@@ -85,6 +85,12 @@
             (
               { pkgs, ... }:
               {
+                # imports = [ inputs.aagl.nixosModules.default ];
+                # nix.settings = inputs.aagl.nixConfig;
+                # programs = {
+                #   sleepy-launcher.enable = true;
+                #   honkers-railway-launcher.enable = true;
+                # };
                 nixpkgs.overlays = [
                   inputs.niri.overlays.niri
                 ];
@@ -92,7 +98,7 @@
                   ghostty.packages."${system}".default
                   inputs.zen.packages.x86_64-linux.default
                   pkgs.niri-unstable
-                  inputs.umu.packages.${pkgs.system}.umu
+                  # inputs.umu.packages.${pkgs.system}.umu
                   inputs.yt-x.packages."${system}".default
                   inputs.curd.packages.${pkgs.system}.default
                 ];
@@ -115,7 +121,7 @@
             nixpkgs.overlays = [
             ];
             home.packages = [
-              inputs.astal.packages.${system}.default
+              # inputs.astal.packages.${system}.default
             ];
           }
           ./hosts/${host}/home.nix

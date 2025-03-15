@@ -14,12 +14,13 @@ let
     browser
     terminal
     extraMonitorSettings
+    monitorSettings
     ;
 in
 with lib;
 {
   wayland.windowManager.hyprland = {
-    enable = true;
+    enable = false;
     xwayland.enable = true;
     systemd.enable = true;
     # plugins = [
@@ -45,13 +46,12 @@ with lib;
           env = MOZ_ENABLE_WAYLAND, 1
           exec-once = dbus-update-activation-environment --systemd --all
           exec-once = systemctl --user import-environment QT_QPA_PLATFORMTHEME WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
-          exec-once = killall -q swww;sleep .5 && swww init
-          # exec-once = killall -q waybar;sleep .5 && waybar
-          exec-once = killall -q swaync;sleep .5 && swaync
+          exec-once = hyprpanel & disown
           exec-once = nm-applet --indicator
           exec-once = blueman-applet
           exec-once = lxqt-policykit-agent
-          exec-once = sleep 1.5 && swww img /home/${username}/Pictures/Wallpapers/law.jpg
+          # exec-once = sleep 1.5 && swww img /home/${username}/Pictures/Wallpapers/law.jpg
+          exec-once = sleep 1.5 && hyprpaper
           exec-once = playerctld daemon
           exec-once = mpDris2
           exec-once = wl-paste --type text --watch cliphist store
@@ -60,6 +60,7 @@ with lib;
 
 
           ${extraMonitorSettings}
+          ${monitorSettings}
           general {
             gaps_in = 6
             gaps_out = 8
@@ -89,24 +90,17 @@ with lib;
           windowrulev2 = float,class:(xdg-desktop-portal-gtk)
           windowrulev2 = stayfocused, title:^()$,class:^(steam)$
           windowrulev2 = minsize 1 1, title:^()$,class:^(steam)$
-          windowrulev2 = opacity 0.9 0.7, class:^(firefox)$
-          windowrulev2 = opacity 0.9 0.7, class:^(thunar)$
-          #windowrulev2 = workspace 1,class:(Vivaldi-stable)
-          windowrulev2 = workspace 1,class:(firefox)
-          windowrulev2 = workspace 2,class:(kitty)
-          #windowrulev2 = workspace 3,class:(discord)
-          windowrulev2 = workspace 3,class:(vesktop)
-          windowrulev2 = workspace 9,class:(calibre-gui)
-          windowrulev2 = workspace 9,class:(org.kde.okular)
-          windowrulev2 = workspace 5,class:(mpv)
+          # windowrulev2 = opacity 0.9 0.7, class:^(firefox)$
+          # windowrulev2 = opacity 0.9 0.7, class:^(thunar)$
           #windowrulev2 = workspace 8,class:(com.obsproject.Studio)
-          windowrulev2 = workspace 4,class:(spotube)
-          windowrulev2 = workspace 4,class:(Spotify)
           windowrulev2 = workspace 10,class:(Ryujinx)
-          windowrulev2 = workspace 10,class:(steam)
-          windowrulev2 = workspace 10,class:(lutris)
           windowrulev2 = pin,title:(Picture in picture)
+          windowrulev2 = float,title:(Picture in picture)
+          windowrulev2 = pin,title:(Picture-in-Picture)
+          windowrulev2 = float,title:(Picture-in-Picture)
           windowrulev2 = immediate,class:(steam_app_0)
+          windowrulev2 = opacity 0.9, title:(Ghostty)
+          # windowrulev2 = opacity 0.8, class:(kitty)
 
           gestures {
             workspace_swipe = true
@@ -140,10 +134,11 @@ with lib;
               color = rgba(1a1a1aee)
             }
             blur {
-                enabled = true size = 5
+                enabled = true
+                size = 12
                 passes = 3
-                new_optimizations = on
-                ignore_opacity = off
+                new_optimizations = true
+                ignore_opacity = true
             }
           }
           plugin {
@@ -172,7 +167,8 @@ with lib;
           bind = ${modifier},G,exec,flatpak run net.lutris.Lutris 
           bind = ${modifier},N,exec,thunar
           bind = ${modifier},M,exec,spotify
-          bind = ,F10,exec,jerry --rofi
+          # bind = ,F10,exec,jerry --rofi
+          bind = ,F1,exec,curd
           bind = ${modifier},V,exec,cliphist list | rofi -dmenu | cliphist decode | wl-copy
           bind = ${modifier},Q,killactive,
           bind = ${modifier},P,pseudo,
@@ -227,15 +223,25 @@ with lib;
           bind = ALT,Tab,cyclenext
           bind = ALT,Tab,bringactivetotop
           binde = ,XF86AudioRaiseVolume,exec,wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
+          binde = ,F10,exec,wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
           binde = ,XF86AudioLowerVolume,exec,wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+          binde = ,F11,exec,wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
           bind = ,XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+          bind = ,F12, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
           bind = ,XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_SOURCE@ toggle
+          bind = ,F9, exec, wpctl set-mute @DEFAULT_SOURCE@ toggle
           bind = ,XF86AudioPlay, exec, playerctl play-pause
+          bind = ,F6, exec, playerctl play-pause
           bind = ,XF86AudioPause, exec, playerctl play-pause
+          bind = ,F7, exec, playerctl play-pause
           bind = ,XF86AudioNext, exec, playerctl next
+          bind = ,F8, exec, playerctl next
           bind = ,XF86AudioPrev, exec, playerctl previous
+          bind = ,F5, exec, playerctl previous
           binde = ,XF86MonBrightnessDown,exec,brightnessctl set 5%-
+          binde = ,F3,exec,brightnessctl set 5%-
           binde = ,XF86MonBrightnessUp,exec,brightnessctl set +5%
+          binde = ,F2,exec,brightnessctl set +5%
           # trigger when the switch is turning off
           bindl = , switch:off:Lid Switch,exec,hyprctl keyword monitor "eDP-1, 1366x768, 0x0, 1"
           # trigger when the switch is turning on

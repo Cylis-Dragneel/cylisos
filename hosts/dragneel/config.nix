@@ -208,16 +208,14 @@
     pciutils
     ffmpeg-full
     socat
-    pokemonsay
+    # pokemonsay
     krabby
     ripgrep
     lshw
     bat
     pkg-config
-    meson
     hyprpicker
-    ninja
-    brightnessctl
+    # brightnessctl
     virt-viewer
     swappy
     appimage-run
@@ -256,7 +254,7 @@
     wev
     pamixer
     gimp
-    inkscape
+    # inkscape
     vesktop
     obsidian
     gitleaks
@@ -264,17 +262,15 @@
     amberol
     obs-studio
     pass
-    rmpc
+    # rmpc
     xournalpp
     scrot
     thefuck # Favorite package btw
-    # redis
     exercism
     tldr
     protonvpn-cli
     protonvpn-gui
     pipes-rs
-    # tym
     spotdl
     screenkey
     radeontop
@@ -291,12 +287,12 @@
     soulseekqt
     yacreader
     ripgrep
-    lutgen
+    # lutgen
     fd
     spotify
     sshfs
     timg
-    flowtime
+    # flowtime
     mousam
     freetube
     anup
@@ -306,7 +302,7 @@
     # wineWow64Packages.waylandFul
     # ente-auth
     xwallpaper
-    xbindkeys
+    # xbindkeys
     polybar
     xwayland-satellite-unstable
     cloudflare-warp
@@ -317,11 +313,14 @@
     ytfzf
     localsend
     gpodder
-    geany
     waypaper
     zoom-us
+    recordbox
     gapless
+    parabolic
+    wine-staging
     home-manager
+    vimPlugins.nvim-treesitter.withAllGrammars
     dolphin-emu
     duckstation
     retroarch-full
@@ -335,22 +334,18 @@
     redshift
     hyprpaper
     godot_4
-    kdenlive
+    kdePackages.kdenlive
     aseprite
-    libresprite
+    # libresprite
     audacity
     nitch
     nodejs_18
     geoclue2
     gammastep
-    varia
     cartridges
     mgba
-    mpv
-    dav1d
     ani-cli
     ani-skip
-    mangal
     python3
     ueberzugpp
     chafa
@@ -358,80 +353,81 @@
     nitrogen
     distrobox
     podman
-    (emacsWithPackagesFromUsePackage {
-      package = pkgs.emacs-git;
-      config = ../../config/emacs/init.el;
-      extraEmacsPackages = epkgs: [
-        epkgs.use-package
-        epkgs.evil
-        epkgs.evil-collection
-        epkgs.evil-tutor
-        epkgs.general
-        epkgs.which-key
-        epkgs.toc-org
-        epkgs.org-bullets
-        epkgs.sudo-edit
-        epkgs.all-the-icons
-        epkgs.all-the-icons-dired
-        epkgs.counsel
-        epkgs.ivy
-        epkgs.ivy-rich
-        epkgs.all-the-icons-ivy-rich
-        epkgs.eshell-syntax-highlighting
-        epkgs.vterm
-        epkgs.vterm-toggle
-        epkgs.catppuccin-theme
-        epkgs.rainbow-mode
-        epkgs.company
-        epkgs.company-box
-        epkgs.dashboard
-        epkgs.diminish
-        epkgs.flycheck
-        epkgs.lua-mode
-        epkgs.nix-mode
-        # epkgs.haskell-mode
-        # epkgs.elcord
-        epkgs.go-mode
-        epkgs.zig-mode
-        epkgs.projectile
-        epkgs.eshell-toggle
-        epkgs.dired-open
-        epkgs.peep-dired
-        epkgs.neotree
-        epkgs.doom-themes
-        epkgs.doom-modeline
-        epkgs.git-timemachine
-        epkgs.magit
-        epkgs.hl-todo
-        epkgs.perspective
-        epkgs.rainbow-delimiters
-        epkgs.tldr
-        epkgs.lsp-mode
-        epkgs.lsp-ui
-        epkgs.lsp-treemacs
-        epkgs.lsp-ivy
-        epkgs.dap-mode
-        epkgs.obsidian
-        epkgs.direnv
-        epkgs.counsel-projectile
-        epkgs.wakatime-mode
-      ];
-    })
+    umu-launcher
+    # (emacsWithPackagesFromUsePackage {
+    #   package = pkgs.emacs-git;
+    #   config = ../../config/emacs/init.el;
+    #   extraEmacsPackages = epkgs: [
+    #     epkgs.use-package
+    #     epkgs.evil
+    #     epkgs.evil-collection
+    #     epkgs.evil-tutor
+    #     epkgs.general
+    #     epkgs.which-key
+    #     epkgs.toc-org
+    #     epkgs.org-bullets
+    #     epkgs.sudo-edit
+    #     epkgs.all-the-icons
+    #     epkgs.all-the-icons-dired
+    #     epkgs.counsel
+    #     epkgs.ivy
+    #     epkgs.ivy-rich
+    #     epkgs.all-the-icons-ivy-rich
+    #     epkgs.eshell-syntax-highlighting
+    #     epkgs.vterm
+    #     epkgs.vterm-toggle
+    #     epkgs.catppuccin-theme
+    #     epkgs.rainbow-mode
+    #     epkgs.company
+    #     epkgs.company-box
+    #     epkgs.dashboard
+    #     epkgs.diminish
+    #     epkgs.flycheck
+    #     epkgs.lua-mode
+    #     epkgs.nix-mode
+    #     # epkgs.haskell-mode
+    #     # epkgs.elcord
+    #     epkgs.go-mode
+    #     epkgs.zig-mode
+    #     epkgs.projectile
+    #     epkgs.eshell-toggle
+    #     epkgs.dired-open
+    #     epkgs.peep-dired
+    #     epkgs.neotree
+    #     epkgs.doom-themes
+    #     epkgs.doom-modeline
+    #     epkgs.git-timemachine
+    #     epkgs.magit
+    #     epkgs.hl-todo
+    #     epkgs.perspective
+    #     epkgs.rainbow-delimiters
+    #     epkgs.tldr
+    #     epkgs.lsp-mode
+    #     epkgs.lsp-ui
+    #     epkgs.lsp-treemacs
+    #     epkgs.lsp-ivy
+    #     epkgs.dap-mode
+    #     epkgs.obsidian
+    #     epkgs.direnv
+    #     epkgs.counsel-projectile
+    #     epkgs.wakatime-mode
+    #   ];
+    # })
     #Awesome related
     xorg.xprop
     xorg.xinit
-    python312Packages.cmake
-    luajitPackages.lgi
-    luajit
-    xorg.xorgproto
-    xorg.libxcb
-    xcb-util-cursor
-    xorg.xcbutil
-    xorg.xcbutilkeysyms
-    cairo
-    pango
-    glib
-    haskellPackages.gio
+    # python312Packages.cmake
+    # luajitPackages.lgi
+    # luajit
+    # xorg.xorgproto
+    # xorg.libxcb
+    # xcb-util-cursor
+    # xorg.xcbutil
+    # xorg.xcbutilkeysyms
+    # cairo
+    # pango
+    # glib
+    # haskellPackages.gio
     xclip
   ];
 
@@ -480,7 +476,7 @@
     dbus.packages = [ pkgs.gcr ];
     timesyncd.enable = true;
     cloudflare-warp.enable = true;
-    emacs.enable = true;
+    emacs.enable = false;
     kanata = {
       enable = false;
       keyboards = {
@@ -658,7 +654,7 @@
     warp-log-cleanup = {
       wantedBy = [ "timers.target" ];
       timerConfig = {
-        OnCalendar = "weekly";
+        OnCalendar = "daily";
         Persistent = true;
       };
     };
