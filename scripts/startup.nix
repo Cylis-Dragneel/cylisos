@@ -13,5 +13,5 @@ pkgs.writeShellScriptBin "startup" # bash
     playerctld daemon & disown
     wl-paste --type text --watch cliphist store & disown
     wl-paste --type image --watch cliphist store & disown
-    battery & disown
+    gammastep-indicator & disown
   ''

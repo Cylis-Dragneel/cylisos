@@ -178,6 +178,7 @@ in
     vesktop.enable = false;
     vscode.enable = false;
     hyprlock.enable = false;
+    mpv.enable = false;
   };
 
   stylix = {
@@ -263,32 +264,20 @@ in
 
   # Scripts
   home.packages = [
-    inputs.jerry.packages.${pkgs.system}.default
     (import ../../scripts/emopicker9000.nix { inherit pkgs; })
     (import ../../scripts/pdf-viewer.nix { inherit pkgs; })
     (import ../../scripts/task-waybar.nix { inherit pkgs; })
     (import ../../scripts/battery.nix { inherit pkgs; })
     (import ../../scripts/proj.nix { inherit pkgs; })
     (import ../../scripts/clip.nix { inherit pkgs; })
-    (import ../../scripts/startup.nix {
-      inherit pkgs;
-      inherit username;
-    })
-    (import ../../scripts/wallsetter.nix {
-      inherit pkgs;
-      inherit username;
-    })
+    (import ../../scripts/startup.nix { inherit pkgs username; })
+    (import ../../scripts/wallsetter.nix { inherit pkgs username; })
     (import ../../scripts/web-search.nix { inherit pkgs; })
-    (import ../../scripts/obsidian-new.nix {
-      inherit pkgs;
-      inherit username;
-    })
+    (import ../../scripts/obsidian-new.nix { inherit pkgs username; })
     (import ../../scripts/rofi-launcher.nix { inherit pkgs; })
     (import ../../scripts/screenshootin.nix { inherit pkgs; })
-    (import ../../scripts/list-hypr-bindings.nix {
-      inherit pkgs;
-      inherit host;
-    })
+    (import ../../scripts/list-hypr-bindings.nix { inherit pkgs host; })
+    (import ../../scripts/fr-hms.nix { inherit pkgs host username; })
     pkgs.hyprpanel
   ];
 
@@ -305,7 +294,45 @@ in
       PartOf = [
         "tray.target"
         "graphical-session.target"
+  programs.ghostty = {
+    enable = true;
+    package = inputs.ghostty.packages.${pkgs.system}.default;
+    enableZshIntegration = true;
+    installBatSyntax = true;
+    installVimSyntax = true;
+    settings = {
+      theme = "/home/${username}/.config/ghostty/tokyonight_storm";
+      font-size = 11.3;
+      font-family = [
+        ""
+        "Maple Mono"
       ];
+      font-feature = [
+        "calt"
+        "cv01"
+        "cv02"
+        "cv03"
+        "cv31"
+        "ss03"
+      ];
+      cursor-style = "underline";
+      mouse-hide-while-typing = true;
+      background-opacity = 0.7;
+      background-blur-radius = 15;
+      unfocused-split-opacity = 0.7;
+      title = "Ghostty";
+      keybind = [
+        "ctrl+shift+r=reload_config"
+        "ctrl+backspace=text:\\x1b\\x7f"
+      ];
+      window-decoration = false;
+      window-theme = "ghostty";
+      focus-follows-mouse = false;
+      clipboard-read = "allow";
+      clipboard-write = "allow";
+      confirm-close-surface = false;
+      shell-integration-features = "cursor,no-sudo,title";
+      term = "xterm-ghostty";
     };
     Service = {
       Environment = "PATH=/run/wrappers/bin:${lib.makeBinPath dependencies}";

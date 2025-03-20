@@ -95,7 +95,6 @@
                   inputs.niri.overlays.niri
                 ];
                 environment.systemPackages = [
-                  ghostty.packages."${system}".default
                   inputs.zen.packages.x86_64-linux.default
                   pkgs.niri-unstable
                   # inputs.umu.packages.${pkgs.system}.umu
@@ -121,6 +120,7 @@
             nixpkgs.overlays = [
             ];
             home.packages = [
+              inputs.jerry.packages.${system}.default
               # inputs.astal.packages.${system}.default
             ];
           }
