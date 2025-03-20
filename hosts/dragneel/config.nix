@@ -18,6 +18,7 @@
     ../../modules/local-hardware-clock.nix
     ../../modules/overlays.nix
     # ../../modules/hilbish.nix
+    ../../modules/emacs.nix
   ];
 
   boot = {
@@ -354,65 +355,17 @@
     distrobox
     podman
     umu-launcher
-    # (emacsWithPackagesFromUsePackage {
-    #   package = pkgs.emacs-git;
-    #   config = ../../config/emacs/init.el;
-    #   extraEmacsPackages = epkgs: [
-    #     epkgs.use-package
-    #     epkgs.evil
-    #     epkgs.evil-collection
-    #     epkgs.evil-tutor
-    #     epkgs.general
-    #     epkgs.which-key
-    #     epkgs.toc-org
-    #     epkgs.org-bullets
-    #     epkgs.sudo-edit
-    #     epkgs.all-the-icons
-    #     epkgs.all-the-icons-dired
-    #     epkgs.counsel
-    #     epkgs.ivy
-    #     epkgs.ivy-rich
-    #     epkgs.all-the-icons-ivy-rich
-    #     epkgs.eshell-syntax-highlighting
-    #     epkgs.vterm
-    #     epkgs.vterm-toggle
-    #     epkgs.catppuccin-theme
-    #     epkgs.rainbow-mode
-    #     epkgs.company
-    #     epkgs.company-box
-    #     epkgs.dashboard
-    #     epkgs.diminish
-    #     epkgs.flycheck
-    #     epkgs.lua-mode
-    #     epkgs.nix-mode
-    #     # epkgs.haskell-mode
-    #     # epkgs.elcord
-    #     epkgs.go-mode
-    #     epkgs.zig-mode
-    #     epkgs.projectile
-    #     epkgs.eshell-toggle
-    #     epkgs.dired-open
-    #     epkgs.peep-dired
-    #     epkgs.neotree
-    #     epkgs.doom-themes
-    #     epkgs.doom-modeline
-    #     epkgs.git-timemachine
-    #     epkgs.magit
-    #     epkgs.hl-todo
-    #     epkgs.perspective
-    #     epkgs.rainbow-delimiters
-    #     epkgs.tldr
-    #     epkgs.lsp-mode
-    #     epkgs.lsp-ui
-    #     epkgs.lsp-treemacs
-    #     epkgs.lsp-ivy
-    #     epkgs.dap-mode
-    #     epkgs.obsidian
-    #     epkgs.direnv
-    #     epkgs.counsel-projectile
-    #     epkgs.wakatime-mode
-    #   ];
-    # })
+    (emacsWithPackagesFromUsePackage {
+      package = pkgs.emacs-unstable;
+      config = ../../config/emacs/config.org;
+      alwaysEnsure = true;
+      alwaysTangle = true;
+      extraEmacsPackages = epkgs: [
+        # epkgs.dap-ui
+        pkgs.gofumpt
+        pkgs.gopls
+      ];
+    })
     #Awesome related
     xorg.xprop
     xorg.xinit
@@ -476,7 +429,10 @@
     dbus.packages = [ pkgs.gcr ];
     timesyncd.enable = true;
     cloudflare-warp.enable = true;
-    emacs.enable = false;
+    emacs = {
+      enable = true;
+      package = pkgs.emacs-unstable;
+    };
     kanata = {
       enable = false;
       keyboards = {

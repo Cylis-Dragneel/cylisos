@@ -1,9 +1,9 @@
-
 #+TITLE: Cylis' GNU Emacs Config
 #+AUTHOR: Cylis Dragneel (Taha Ahmad)
 #+description: cylis' personal emacs config.
 #+startup: showeverything
 #+OPTIONS: toc:2
+#+PROPERTY: header-args:emacs-list :tangle yes
 
 * TABLE OF CONTENTS :toc:
 - [[#important-programs-to-load-first][IMPORTANT PROGRAMS TO LOAD FIRST]]
@@ -18,6 +18,7 @@
 - [[#diminish][DIMINISH]]
 - [[#dired][DIRED]]
 - [[#direnv][DIRENV]]
+- [[#elcord][ELCORD]]
 - [[#elfeed][ELFEED]]
 - [[#flycheck][FLYCHECK]]
 - [[#fonts][FONTS]]
@@ -79,6 +80,13 @@ Loading evil mode, which is basically vim keybindings and motions in emacs.
   (setq evil-collection-mode-list '(dashboard dired ibuffer))
   (evil-collection-init))
 (use-package evil-tutor)
+(use-package evil-escape
+  :ensure t
+  :init
+  (setq-default evil-escape-key-sequence "jk"
+		evil-escape-delay 0.2)
+  :config
+  (evil-escape-mode 1))
 
 ;; Using RETURN to follow links in Org/Evil 
 ;; Unmap keys in 'evil-maps if not done, (setq org-return-follows-link t) will not work
@@ -224,31 +232,39 @@ This package implements hiding or abbreviation of the modeline displays (lighter
       (direnv-mode))
 #+end_src
 
+* ELCORD
+A plugin to get discord-rich-presence
+#+begin_src emacs-lisp
+(use-package elcord)
+(elcord-mode)
+#+end_src
+
 * ELFEED
 An RSS newsfeed reader for Emacs.  Move through the articles with ‘j/k’.  Move through the stories with ‘CTRL j/k’ when in other frame.
 #+begin_src emacs-lisp
-;; (use-package elfeed
-  ;; :config
-  ;; (setq elfeed-search-feed-face ":foreground #ffffff :weight bold"
-        ;; elfeed-feeds (quote
-                       ;; (("https://www.reddit.com/r/linux.rss" reddit linux)
-                        ;; ("https://www.reddit.com/r/commandline.rss" reddit commandline)
-                        ;; ("https://www.reddit.com/r/distrotube.rss" reddit distrotube)
-                        ;; ("https://www.reddit.com/r/emacs.rss" reddit emacs)
-                        ;; ("https://www.gamingonlinux.com/article_rss.php" gaming linux)
-                        ;; ("https://hackaday.com/blog/feed/" hackaday linux)
-                        ;; ("https://opensource.com/feed" opensource linux)
-                        ;; ("https://linux.softpedia.com/backend.xml" softpedia linux)
-                        ;; ("https://itsfoss.com/feed/" itsfoss linux)
-                        ;; ("https://www.phoronix.com/rss.php" phoronix linux)
-                        ;; ("http://feeds.feedburner.com/d0od" omgubuntu linux)
-                        ;; ("https://www.techrepublic.com/rssfeeds/topic/open-source/" techrepublic linux)
-                        ;; ("http://lxer.com/module/newswire/headlines.rss" lxer linux)))))
-;; 
-;; (use-package elfeed-goodies
-  ;; :config
-  ;; (setq elfeed-goodies/entry-pane-size 0.5))
+  (use-package elfeed
+    :config
+    (setq elfeed-search-feed-face ":foreground #ffffff :weight bold"
+          elfeed-feeds (quote
+                         (("https://www.reddit.com/r/linux.rss" reddit linux)
+                          ("https://www.reddit.com/r/commandline.rss" reddit commandline)
+                          ("https://www.reddit.com/r/distrotube.rss" reddit distrotube)
+                          ("https://www.reddit.com/r/emacs.rss" reddit emacs)
+                          ("https://www.gamingonlinux.com/article_rss.php" gaming linux)
+                          ("https://hackaday.com/blog/feed/" hackaday linux)
+                          ("https://opensource.com/feed" opensource linux)
+                          ("https://linux.softpedia.com/backend.xml" softpedia linux)
+                          ("https://itsfoss.com/feed/" itsfoss linux)
+                          ("https://www.phoronix.com/rss.php" phoronix linux)
+                          ("http://feeds.feedburner.com/d0od" omgubuntu linux)
+                          ("https://www.techrepublic.com/rssfeeds/topic/open-source/" techrepublic linux)
+                          ("http://lxer.com/module/newswire/headlines.rss" lxer linux)))))
+
+  (use-package elfeed-goodies
+    :config
+    (setq elfeed-goodies/entry-pane-size 0.5))
 #+end_src
+
 
 
 * FLYCHECK
@@ -264,7 +280,7 @@ Defining the various fonts that Emacs will use.
 ** Setting the Font Face
 #+begin_src emacs-lisp
 (set-face-attribute 'default nil
-                  :font "JetBrainsMono Nerd Font Mono"
+                  :font "Maple Mono"
                   :height 110
                   :weight 'medium)
 (set-face-attribute 'variable-pitch nil
@@ -272,14 +288,25 @@ Defining the various fonts that Emacs will use.
                   :height 120
                   :weight 'medium)
 (set-face-attribute 'fixed-pitch nil
-                  :font "JetBrainsMono Nerd Font Mono"
+                  :font "Maple Mono"
                   :height 110
                   :weight 'medium)
+
+(set-fontset-font t 'unicode (font-spec :family "Symbola") nil 'append)
+(setq use-default-font-for-symbols nil)
+(when (member "Noto Color Emoji" (font-family-list))
+  (set-fontset-font t 'symbol (font-spec :family "Noto Color Emoji") nil 'prepend))
+
 ;; Makes commented text and keywords italics.
 ;; This is working in emacsclient but not emacs.
 ;; Your font must have an italic face available.
-(set-face-attribute 'font-lock-comment-face nil :slant 'italic)
-(set-face-attribute 'font-lock-keyword-face nil :slant 'italic)
+;; (set-face-attribute 'font-lock-comment-face nil :slant 'italic)
+;; (set-face-attribute 'font-lock-keyword-face nil :slant 'italic)
+(custom-set-faces
+'(font-lock-comment-face ((t (:slant italic))))
+'(font-lock-keyword-face ((t (:slant italic))))
+'(font-lock-keyword-face ((t (:slant italic)))))
+(setq org-src-fontify-natively t)
 
 ;; This sets the default font on all graphical frames created after restarting Emacs.
 ;; Does the same thing as 'set-face-attribute default' above, but emacsclient fonts
@@ -718,7 +745,7 @@ Org-bullets gives us attractive bullets rather than asterisks.
 #+end_src
 
 ** Disabling Electric Indent
-#+beign_src emacs-lisp
+#+begin_src emacs-lisp
 (electric-indent-mode -1)
 (setq org-edit-src-content-indentation 0)
 #+end_src
@@ -867,16 +894,17 @@ sudo-edit gives us the ability to open files with sudo privileges or switch over
 * THEME
 Load your own custom theme that will be placed in the themes directory of your emacs configuration path.
 #+begin_src emacs-lisp
-  (add-to-list 'custom-theme-load-path "~/.config/emacs/themes/")
-  (use-package doom-themes
-    :config
-    (setq doom-themes-enable-bold t
-    doom-themes-enable-italic t))
-  ;; (load-theme 'Euphoria t)
-  (load-theme 'doom-tokyo-night t)
-  ;; fallback theme
-  (use-package catppuccin-theme)
-  ;;(load-theme 'catppuccin :no-confirm)
+(add-to-list 'custom-theme-load-path "~/.config/emacs/themes/")
+(use-package doom-themes
+  :config
+  (setq doom-themes-enable-bold t
+  doom-themes-enable-italic t))
+;; (load-theme 'Euphoria t)
+(setq doom-themes-enable-italic t)
+(load-theme 'doom-tokyo-night t)
+;; fallback theme
+(use-package catppuccin-theme)
+;;(load-theme 'catppuccin :no-confirm)
 #+end_src
 
 * TLDR
@@ -887,8 +915,8 @@ Load your own custom theme that will be placed in the themes directory of your e
 * Transparency
 Enable True Transparency if you want.
 #+begin_src emacs-lisp
-(set-frame-parameter nil 'alpha-background 70)
-(add-to-list 'default-frame-alist '(alpha-background . 70))
+(set-frame-parameter nil 'alpha-background 80)
+(add-to-list 'default-frame-alist '(alpha-background . 80))
 #+end_src
 
 * WAKATIME
