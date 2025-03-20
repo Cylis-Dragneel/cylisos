@@ -52,9 +52,9 @@
   '';
   initExtra = ''
     bindkey -e
+    nitch
 
     # [[ ! -f ${./p10k.zsh} ]] || source ${./p10k.zsh}
-    krabby random
     # OMP
     # eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/dracula.omp.json)"
     zstyle ':completion:*:git-checkout:*' sort false
@@ -75,6 +75,7 @@
       fi
       echo '{"command":["script-message", "'"$script_name"'"] }' | socat - /tmp/mpvsocket
     }
+    echo -ne '\e[5 q'
   '';
   oh-my-zsh = {
     enable = true;

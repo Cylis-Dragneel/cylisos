@@ -45,7 +45,7 @@ in
     ../../config/starship/starship.nix
     ../../config/nushell.nix
     ../../modules/overlays.nix
-    inputs.ags.homeManagerModules.default
+    # inputs.ags.homeManagerModules.default
   ];
 
   # Place Files Inside Home Directory
@@ -287,13 +287,6 @@ in
     client.default_app.use_magnet = true;
     source.nyaa.default_sort = "Seeders";
   };
-  programs.ags.enable = true;
-  systemd.user.services.ags = {
-    Unit = {
-      Description = "Aylur's Gtk Shell";
-      PartOf = [
-        "tray.target"
-        "graphical-session.target"
   programs.ghostty = {
     enable = true;
     package = inputs.ghostty.packages.${pkgs.system}.default;
@@ -334,13 +327,23 @@ in
       shell-integration-features = "cursor,no-sudo,title";
       term = "xterm-ghostty";
     };
-    Service = {
-      Environment = "PATH=/run/wrappers/bin:${lib.makeBinPath dependencies}";
-      ExecStart = "${cfg.package}/bin/ags -c ${config.xdg.configHome}/ags/config.js";
-      Restart = "on-failure";
-    };
-    Install.WantedBy = [ "graphical-session.target" ];
   };
+  # programs.ags.enable = true;
+  # systemd.user.services.ags = {
+  #   Unit = {
+  #     Description = "Aylur's Gtk Shell";
+  #     PartOf = [
+  #       "tray.target"
+  #       "graphical-session.target"
+  #     ];
+  #   };
+  #   Service = {
+  #     Environment = "PATH=/run/wrappers/bin:${lib.makeBinPath dependencies}";
+  #     ExecStart = "${cfg.package}/bin/ags -c ${config.xdg.configHome}/ags/config.js";
+  #     Restart = "on-failure";
+  #   };
+  #   Install.WantedBy = [ "graphical-session.target" ];
+  # };
 
   services = {
     gammastep = {
@@ -452,121 +455,126 @@ in
     };
     vscode = {
       enable = true;
-      extensions =
-        with pkgs.vscode-extensions;
-        [
-          ms-python.python
-          ms-python.pylint
-          catppuccin.catppuccin-vsc
-          catppuccin.catppuccin-vsc-icons
-          github.copilot
-          github.copilot-chat
-          ritwickdey.liveserver
-          mechatroner.rainbow-csv
-          vscodevim.vim
-          golang.go
-          eamodio.gitlens
-          esbenp.prettier-vscode
-          jnoortheen.nix-ide
-          arrterian.nix-env-selector
-          mkhl.direnv
+      profiles = {
+        default = {
+          extensions =
+            with pkgs.vscode-extensions;
+            [
+              ms-python.python
+              ms-python.pylint
+              catppuccin.catppuccin-vsc
+              catppuccin.catppuccin-vsc-icons
+              github.copilot
+              github.copilot-chat
+              ritwickdey.liveserver
+              mechatroner.rainbow-csv
+              vscodevim.vim
+              golang.go
+              eamodio.gitlens
+              esbenp.prettier-vscode
+              jnoortheen.nix-ide
+              arrterian.nix-env-selector
+              mkhl.direnv
 
-        ]
-        ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
-          {
-            name = "errorlens";
-            publisher = "usernamehw";
-            version = "3.24.0";
-            sha256 = "sha256-Y3M/A5rYLkxQPRIZ0BUjhlkvixDae+wIRUsBn4tREFw=";
-          }
-          {
-            name = "vscode-wakatime";
-            publisher = "wakatime";
-            version = "25.0.0";
-            sha256 = "sha256-n/7y2nbD+ziUCDmNbfuT01GK/ls8rTfghpntj6SmsbA=";
-          }
-          {
-            name = "ripgrep";
-            publisher = "jimmyzjx";
-            version = "0.4.2";
-            sha256 = "sha256-ZP7taq/37rJhbiwD0Vk+6YM6+smjUhC93BFKxcmneMM=";
-          }
-        ];
-      userSettings = {
-        "update.mode" = "none";
-        "extensions.autoUpdate" = false; # Disable extension auto-updates
-        "extensions.autoCheckUpdates" = false; # Disable checking for extension updates
+            ]
+            ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+              {
+                name = "errorlens";
+                publisher = "usernamehw";
+                version = "3.24.0";
+                sha256 = "sha256-Y3M/A5rYLkxQPRIZ0BUjhlkvixDae+wIRUsBn4tREFw=";
+              }
+              {
+                name = "vscode-wakatime";
+                publisher = "wakatime";
+                version = "25.0.0";
+                sha256 = "sha256-n/7y2nbD+ziUCDmNbfuT01GK/ls8rTfghpntj6SmsbA=";
+              }
+              {
+                name = "ripgrep";
+                publisher = "jimmyzjx";
+                version = "0.4.2";
+                sha256 = "sha256-ZP7taq/37rJhbiwD0Vk+6YM6+smjUhC93BFKxcmneMM=";
+              }
+            ];
+          userSettings = {
+            "update.mode" = "none";
+            "extensions.autoUpdate" = false; # Disable extension auto-updates
+            "extensions.autoCheckUpdates" = false; # Disable checking for extension updates
 
-        # Go specific update disabling
-        "go.gopath" = ""; # Let the project flake handle the GOPATH
-        "go.toolsManagement.checkForUpdates" = "off";
+            # Go specific update disabling
+            "go.gopath" = ""; # Let the project flake handle the GOPATH
+            "go.toolsManagement.checkForUpdates" = "off";
 
-        "editor.cursorBlinking" = "smooth";
-        "editor.cursorSmoothCaretAnimation" = "on";
-        "editor.wordWrap" = "on";
-        "editor.formatOnSave" = true;
-        "editor.minimap.enabled" = true;
-        "editor.fontFamily" = "Maple Mono";
-        "editor.fontLigatures" = true;
+            "editor.cursorBlinking" = "smooth";
+            "editor.cursorSmoothCaretAnimation" = "on";
+            "editor.wordWrap" = "on";
+            "editor.formatOnSave" = true;
+            "editor.minimap.enabled" = true;
+            "editor.fontFamily" = "Maple Mono";
+            "editor.fontLigatures" = true;
 
-        "workbench.colorTheme" = "Catppuccin Macchiato";
-        "workbench.iconTheme" = "catppuccin-macchiato";
+            "workbench.colorTheme" = "Catppuccin Macchiato";
+            "workbench.iconTheme" = "catppuccin-macchiato";
 
-        "terminal.integrated.fontFamily" = "Maple Mono";
+            "terminal.integrated.fontFamily" = "Maple Mono";
 
-        # Go settings
-        "go.useLanguageServer" = true;
-        "go.toolsManagement.autoUpdate" = false;
-        "go.formatTool" = "goimports";
-        "go.lintTool" = "golint";
-        "go.testOnSave" = false;
+            # Go settings
+            "go.useLanguageServer" = true;
+            "go.toolsManagement.autoUpdate" = false;
+            "go.formatTool" = "goimports";
+            "go.lintTool" = "golint";
+            "go.testOnSave" = false;
 
-        # Correctly formatted Go settings for Nix
-        "[go]" = {
-          "editor.insertSpaces" = false;
-          "editor.formatOnSave" = true;
-          "editor.codeActionsOnSave" = {
-            "source.organizeImports" = "always";
+            # Correctly formatted Go settings for Nix
+            "[go]" = {
+              "editor.insertSpaces" = false;
+              "editor.formatOnSave" = true;
+              "editor.codeActionsOnSave" = {
+                "source.organizeImports" = "always";
+              };
+            };
+
+            # Go language server settings
+            "gopls" = {
+              "usePlaceholders" = true;
+              "staticcheck" = true;
+              "completeUnimported" = true;
+              "matcher" = "Fuzzy";
+              "analyses" = {
+                "nilness" = true;
+                "unusedparams" = true;
+                "unusedwrite" = true;
+                "useany" = true;
+              };
+            };
+
+            # Debugging
+            "go.delveConfig" = {
+              "dlvLoadConfig" = {
+                "followPointers" = true;
+                "maxVariableRecurse" = 1;
+                "maxStringLen" = 128;
+                "maxArrayValues" = 64;
+                "maxStructFields" = -1;
+              };
+              "apiVersion" = 2;
+              "showGlobalVariables" = false;
+            };
+
+            # Direnv settings
+            "direnv.enable" = true;
+            "nix.enableLanguageServer" = true;
           };
+          keybindings = [
+            {
+              key = "ctrl+shift+f";
+              command = "ripgrep.find";
+            }
+          ];
         };
-
-        # Go language server settings
-        "gopls" = {
-          "usePlaceholders" = true;
-          "staticcheck" = true;
-          "completeUnimported" = true;
-          "matcher" = "Fuzzy";
-          "analyses" = {
-            "nilness" = true;
-            "unusedparams" = true;
-            "unusedwrite" = true;
-            "useany" = true;
-          };
-        };
-
-        # Debugging
-        "go.delveConfig" = {
-          "dlvLoadConfig" = {
-            "followPointers" = true;
-            "maxVariableRecurse" = 1;
-            "maxStringLen" = 128;
-            "maxArrayValues" = 64;
-            "maxStructFields" = -1;
-          };
-          "apiVersion" = 2;
-          "showGlobalVariables" = false;
-        };
-
-        # Direnv settings
-        "direnv.enable" = true;
-        "nix.enableLanguageServer" = true;
       };
-      keybindings = [
-        {
-          key = "ctrl+shift+f";
-          command = "ripgrep.find";
-        }
-      ];
+
     };
     spicetify = import ../../config/spicetify.nix { inherit pkgs inputs; };
     wezterm = {

@@ -5,9 +5,9 @@
   inputs,
   username,
   options,
+  lib,
   ...
 }:
-
 {
   imports = [
     ./hardware.nix
@@ -17,7 +17,6 @@
     ../../modules/vm-guest-services.nix
     ../../modules/local-hardware-clock.nix
     ../../modules/overlays.nix
-    # ../../modules/hilbish.nix
     ../../modules/emacs.nix
   ];
 
@@ -355,6 +354,13 @@
     distrobox
     podman
     umu-launcher
+    cosmic-files
+    fish
+    helix
+    jq
+    chromium
+    zip
+    p7zip
     (emacsWithPackagesFromUsePackage {
       package = pkgs.emacs-unstable;
       config = ../../config/emacs/config.org;
@@ -415,6 +421,7 @@
       xdg-desktop-portal
       xdg-desktop-portal-hyprland
       xdg-desktop-portal-wlr
+      xdg-desktop-portal-gnome
     ];
     configPackages = with pkgs; [
       xdg-desktop-portal-gtk

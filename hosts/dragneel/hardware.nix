@@ -22,7 +22,12 @@
     "sd_mod"
   ];
   boot.initrd.kernelModules = [ "amdgpu" ];
-  boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelModules = [
+    "kvm-intel"
+    "snd-aloop"
+    "i2c-dev"
+    "i2c-piix4"
+  ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" = {

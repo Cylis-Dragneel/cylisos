@@ -1,4 +1,3 @@
-{ pkgs, inputs, ... }:
 {
   pkgs,
   inputs,

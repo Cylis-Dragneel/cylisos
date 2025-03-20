@@ -20,7 +20,7 @@ in
 with lib;
 {
   wayland.windowManager.hyprland = {
-    enable = false;
+    enable = true;
     xwayland.enable = true;
     systemd.enable = true;
     # plugins = [
@@ -73,7 +73,7 @@ with lib;
           input {
             kb_layout = us
             kb_options = grp:alt_shift_toggle
-            follow_mouse = 3
+            follow_mouse = 2
             touchpad {
               natural_scroll = false
             }
@@ -160,6 +160,7 @@ with lib;
           bind = ${modifier}SHIFT,N,exec,swaync-client -rs
           bind = ${modifier},W,exec,${browser}
           bind = ${modifier},E,exec,emopicker9000
+          bind = ${modifier}SHIFT,E,exec,emacsclient -c
           bind = ,Print,exec,screenshootin
           bind = ${modifier},D,exec,vesktop
           bind = ${modifier},O,exec,obsidian
