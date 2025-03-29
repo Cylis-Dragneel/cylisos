@@ -11,7 +11,7 @@ local servers = {
 	"rustanalyzer",
 	"nixd",
 	"gopls",
-	"tsls",
+	"vtsls",
 	"zls",
 	"luals",
 	"html",
@@ -24,13 +24,12 @@ local servers = {
 	"elixirls",
 	"astro",
 	"denols",
-	"tsserver",
 	"harperls",
 }
 
 lsp["rustanalyzer"] = {
 	cmd = { "rust-analyzer" },
-	filetypes = { "rs" },
+	filetypes = { "rust" },
 	on_attach = on_attach,
 	capabilities = capabilities,
 	settings = {
@@ -51,16 +50,10 @@ lsp["nixd"] = {
 	settings = {
 		nixd = {
 			autowatch = true,
-			nixpkgs = {
-				expr = 'import (builtins.getFlake "/home/cylis/cylisos").inputs.nixpkgs { }',
-			},
-			formatting = {
-				command = { "nixfmt" },
-			},
+			nixpkgs = { expr = 'import (builtins.getFlake "/home/cylis/cylisos").inputs.nixpkgs { }' },
+			formatting = { command = { "nixfmt" } },
 			options = {
-				nixos = {
-					expr = '(builtins.getFlake "/home/cylis/cylisos/").nixosConfigurations.dragneel.options',
-				},
+				nixos = { expr = '(builtins.getFlake "/home/cylis/cylisos/").nixosConfigurations.dragneel.options' },
 			},
 		},
 	},
@@ -82,11 +75,11 @@ lsp["gopls"] = {
 	},
 }
 
-lsp["tsls"] = {
+lsp["vtsls"] = {
 	capabilities = capabilities,
 	on_attach = on_attach,
 	filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
-	cmd = { "typescript-language-server", "--stdio" },
+	cmd = { "vtsls", "--stdio" },
 }
 
 lsp["zls"] = {
@@ -103,18 +96,10 @@ lsp["luals"] = {
 	cmd = { "lua-language-server" },
 	settings = {
 		Lua = {
-			runtime = {
-				version = "LuaJIT",
-			},
-			diagnostics = {
-				globals = { "vim" },
-			},
-			workspace = {
-				library = vim.api.nvim_get_runtime_file("", true),
-			},
-			telemetry = {
-				enable = false,
-			},
+			runtime = { version = "LuaJIT" },
+			diagnostics = { globals = { "vim" } },
+			workspace = { library = vim.api.nvim_get_runtime_file("", true) },
+			telemetry = { enable = false },
 		},
 	},
 }
@@ -187,13 +172,6 @@ lsp["denols"] = {
 	on_attach = on_attach,
 	filetypes = { "deno" },
 	cmd = { "deno", "lsp" },
-}
-
-lsp["tsserver"] = {
-	capabilities = capabilities,
-	on_attach = on_attach,
-	filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
-	cmd = { "typescript-language-server", "--stdio" },
 }
 
 lsp["harperls"] = {

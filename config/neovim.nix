@@ -1,7 +1,6 @@
 {
   pkgs,
   inputs,
-  lib,
   ...
 }:
 let
@@ -30,7 +29,7 @@ in
         astro-language-server
         elixir-ls
         harper
-        typescript-language-server
+        vtsls
         # haskell-language-server
         gopls
         basedpyright
@@ -39,7 +38,6 @@ in
         marksman
         luajitPackages.lua-lsp
         #Misc.
-        codeium
         # Formatters
         rustfmt
         clippy
@@ -57,7 +55,6 @@ in
         codecompanion-nvim
         none-ls-nvim
         vim-wakatime
-        codeium-nvim
         mini-nvim
         obsidian-nvim
         catppuccin-nvim
@@ -124,7 +121,6 @@ in
           ${builtins.readFile ./nvim/plugins/copilot.lua}
           require("ibl").setup()
           require("colorizer").setup()
-          -- require("codeium").setup()
         '';
     };
   };
