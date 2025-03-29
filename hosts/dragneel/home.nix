@@ -57,12 +57,12 @@ in
     source = ../../config/fastfetch;
     recursive = true;
   };
-  home.file.".config/awesome" = {
-    source = ../../config/awesome;
-    recursive = true;
-  };
   home.file.".config/ghostty" = {
     source = ../../config/ghostty;
+    recursive = true;
+  };
+  home.file.".config/awesome" = {
+    source = ../../config/awesome;
     recursive = true;
   };
   home.file.".config/i3" = {
@@ -79,6 +79,10 @@ in
   };
   home.file.".config/emacs" = {
     source = ../../config/emacs;
+    recursive = true;
+  };
+  home.file.".config/sesh" = {
+    source = ../../config/sesh;
     recursive = true;
   };
   home.file.".config/wlogout/icons" = {
@@ -106,14 +110,11 @@ in
     userName = "${gitUsername}";
     userEmail = "${gitEmail}";
     extraConfig = {
-      init = {
-        defaultBranch = "main";
-      };
-      color = {
-        ui = "auto";
-      };
-      pull = {
-        rebase = false;
+      init.defaultBranch = "main";
+      color.ui = "auto";
+      pull.rebase = false;
+      alias = {
+        pr = "pull --rebase";
       };
     };
   };
@@ -131,6 +132,7 @@ in
     configFile."mpv/mpv.conf".text = ''
       --input-ipc-server=/tmp/mpvsocket
       --save-position-on-quit
+      --fullscreen
       ytdl-raw-options=cookies-from-browser=firefox
 
       # --- bonus mpv tips ---
@@ -179,6 +181,7 @@ in
     vscode.enable = false;
     hyprlock.enable = false;
     mpv.enable = false;
+    starship.enable = false;
   };
 
   stylix = {
@@ -278,56 +281,10 @@ in
     (import ../../scripts/screenshootin.nix { inherit pkgs; })
     (import ../../scripts/list-hypr-bindings.nix { inherit pkgs host; })
     (import ../../scripts/fr-hms.nix { inherit pkgs host username; })
+    (import ../../scripts/sesh.nix { inherit pkgs; })
     pkgs.hyprpanel
   ];
 
-  programs.nyaa = {
-    enable = true;
-    download_client = "DefaultApp";
-    client.default_app.use_magnet = true;
-    source.nyaa.default_sort = "Seeders";
-  };
-  programs.ghostty = {
-    enable = true;
-    package = inputs.ghostty.packages.${pkgs.system}.default;
-    enableZshIntegration = true;
-    installBatSyntax = true;
-    installVimSyntax = true;
-    settings = {
-      theme = "/home/${username}/.config/ghostty/tokyonight_storm";
-      font-size = 11.3;
-      font-family = [
-        ""
-        "Maple Mono"
-      ];
-      font-feature = [
-        "calt"
-        "cv01"
-        "cv02"
-        "cv03"
-        "cv31"
-        "ss03"
-      ];
-      cursor-style = "underline";
-      mouse-hide-while-typing = true;
-      background-opacity = 0.7;
-      background-blur-radius = 15;
-      unfocused-split-opacity = 0.7;
-      title = "Ghostty";
-      keybind = [
-        "ctrl+shift+r=reload_config"
-        "ctrl+backspace=text:\\x1b\\x7f"
-      ];
-      window-decoration = false;
-      window-theme = "ghostty";
-      focus-follows-mouse = false;
-      clipboard-read = "allow";
-      clipboard-write = "allow";
-      confirm-close-surface = false;
-      shell-integration-features = "cursor,no-sudo,title";
-      term = "xterm-ghostty";
-    };
-  };
   # programs.ags.enable = true;
   # systemd.user.services.ags = {
   #   Unit = {
@@ -359,7 +316,7 @@ in
     picom = {
       enable = true;
       activeOpacity = 1.0;
-      inactiveOpacity = 0.8;
+      inactiveOpacity = 1.0;
       shadow = true;
       shadowOffsets = [
         (-25)
@@ -411,6 +368,13 @@ in
   };
 
   programs = {
+    nyaa = {
+      enable = true;
+      download_client = "DefaultApp";
+      client.default_app.use_magnet = true;
+      source.nyaa.default_sort = "Date";
+    };
+    ghostty = import ../../config/ghostty.nix { inherit pkgs inputs username; };
     # hyprpanel = {
     #   enable = true;
     #   systemd.enable = true;
@@ -475,7 +439,6 @@ in
               jnoortheen.nix-ide
               arrterian.nix-env-selector
               mkhl.direnv
-
             ]
             ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
               {
@@ -502,23 +465,76 @@ in
             "extensions.autoUpdate" = false; # Disable extension auto-updates
             "extensions.autoCheckUpdates" = false; # Disable checking for extension updates
 
-            # Go specific update disabling
-            "go.gopath" = ""; # Let the project flake handle the GOPATH
-            "go.toolsManagement.checkForUpdates" = "off";
-
             "editor.cursorBlinking" = "smooth";
             "editor.cursorSmoothCaretAnimation" = "on";
             "editor.wordWrap" = "on";
             "editor.formatOnSave" = true;
-            "editor.minimap.enabled" = true;
+            "editor.minimap.enabled" = false;
             "editor.fontFamily" = "Maple Mono";
-            "editor.fontLigatures" = true;
+            "editor.suggestFontSize" = 13;
+            "editor.fontSize" = 13;
+            "editor.suggestLineHeight" = 30;
+            "editor.fontWeight" = "400";
+            "codesnap.backgroundColor" = "#FFC540";
+            "codesnap.showLineNumbers" = false;
+            "codesnap.roundedCorners" = true;
+            "editor.fontLigatures" = "'calt','cv01','cv02','cv03','cv31','ss03'";
+            "editor.lightbulb.enabled" = "off";
 
             "workbench.colorTheme" = "Catppuccin Macchiato";
             "workbench.iconTheme" = "catppuccin-macchiato";
+            "workbench.activityBar.location" = "hidden";
+            # "workbench.statusBar.visible" = false;
+            "workbench.sideBar.location" = "right";
+            "window.menuBarVisibility" = "compact";
 
             "terminal.integrated.fontFamily" = "Maple Mono";
+            "terminal.integrated.lineHeight" = 1.5;
+            "terminal.integrated.fontSize" = 13;
 
+            "search.useIgnoreFiles" = false;
+            "search.exclude" = {
+              "**/.direnv/" = true;
+              "**/node_modules" = true;
+              "**/dist" = true;
+            };
+
+            "ripgrep.exe" = "${pkgs.ripgrep}/bin/ripgrep";
+
+            "nix.serverPath" = "nixd";
+            "nix.serverSettings" = {
+              "nixd" = {
+                "formatting" = {
+                  "command" = [ "nixfmt" ];
+                };
+                "autowatch" = true;
+                "nixpkgs" = {
+                  "expr" = "import (builtins.getFlake '/home/${username}/cylisos').inputs.nixpkgs { }";
+                };
+                "options" = {
+                  "nixos" = {
+                    "expr" = "(builtins.getFlake '/home/${username}/cylisos').nixosConfigurations.${host}.options";
+                  };
+                  "home-manager" = {
+                    "expr" = "(builtins.getFlake '/home/${username}/cylisos').homeConfigurations.${username}.options";
+                  };
+                };
+              };
+            };
+
+            "vim.insertModeKeyBindings" = [
+              {
+                before = [
+                  "j"
+                  "k"
+                ];
+                after = [ "<Esc>" ];
+              }
+            ];
+
+            # Go specific update disabling
+            "go.gopath" = ""; # Let the project flake handle the GOPATH
+            "go.toolsManagement.checkForUpdates" = "off";
             # Go settings
             "go.useLanguageServer" = true;
             "go.toolsManagement.autoUpdate" = false;
@@ -576,7 +592,7 @@ in
       };
 
     };
-    spicetify = import ../../config/spicetify.nix { inherit pkgs inputs; };
+    spicetify = import ../../config/spicetify.nix { inherit inputs pkgs; };
     wezterm = {
       enable = false;
       enableZshIntegration = true;

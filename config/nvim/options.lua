@@ -28,3 +28,4 @@ opt.sidescrolloff = 5
 vim.g.mapleader = " "
 opt.conceallevel = 2
 opt.termguicolors = true
+opt.showmode = false

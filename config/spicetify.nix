@@ -12,7 +12,7 @@ in
     goToSong
     powerBar
     skipOrPlayLikedSongs
-    volumeProfiles
+    # volumeProfiles
     playNext
     history
     keyboardShortcut

@@ -30,6 +30,7 @@ in
         astro-language-server
         elixir-ls
         harper
+        typescript-language-server
         # haskell-language-server
         gopls
         basedpyright
@@ -50,7 +51,10 @@ in
         nixfmt-rfc-style
       ];
       plugins = with pkgs.vimPlugins; [
-        cord-nvim
+        smart-open-nvim
+        neocord
+        copilot-vim
+        codecompanion-nvim
         none-ls-nvim
         vim-wakatime
         codeium-nvim
@@ -105,7 +109,7 @@ in
           ${builtins.readFile ./nvim/plugins/auto-session.lua}
           ${builtins.readFile ./nvim/plugins/comment.lua}
           ${builtins.readFile ./nvim/plugins/cmp.lua}
-          ${builtins.readFile ./nvim/plugins/lsp.lua}
+          ${builtins.readFile ./nvim/plugins/new-lsp.lua}
           ${builtins.readFile ./nvim/plugins/nvim-tree.lua}
           ${builtins.readFile ./nvim/plugins/telescope.lua}
           ${builtins.readFile ./nvim/plugins/todo-comments.lua}
@@ -117,6 +121,7 @@ in
           ${builtins.readFile ./nvim/plugins/none.lua}
           ${builtins.readFile ./nvim/plugins/lualine.lua}
           ${builtins.readFile ./nvim/plugins/presence.lua}
+          ${builtins.readFile ./nvim/plugins/copilot.lua}
           require("ibl").setup()
           require("colorizer").setup()
           -- require("codeium").setup()

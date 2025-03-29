@@ -75,6 +75,14 @@
       fi
       echo '{"command":["script-message", "'"$script_name"'"] }' | socat - /tmp/mpvsocket
     }
+    mpv-append() {
+      local vid="$1"
+      if [[ -z "$vid" ]]; then
+        echo "Usage: mpv-append <video-url>"
+        return 1
+      fi
+      echo '{"command": ["loadfile", "'"$vid"'", "append-play"]}' | socat - /tmp/mpvsocket
+    }
     echo -ne '\e[5 q'
   '';
   oh-my-zsh = {

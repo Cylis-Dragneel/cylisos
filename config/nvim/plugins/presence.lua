@@ -1,30 +1,58 @@
-require("cord").setup({
-	editor = { tooltip = "Coding Hard or Hardly Coding" },
-	display = {
-		theme = "catppuccin",
-		swap_fields = true,
-		swap_icons = true,
-	},
-	idle = { details = "Staring into the void probalby" },
-	variables = true,
-	advanced = {
-		plugin = { cursor_update = "on_move" },
-		discord = {
-			reconnect = { enabled = true },
-		},
-	},
-	assets = {
-		[".lua"] = {
-			tooltip = "Lua",
-			icon = "http://www.andreas-rozek.de/Lua/Lua-Logo_64x64.png",
-		},
-		[".nix"] = {
-			tooltip = "Nix",
-			-- icon = "https://github.com/NixOS/nixos-artwork/blob/master/logo/nix-snowflake-colours.svg",
-		},
-		[".zig"] = {
-			tooltip = "Zig",
-			-- icon = "https://github.com/ziglang/logo/blob/master/zig-favicon.png",
-		},
-	},
+-- require("cord").setup({
+-- client_id = "766539493003755530",
+-- editor = {
+-- 	tooltip = "Coding Hard or Hardly Coding",
+-- 	client = "766539493003755530",
+-- 	icon = "neovim",
+-- },
+-- display = {
+-- 	theme = "catppuccin",
+-- 	swap_fields = true,
+-- 	swap_icons = false,
+-- },
+-- idle = { details = "Staring into the void probalby" },
+-- variables = true,
+-- advanced = {
+-- 	plugin = { cursor_update = "on_move" },
+-- 	discord = {
+-- 		reconnect = { enabled = true },
+-- 	},
+-- },
+-- assets = {
+-- 	lua = {
+-- 		tooltip = "LuLua",
+-- 		icon = "lua",
+-- 	},
+-- 	nix = {
+-- 		tooltip = "Nix",
+-- 		icon = "nixos",
+-- 	},
+-- 	zig = {
+-- 		tooltip = "Zig",
+-- 		icon = "zig",
+-- 	},
+-- },
+-- })
+
+require("neocord").setup({
+	logo = "auto",
+	logo_tooltip = "Coding Hard or Hardly Coding",
+	main_image = "language",
+	-- client_id = "766539493003755530", -- Use your own Discord application client id (not recommended)
+	log_level = nil, -- Log messages at or above this level (one of the following: "debug", "info", "warn", "error")
+	debounce_timeout = 10, -- Number of seconds to debounce events (or calls to `:lua package.loaded.presence:update(<filename>, true)`)
+	blacklist = {}, -- A list of strings or Lua patterns that disable Rich Presence if the current file name, path, or workspace matches
+	file_assets = {}, -- Custom file asset definitions keyed by file names and extensions (see default config at `lua/presence/file_assets.lua` for reference)
+	show_time = true, -- Show the timer
+	global_timer = false, -- if set true, timer won't update when any event are triggered
+
+	-- Rich Presence text options
+	editing_text = "Editing %s", -- Format string rendered when an editable file is loaded in the buffer (either string or function(filename: string): string)
+	file_explorer_text = "Browsing %s", -- Format string rendered when browsing a file explorer (either string or function(file_explorer_name: string): string)
+	git_commit_text = "Committing changes", -- Format string rendered when committing changes in git (either string or function(filename: string): string)
+	plugin_manager_text = "Managing plugins", -- Format string rendered when managing plugins (either string or function(plugin_manager_name: string): string)
+	reading_text = "Reading %s", -- Format string rendered when a read-only or unmodifiable file is loaded in the buffer (either string or function(filename: string): string)
+	workspace_text = "Working on %s", -- Format string rendered when in a git repository (either string or function(project_name: string|nil, filename: string): string)
+	line_number_text = "Line %s out of %s", -- Format string rendered when `enable_line_number` is set to true (either string or function(line_number: number, line_count: number): string)
+	terminal_text = "Using Terminal",
 })

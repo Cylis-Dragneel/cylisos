@@ -164,6 +164,7 @@
       remotePlay.openFirewall = true;
       dedicatedServer.openFirewall = true;
       localNetworkGameTransfers.openFirewall = true;
+      gamescopeSession.enable = true;
     };
     gamescope = {
       enable = true;
@@ -174,6 +175,8 @@
       plugins = with pkgs.xfce; [
         thunar-archive-plugin
         thunar-volman
+        thunar-archive-plugin
+        thunar-media-tags-plugin
       ];
     };
   };
@@ -247,6 +250,7 @@
     nextcloud-client
     lazygit
     xfce.tumbler
+    ffmpegthumbnailer
     luajitPackages.luarocks
     cliphist
     scc
@@ -323,7 +327,6 @@
     vimPlugins.nvim-treesitter.withAllGrammars
     dolphin-emu
     duckstation
-    retroarch-full
     heroic
     autorandr
     xorg.libxcvt
@@ -340,7 +343,6 @@
     audacity
     nitch
     nodejs_18
-    geoclue2
     gammastep
     cartridges
     mgba
@@ -352,7 +354,6 @@
     code-cursor
     nitrogen
     distrobox
-    podman
     umu-launcher
     cosmic-files
     fish
@@ -361,6 +362,13 @@
     chromium
     zip
     p7zip
+    osu-lazer-bin
+    torzu
+    imagemagick
+    waytrogen
+    mpvpaper
+    gifsicle
+    wf-recorder
     (emacsWithPackagesFromUsePackage {
       package = pkgs.emacs-unstable;
       config = ../../config/emacs/config.org;
@@ -404,6 +412,14 @@
   };
 
   environment.variables = {
+    FZF_DEFAULT_OPTS = ''
+      --height 60%
+      --layout=reverse
+      --border
+      --inline-info
+      --preview 'bat --style=numbers --color=always {}'
+
+    '';
     CYLISOS_VERSION = "1.0";
     CYLISOS = "true";
     ROC_ENABLE_PRE_VEGA = "1";
@@ -433,6 +449,12 @@
 
   # Services to start
   services = {
+    tumbler.enable = true;
+    geoclue2 = {
+      enable = true;
+      enableDemoAgent = true;
+      enableWifi = true;
+    };
     dbus.packages = [ pkgs.gcr ];
     timesyncd.enable = true;
     cloudflare-warp.enable = true;

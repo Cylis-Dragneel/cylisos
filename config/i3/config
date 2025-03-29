@@ -16,10 +16,10 @@ exec_always nm-applet --indicator
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
-# bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-# bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-# bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-# bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+bindsym $mod+F10 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+bindsym $mod+F11 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym $mod+F12 exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym $mod+F9 exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 floating_modifier $mod
 tiling_drag modifier titlebar
@@ -130,6 +130,8 @@ bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit xfce+i3? This will end your X session.' -B 'Yes, exit xfce+i3' 'xfce4-session-logout'"
 
+bindsym $mod+F1 exec "curd"
+
 # resize window (you can also use the mouse for that)
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
@@ -180,10 +182,10 @@ for_window [all] border none
 # for_window [all] border 5pixel
 
 #Allocating windows to workspaces
-for_window [class="firefox"] move to workspace $ws1
-for_window [class="floorp"] move to workspace $ws1
-for_window [class="vivaldi"] move to workspace $ws1
-for_window [class="ghostty"] move to workspace $ws2
+for_window [class="firefox"] move to workspace $ws2
+for_window [class="zen"] move to workspace $ws2
+for_window [class="vivaldi"] move to workspace $ws2
+for_window [class="ghostty"] move to workspace $ws1
 for_window [class="Spotify"] move to workspace $ws3
 
 #Function Keys binding

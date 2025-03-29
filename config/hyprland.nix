@@ -51,7 +51,8 @@ with lib;
           exec-once = blueman-applet
           exec-once = lxqt-policykit-agent
           # exec-once = sleep 1.5 && swww img /home/${username}/Pictures/Wallpapers/law.jpg
-          exec-once = sleep 1.5 && hyprpaper
+          # exec-once = hyprpaper & disown
+          exec-once = waytrogen --restore
           exec-once = playerctld daemon
           exec-once = mpDris2
           exec-once = wl-paste --type text --watch cliphist store

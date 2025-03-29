@@ -38,6 +38,7 @@ in
     sensible
     vim-tmux-navigator
     continuum
+    tmux-sessionx
   ];
 
   extraConfig = ''
@@ -59,6 +60,12 @@ in
     bind-key -n 'C-k' 'select-pane -U'
     bind-key -n 'C-l' 'select-pane -R'
     bind-key -n C-l send-keys 'C-l'
+    bind-key x kill-pane
+
+    # Sesh
+    bind-key "K" display-popup -E -w 40% "${pkgs.sesh}/bin/sesh connect \"$(
+      ${pkgs.sesh}/bin/sesh list -i | ${pkgs.gum}/bin/gum filter --limit 1 --placeholder 'Pick A session' --prompt='⚡'
+    )\""
 
     # Theme Settings
     set -g @tokyo-night-tmux_window_id_style hsquare
@@ -80,6 +87,7 @@ in
     set -g @resurrect-capture-pane-contents 'on'
     set -g @continuum-restore 'on'
     set-option -g status-position top
+    set -g detach-on-destroy off
 
     # Old Catppuccin Settings
     # set-option -g @catppuccin_flavour 'macchiato'

@@ -235,7 +235,10 @@ This package implements hiding or abbreviation of the modeline displays (lighter
 * ELCORD
 A plugin to get discord-rich-presence
 #+begin_src emacs-lisp
-(use-package elcord)
+(use-package elcord
+  :config
+  (setq elcord-idle-message "Staring into the void")
+  (setq elcord-use-major-mode-as-main-icon t))
 (elcord-mode)
 #+end_src
 
@@ -300,8 +303,9 @@ Defining the various fonts that Emacs will use.
 ;; Makes commented text and keywords italics.
 ;; This is working in emacsclient but not emacs.
 ;; Your font must have an italic face available.
-;; (set-face-attribute 'font-lock-comment-face nil :slant 'italic)
-;; (set-face-attribute 'font-lock-keyword-face nil :slant 'italic)
+(set-face-attribute 'font-lock-comment-face t :slant 'italic)
+(set-face-attribute 'font
+-lock-keyword-face t :slant 'italic)
 (custom-set-faces
 '(font-lock-comment-face ((t (:slant italic))))
 '(font-lock-keyword-face ((t (:slant italic))))
