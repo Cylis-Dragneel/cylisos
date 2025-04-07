@@ -147,6 +147,15 @@
   };
 
   programs = {
+    obs-studio = {
+      enable = true;
+      plugins = with pkgs.obs-studio-plugins; [
+        wlrobs
+        obs-vaapi
+        obs-vkcapture
+        obs-pipewire-audio-capture
+      ];
+    };
     zsh.enable = true;
     nano.enable = false;
     gamemode.enable = true;
@@ -264,7 +273,6 @@
     gitleaks
     nvtopPackages.amd
     amberol
-    obs-studio
     pass
     # rmpc
     xournalpp
@@ -369,6 +377,9 @@
     mpvpaper
     gifsicle
     wf-recorder
+    postgresql
+    podman-compose
+    fluent-reader
     (emacsWithPackagesFromUsePackage {
       package = pkgs.emacs-unstable;
       config = ../../config/emacs/config.org;
@@ -444,11 +455,13 @@
       xdg-desktop-portal-hyprland
       xdg-desktop-portal-wlr
       xdg-desktop-portal
+      xdg-desktop-portal-gnome
     ];
   };
 
   # Services to start
   services = {
+    postgresql.enable = true;
     tumbler.enable = true;
     geoclue2 = {
       enable = true;
@@ -518,7 +531,7 @@
       settings = {
         default_session = {
           user = username;
-          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd niri";
+          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd niri-session";
         };
       };
     };
@@ -563,60 +576,16 @@
     pipewire = {
       enable = true;
       pulse.enable = true;
-      extraConfig.pipewire = {
-        "context.properties" = {
-          "bluez5.enable-sbc-xq" = true;
-          "bluez5.enable-msbc" = true;
-          "bluez5.enable-hw-volume" = true;
-          "bluez5.default.profile" = "a2dp-duplex";
-          "bluez5.auto-profile-switch" = false;
-          "bluez5.headset-roles" = [
-            "hsp_hs"
-            "hsp_ag"
-            "hfp_hf"
-            "hfp_ag"
-          ];
-        };
-        "context.modules" = [
-          {
-            name = "libpipewire-module-filter-chain";
-            args = {
-              "node.description" = "Noise Canceling source";
-              "media.name" = "Noise Canceling source";
-              "filter.graph" = {
-                nodes = [
-                  {
-                    type = "ladspa";
-                    name = "rnnoise";
-                    plugin = "librnnoise_ladspa";
-                    label = "noise_suppressor_mono";
-                    control = {
-                      "VAD Threshold (%)" = 50.0;
-                      "VAD Grace Period (ms)" = 200;
-                      "Retroactive VAD Grace (ms)" = 0;
-                    };
-                  }
-                ];
-              };
-              "capture.props" = {
-                "node.name" = "capture.rnnoise_source";
-                "node.passive" = true;
-              };
-              "playback.props" = {
-                "node.name" = "rnnoise_source";
-                "media.class" = "Audio/Source";
-              };
-            };
-          }
-        ];
-      };
+      wireplumber.enable = true;
+      jack.enable = true;
+      audio.enable = true;
     };
     rpcbind.enable = false;
     nfs.server.enable = false;
   };
   systemd.user.services.xdg-desktop-portal = {
     environment = {
-      XDG_CURRENT_DESKTOP = "KDE";
+      XDG_CURRENT_DESKTOP = "niri";
     };
   };
   systemd.services = {

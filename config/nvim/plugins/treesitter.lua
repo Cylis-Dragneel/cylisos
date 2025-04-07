@@ -1,7 +1,6 @@
 require("nvim-treesitter.configs").setup({
-	auto_install = false,
-	highlight = { enable = true },
-	indent = { enable = true },
-	autopairs = { enable = true },
-	folding = { enable = true },
+  auto_install = false,
+  highlight = { enable = true },
+  indent = { enable = true },
+  folding = { enable = true },
 })

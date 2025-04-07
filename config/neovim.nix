@@ -14,8 +14,8 @@ in
     neovim = {
       enable = true;
       defaultEditor = true;
-      viAlias = true;
-      vimAlias = true;
+      viAlias = false;
+      vimAlias = false;
       vimdiffAlias = true;
       withNodeJs = true;
       extraPackages = with pkgs; [
@@ -57,7 +57,6 @@ in
         vim-wakatime
         mini-nvim
         obsidian-nvim
-        catppuccin-nvim
         tokyonight-nvim
         nvim-colorizer-lua
         alpha-nvim

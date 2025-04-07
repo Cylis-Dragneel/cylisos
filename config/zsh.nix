@@ -37,6 +37,8 @@
     emd = "emacs --daemon";
     emc = "emacsclient -c .";
     zed = "zeditor --foreground ./";
+    pod-up = "podman-compose up -d";
+    pod-down = "podman-compose down";
   };
   defaultKeymap = "emacs";
   history = {

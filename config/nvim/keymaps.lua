@@ -43,3 +43,18 @@ vim.cmd([[cab cc CodeCompanion]])
 -- 	"<cmd>CordTogglePresence<cr>",
 -- 	{ noremap = true, silent = true, desc = "Toggle Rich Presence" }
 -- )
+
+keymap.set("n", "<leader>ll", function()
+	local current_config = vim.diagnostic.config()
+	if current_config.virtual_text then
+		vim.diagnostic.config({
+			virtual_text = false,
+			virtual_lines = { current_line = true },
+		})
+	else
+		vim.diagnostic.config({
+			virtual_text = { current_line = true },
+			virtual_lines = false,
+		})
+	end
+end, { desc = "Toggle between virtual and inline diagnostics" })

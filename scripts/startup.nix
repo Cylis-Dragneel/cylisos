@@ -9,7 +9,6 @@ pkgs.writeShellScriptBin "startup" # bash
     nm-applet --indicator & disown
     blueman-applet & disown
     lxqt-policykit-agent & disown
-    waypaper --restore
     playerctld daemon & disown
     wl-paste --type text --watch cliphist store & disown
     wl-paste --type image --watch cliphist store & disown

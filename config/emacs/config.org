@@ -304,8 +304,7 @@ Defining the various fonts that Emacs will use.
 ;; This is working in emacsclient but not emacs.
 ;; Your font must have an italic face available.
 (set-face-attribute 'font-lock-comment-face t :slant 'italic)
-(set-face-attribute 'font
--lock-keyword-face t :slant 'italic)
+(set-face-attribute 'font-lock-keyword-face t :slant 'italic)
 (custom-set-faces
 '(font-lock-comment-face ((t (:slant italic))))
 '(font-lock-keyword-face ((t (:slant italic))))

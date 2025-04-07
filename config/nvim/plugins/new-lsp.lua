@@ -211,3 +211,5 @@ vim.keymap.set("n", "<leader>ld", vim.lsp.buf.definition, { desc = "Definition" 
 vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, { desc = "Code Action" })
 
 vim.lsp.set_log_level("error")
+
+vim.diagnostic.config({ virtual_text = { current_line = true } })
