@@ -61,6 +61,7 @@ in
     bind-key -n 'C-l' 'select-pane -R'
     bind-key -n C-l send-keys 'C-l'
     bind-key x kill-pane
+    bind-key C-u run-shell -b "xdg-open $(tmux capture-pane -J -p | grep -oE '(https?):\/\/.*[^>]' | fzf-tmux -d20 --multi --bind alt-a:select-all,alt-d:deselect-all)"
 
     # Sesh
     bind-key "K" display-popup -E -w 40% "${pkgs.sesh}/bin/sesh connect \"$(

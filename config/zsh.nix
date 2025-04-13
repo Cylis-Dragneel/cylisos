@@ -11,12 +11,14 @@
   syntaxHighlighting.enable = true;
   shellAliases = {
     sv = "sudo nvim";
-    fr = "nh os switch --hostname ${host} /home/${username}/cylisos";
-    fu = "nh os switch --hostname ${host} --update /home/${username}/cylisos";
-    hms = "nh home switch /home/${username}/cylisos/";
+    # fr = "nh os switch --hostname ${host} /home/${username}/cylisos";
+    # fu = "nh os switch --hostname ${host} --update /home/${username}/cylisos";
+    # hms = "nh home switch /home/${username}/cylisos/";
+    fr = "nh os switch";
+    fu = "nh os switch --update";
+    hms = "nh home switch";
     ncg = "nix-collect-garbage --delete-old && sudo nix-collect-garbage -d && sudo /run/current-system/bin/switch-to-configuration boot";
     v = "nvim";
-    cat = "bat";
     ls = "eza --icons";
     ll = "eza -lh --icons --grid --group-directories-first";
     la = "eza -lah --icons --grid --group-directories-first";
@@ -40,7 +42,7 @@
     pod-up = "podman-compose up -d";
     pod-down = "podman-compose down";
   };
-  defaultKeymap = "emacs";
+  defaultKeymap = "viins";
   history = {
     ignoreAllDups = true;
     path = "$HOME/.zsh_history";
@@ -53,7 +55,9 @@
     # fi
   '';
   initExtra = ''
-    bindkey -e
+    bindkey -v
+    bindkey '^F' autosuggest-accept
+    export KEYTIMEOUT=1
     nitch
 
     # [[ ! -f ${./p10k.zsh} ]] || source ${./p10k.zsh}
@@ -66,6 +70,7 @@
     zstyle ':completion:*' menu no
     zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza -1 --color=always $realpath'
     zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+    _comp_options+=(globdots)
     eval "$(fzf --zsh)"
     eval $(thefuck --alias tf)
     export MANPAGER='nvim +Man!'
@@ -85,7 +90,26 @@
       fi
       echo '{"command": ["loadfile", "'"$vid"'", "append-play"]}' | socat - /tmp/mpvsocket
     }
-    echo -ne '\e[5 q'
+
+    function zle-keymap-select {
+      if [[ "$KEYMAP" == vicmd ]] ||
+         [[ $1 = "block" ]]; then
+        echo -ne "\e[1 q"
+      elif [[ "$KEYMAP" == main ]] ||
+           [[ "$KEYMAP" == viins ]] ||
+           [[ "$KEYMAP" = "" ]] ||
+           [[ $1 = 'beam' ]]; then
+        echo -ne '\e[5 q'
+      fi
+    }
+    zle -N zle-keymap-select
+    zle-line-init() {
+        zle -K viins # initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
+        echo -ne "\e[5 q"
+    }
+    zle -N zle-line-init
+    echo -ne '\e[5 q' # Use beam shape cursor on startup.
+    preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
   '';
   oh-my-zsh = {
     enable = true;

@@ -17,3 +17,8 @@ startup_command = "nvim +GoToFile"
 name = "Youtube 📺"
 path = "~/Videos"
 startup_command = "yt-x"
+
+[[session]]
+name = "Cloud ☁️"
+path = "~/Documents/Main/baks/selfhosting"
+startup_command = "pod-up"
