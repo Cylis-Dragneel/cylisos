@@ -34,6 +34,10 @@
       url = "github:Wraient/curd";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nh = {
+      url = "github:unixpariah/nh";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # astal = {
     #   url = "github:aylur/astal";
     #   inputs.nixpkgs.follows = "nixpkgs";
@@ -61,7 +65,6 @@
       nixpkgs,
       home-manager,
       nixpkgs-stable,
-      ghostty,
       spicetify-nix,
       ...
     }@inputs:
@@ -69,6 +72,7 @@
       system = "x86_64-linux";
       host = "dragneel";
       username = "cylis";
+      system_type = "desktop";
     in
     {
       nixosConfigurations = {
@@ -137,6 +141,7 @@
             username
             host
             spicetify-nix
+            system_type
             ;
           pkgs-stable = import nixpkgs-stable {
             inherit system;

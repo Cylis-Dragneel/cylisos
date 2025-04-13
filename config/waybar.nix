@@ -1,207 +1,131 @@
 {
   pkgs,
-  lib,
-  host,
   config,
+  lib,
+  system_type,
   ...
 }:
-
+with config.lib.stylix.colors.withHashtag;
+with config.stylix.fonts;
 let
-  betterTransition = "all 0.3s cubic-bezier(.55,-0.68,.48,1.682)";
-  inherit (import ../hosts/${host}/variables.nix) clock24h;
+  cfg = config.environment.statusBar;
 in
-with lib;
 {
-  # Configure & Theme Waybar
-  programs.waybar = {
-    enable = true;
-    package = pkgs.waybar;
-    settings = [
-      {
-        layer = "top";
+  options.environment.statusBar.enable = lib.mkOption {
+    type = lib.types.bool;
+    default = system_type == "desktop";
+  };
+
+  config = {
+    home.packages = lib.mkIf cfg.enable [ pkgs.playerctl ];
+    programs.waybar = {
+      inherit (cfg) enable;
+      systemd.enable = true;
+      settings.mainBar = {
         position = "top";
-        modules-center = [
-          # "cava"
-          "mpris"
-        ];
+        layer = "top";
+        margin-top = 0;
+        margin-bottom = 0;
+        margin-left = 0;
+        margin-right = 0;
         modules-left = [
-          "custom/startmenu"
-          "pulseaudio"
-          # "cpu"
-          # "memory"
-          "idle_inhibitor"
+          "custom/launcher"
+          "custom/playerlabel"
+          "custom/playerctl#backward"
+          "custom/playerctl#play"
+          "custom/playerctl#foward"
+        ];
+        modules-center = [
+          "niri/workspaces"
         ];
         modules-right = [
-          # "custom/hyprbindings"
-          "tray"
-          # "battery"
           "custom/notification"
-          "custom/exit"
+          "tray"
+          "battery"
+          "pulseaudio"
+          "backlight"
           "clock"
         ];
-
-        "cava" = {
-          framerate = 30;
-          autosens = 1;
-          bars = 24;
-          lower-cutoff-freq = 50;
-          higher-cutoff-freq = 1400;
+        clock = {
+          # format = "󰥔  {:%a, %d %b, %I:%M %p}";
+          format = "󰥔  {:%a, %d %b, %H:%M}";
+          tooltip = "true";
+          tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
+          format-alt = "   {:%d/%m}";
+        };
+        "hyprland/workspaces" = {
+          active-only = false;
+          all-outputs = false;
+          disable-scroll = false;
+          on-scroll-up = "hyprctl dispatch workspace e-1";
+          on-scroll-down = "hyprctl dispatch workspace e+1";
+          format = "{name}";
+          on-click = "activate";
+          format-icons = {
+            urgent = "";
+            active = "";
+            default = "";
+            sort-by-number = true;
+          };
+        };
+        "niri/workspaces" = {
+          all-outputs = false;
+          current-only = true;
+          format = "{index}";
+          disable-click = true;
+          disable-markup = true;
+        };
+        "cava#left" = {
+          framerate = 60;
+          autosens = 0;
+          sensitivity = 5;
+          bars = 16;
+          lower_cutoff_freq = 50;
+          higher_cutoff_freq = 10000;
           method = "pipewire";
           source = "auto";
           stereo = true;
           reverse = false;
-          bar-delimiter = 0;
+          bar_delimiter = 0;
           monstercat = false;
           waves = false;
-          hide-on-silence = true;
-          noise-reduction = 0.33;
-          input-delay = 2;
+          input_delay = 2;
           format-icons = [
-            "▁"
-            "▂"
-            "▃"
-            "▄"
-            "▅"
-            "▆"
-            "▇"
-            "█"
+            "<span>▁</span>"
+            "<span>▂</span>"
+            "<span>▃</span>"
+            "<span>▄</span>"
+            "<span>▅</span>"
+            "<span>▆</span>"
+            "<span>▇</span>"
+            "<span>█</span>"
           ];
-          actions = {
-            on-click = "playerctl play-pause";
-          };
         };
-        mpris = {
-          dynamic-order = [
-            "artist"
-            "title"
-          ];
-          dynamic-importance-order = [
-            "artist"
-            "title"
-            "position"
-            "length"
-            "album"
-          ];
-          dynamic-len = 88;
-          interval = 1;
-          format = "{status_icon}{dynamic}";
-          tooltip-format = "{player}: {artist} - {title} - {album}";
-          status-icons = {
-            playing = "";
-            paused = " ";
-            stopped = " ";
-          };
-        };
-        "hyprland/workspaces" = {
-          format = "{name}";
-          format-icons = {
-            default = " ";
-            active = " ";
-            urgent = " ";
-          };
-          on-scroll-up = "hyprctl dispatch workspace e+1";
-          on-scroll-down = "hyprctl dispatch workspace e-1";
-        };
-        "clock" = {
-          format = if clock24h == true then '' {:L%H:%M}'' else '' {:L%a %b %d  %I:%M:%S %p}'';
-          tooltip = true;
-          tooltip-format = "<big>{:%A, %d.%B %Y }</big>\n<tt><small>{calendar}</small></tt>";
-        };
-        "hyprland/window" = {
-          max-length = 20;
-          separate-outputs = false;
-          rewrite = {
-            "" = " No Windows ";
-          };
-        };
-        "memory" = {
-          interval = 30;
-          format = " {}%";
-          tooltip = true;
-        };
-        "cpu" = {
-          interval = 30;
-          format = " {usage:2}%";
-          tooltip = true;
-        };
-        "disk" = {
-          format = " {free}";
-          tooltip = true;
-        };
-        "network" = {
+        "cava#right" = {
+          framerate = 60;
+          autosens = 0;
+          sensitivity = 5;
+          bars = 16;
+          lower_cutoff_freq = 50;
+          higher_cutoff_freq = 10000;
+          method = "pipewire";
+          source = "auto";
+          stereo = true;
+          reverse = false;
+          bar_delimiter = 0;
+          monstercat = false;
+          waves = false;
+          input_delay = 2;
           format-icons = [
-            "󰤯"
-            "󰤟"
-            "󰤢"
-            "󰤥"
-            "󰤨"
+            "<span>▁</span>"
+            "<span>▂</span>"
+            "<span>▃</span>"
+            "<span>▄</span>"
+            "<span>▅</span>"
+            "<span>▆</span>"
+            "<span>▇</span>"
+            "<span>█</span>"
           ];
-          format-ethernet = " {bandwidthDownOctets}";
-          format-wifi = "{icon} {signalStrength}%";
-          format-disconnected = "󰤮";
-          tooltip = false;
-        };
-        "tray" = {
-          spacing = 12;
-        };
-        "pulseaudio" = {
-          format = "{icon} {volume}% {format_source}";
-          format-bluetooth = "{volume}% {icon} {format_source}";
-          format-bluetooth-muted = " {icon} {format_source}";
-          format-muted = " {format_source}";
-          format-source = " {volume}%";
-          format-source-muted = "";
-          format-icons = {
-            headphone = "";
-            hands-free = "";
-            headset = "";
-            phone = "";
-            portable = "";
-            car = "";
-            default = [
-              ""
-              ""
-              ""
-            ];
-          };
-          on-click = "sleep 0.1 && pavucontrol";
-        };
-        "custom/playerctl" = {
-          format = "{icon}  <span>{}</span>";
-          return-type = "json";
-          max-length = 333;
-          exec = "playerctl -a metadata --format '{\"text\": \"{{artist}} ~ {{markup_escape(title)}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F";
-          on-click-middle = "playerctl play-pause";
-          on-click = "playerctl previous";
-          on-click-right = "playerctl next";
-          format-icons = {
-            Playing = "<span foreground='#98BB6C'></span>";
-            Paused = "<span foreground='#E46876'></span>";
-          };
-        };
-        "custom/exit" = {
-          tooltip = false;
-          format = "";
-          on-click = "sleep 0.1 && wlogout";
-        };
-        "custom/startmenu" = {
-          tooltip = false;
-          format = "";
-          # exec = "rofi -show drun";
-          on-click = "sleep 0.1 && rofi-launcher";
-        };
-        "custom/hyprbindings" = {
-          tooltip = false;
-          format = "󱕴";
-          on-click = "sleep 0.1 && list-hypr-bindings";
-        };
-        "idle_inhibitor" = {
-          format = "{icon}";
-          format-icons = {
-            activated = "";
-            deactivated = "";
-          };
-          tooltip = "true";
         };
         "custom/notification" = {
           tooltip = false;
@@ -222,148 +146,238 @@ with lib;
           on-click = "sleep 0.1 && task-waybar";
           escape = true;
         };
-        "custom/battery-noti" = {
-          exec = "battery";
-          interval = 60;
-          return-type = "void";
+        "custom/playerctl#backward" = {
+          format = "󰙣 ";
+          on-click = "playerctl previous";
+          on-scroll-up = "playerctl volume .05+";
+          on-scroll-down = "playerctl volume .05-";
         };
-        "battery" = {
-          states = {
-            warning = 30;
-            critical = 25;
+        "custom/playerctl#play" = {
+          format = "{icon}";
+          return-type = "json";
+          exec = "playerctl -a metadata --format '{\"text\": \"{{artist}} - {{markup_escape(title)}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F";
+          on-click = "playerctl play-pause";
+          on-scroll-up = "playerctl volume .05+";
+          on-scroll-down = "playerctl volume .05-";
+          format-icons = {
+            Playing = "<span>󰏥 </span>";
+            Paused = "<span> </span>";
+            Stopped = "<span> </span>";
           };
-          format = "{icon} {capacity}%";
-          format-charging = "󰂄 {capacity}%";
-          format-plugged = "󱘖 {capacity}%";
-          format-icons = [
-            "󰁺"
-            "󰁻"
-            "󰁼"
-            "󰁽"
-            "󰁾"
-            "󰁿"
-            "󰂀"
-            "󰂁"
-            "󰂂"
-            "󰁹"
-          ];
-          on-click = "";
-          tooltip = false;
         };
-      }
-    ];
-    style = concatStrings [
-      # css
-      ''
+        "custom/playerctl#foward" = {
+          format = "󰙡 ";
+          on-click = "playerctl next";
+          on-scroll-up = "playerctl volume .05+";
+          on-scroll-down = "playerctl volume .05-";
+        };
+        "custom/playerlabel" = {
+          format = "<span>󰎈 {} 󰎈</span>";
+          return-type = "json";
+          max-length = 40;
+          exec = "playerctl -a metadata --format '{\"text\": \"{{artist}} - {{markup_escape(title)}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F";
+          on-click = "";
+        };
+        battery = {
+          states = {
+            good = 95;
+            warning = 30;
+            critical = 15;
+          };
+          format = "{icon}  {capacity}%";
+          format-charging = "  {capacity}%";
+          format-plugged = " {capacity}% ";
+          format-alt = "{icon} {time}";
+          format-icons = [
+            ""
+            ""
+            ""
+            ""
+            ""
+          ];
+        };
+
+        memory = {
+          format = "󰍛 {}%";
+          format-alt = "󰍛 {used}/{total} GiB";
+          interval = 5;
+        };
+        cpu = {
+          format = "󰻠 {usage}%";
+          format-alt = "󰻠 {avg_frequency} GHz";
+          interval = 5;
+        };
+        network = {
+          format-wifi = "  {signalStrength}%";
+          format-ethernet = "󰈀 100% ";
+          tooltip-format = "Connected to {essid} {ifname} via {gwaddr}";
+          format-linked = "{ifname} (No IP)";
+          format-disconnected = "󰖪 0% ";
+        };
+        tray = {
+          icon-size = 20;
+          spacing = 8;
+        };
+        backlight = {
+          format = "{icon} {percent}%";
+          format-icons = {
+            default = [
+              ""
+              ""
+              ""
+              ""
+              ""
+              ""
+              ""
+              ""
+              ""
+            ];
+          };
+        };
+        pulseaudio = {
+          format = "{icon} {volume}%";
+          format-muted = "󰝟";
+          format-icons = {
+            default = [
+              "󰕿"
+              "󰖀"
+              "󰕾"
+            ];
+          };
+          # on-scroll-up= "bash ~/.scripts/volume up";
+          # on-scroll-down= "bash ~/.scripts/volume down";
+          scroll-step = 5;
+          on-click = "pavucontrol";
+        };
+      };
+      style = ''
         * {
-          font-family: JetBrainsMono Nerd Font Mono;
-          font-size: 12px;
-          border-radius: 0px;
-          border: none;
-          min-height: 0px;
-        }
-        window#waybar {
-          background: rgba(0,0,0,0);
-        }
-        #workspaces {
-          color: #${config.stylix.base16Scheme.base00};
-          background: #${config.stylix.base16Scheme.base01};
-          margin: 4px 4px;
-          padding: 5px 5px;
-          border-radius: 16px;
-        }
-        #workspaces button {
-          font-weight: bold;
-          padding: 0px 5px;
-          margin: 0px 3px;
-          border-radius: 16px;
-          color: #${config.stylix.base16Scheme.base00};
-          background: linear-gradient(45deg, #${config.stylix.base16Scheme.base08}, #${config.stylix.base16Scheme.base0D});
-          opacity: 0.5;
-          transition: ${betterTransition};
-        }
-        #workspaces button.active {
-          font-weight: bold;
-          padding: 0px 5px;
-          margin: 0px 3px;
-          border-radius: 16px;
-          color: #${config.stylix.base16Scheme.base00};
-          background: linear-gradient(45deg, #${config.stylix.base16Scheme.base08}, #${config.stylix.base16Scheme.base0D});
-          transition: ${betterTransition};
-          opacity: 1.0;
-          min-width: 40px;
-        }
-        #workspaces button:hover {
-          font-weight: bold;
-          border-radius: 16px;
-          color: #${config.stylix.base16Scheme.base00};
-          background: linear-gradient(45deg, #${config.stylix.base16Scheme.base08}, #${config.stylix.base16Scheme.base0D});
-          opacity: 0.8;
-          transition: ${betterTransition};
-        }
-        tooltip {
-          background: #${config.stylix.base16Scheme.base00};
-          border: 1px solid #${config.stylix.base16Scheme.base08};
-          border-radius: 12px;
-        }
-        tooltip label {
-          color: #${config.stylix.base16Scheme.base08};
-        }
-        #window, #pulseaudio, #cpu, #memory, #idle_inhibitor {
-          font-weight: bold;
-          margin: 4px 0px;
-          margin-left: 7px;
-          padding: 0px 18px;
-          background: #${config.stylix.base16Scheme.base05};
-          color: #${config.stylix.base16Scheme.base00};
-          border-radius: 24px 10px 24px 10px;
-        }
-        #custom-startmenu {
-          color: #${config.stylix.base16Scheme.base0C};
-          background: #${config.stylix.base16Scheme.base02};
-          font-size: 28px;
-          margin: 0px;
-          padding: 0px 30px 0px 15px;
-          border-radius: 0px 0px 40px 0px;
-        }
-        #custom-hyprbindings, #network, #battery,
-        #custom-notification, #tray, #custom-exit {
-          font-weight: bold;
-          background: #${config.stylix.base16Scheme.base09};
-          color: #${config.stylix.base16Scheme.base00};
-          margin: 4px 0px;
-          margin-right: 7px;
-          border-radius: 10px 24px 10px 24px;
-          padding: 0px 18px;
-        }
-        #clock {
-          font-weight: bold;
-          color: #0D0E15;
-          background: linear-gradient(90deg, #${config.stylix.base16Scheme.base0E}, #${config.stylix.base16Scheme.base0C});
-          margin: 0px;
-          padding: 0px 15px 0px 30px;
-          border-radius: 0px 0px 0px 40px;
-        }
-        #mpris {
-          border-radius: 16px;
-          padding-left: 12px;
-          padding-right: 4px;
-          margin-right: 8px;
-          margin-top: 2px;
-          margin-bottom: 2px;
-          padding-top: 2px;
-          color: #17191e;
-          background-color: #8CF6D4;
-          font-weight: 700;
+            border: none;
+            border-radius: 0px;
+            min-height: 0;
         }
 
-        #cava {
-          margin-top: 2px;
-          padding-left: 16px;
-          padding-right: 4px;
-          color: #8e2444;
+        window#waybar {
+            background-color: ${base00};
         }
-      ''
-    ];
+
+        #cava.left, #cava.right {
+            background: ${base01};
+            margin: 5px;
+            padding: 8px 16px;
+            color: ${base0E};
+        }
+        #cava.left {
+            border-radius: 24px 10px 24px 10px;
+        }
+        #cava.right {
+            border-radius: 10px 24px 10px 24px;
+        }
+        #workspaces {
+            background: ${base01};
+            margin: 5px 5px;
+            padding: 8px 5px;
+            border-radius: 16px;
+            color: ${base0E}
+        }
+        #workspaces button {
+            padding: 0px 5px;
+            margin: 0px 3px;
+            border-radius: 16px;
+            color: transparent;
+            background-color: ${base01};
+            transition: all 0.3s ease-in-out;
+        }
+
+        #workspaces button.active {
+            background-color: ${base0B};
+            color: ${base01};
+            border-radius: 16px;
+            min-width: 50px;
+            background-size: 400% 400%;
+            transition: all 0.3s ease-in-out;
+        }
+
+        #workspaces button:hover {
+            background-color: ${base08};
+            color: ${base01};
+            border-radius: 16px;
+            min-width: 50px;
+            background-size: 400% 400%;
+        }
+
+        #custom-notification, #tray, #pulseaudio, #network, #battery, #backlight,
+        #custom-playerctl.backward, #custom-playerctl.play, #custom-playerctl.foward{
+            background: ${base01};
+            font-weight: bold;
+            margin: 5px 0px;
+        }
+        #custom-notification, #tray, #pulseaudio, #network, #backlight, #battery{
+            color: ${base0E};
+            border-radius: 10px 24px 10px 24px;
+            padding: 0 20px;
+            margin-left: 7px;
+        }
+        #clock {
+            color: ${base08};
+            background-color: ${base01};
+            border-radius: 0px 0px 0px 40px;
+            padding: 10px 10px 15px 25px;
+            margin-left: 7px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        #custom-launcher {
+            color: ${base0B};
+            background-color: ${base01};
+            border-radius: 0px 0px 40px 0px;
+            margin: 0px;
+            padding: 0px 35px 0px 15px;
+            font-size: 28px;
+        }
+
+        #custom-playerctl.backward, #custom-playerctl.play, #custom-playerctl.foward {
+            background: ${base01};
+            font-size: 22px;
+        }
+        #custom-playerctl.backward:hover, #custom-playerctl.play:hover, #custom-playerctl.foward:hover{
+            color: ${base08};
+        }
+        #custom-playerctl.backward {
+            color: ${base0E};
+            border-radius: 24px 0px 0px 10px;
+            padding-left: 16px;
+            margin-left: 7px;
+        }
+        #custom-playerctl.play {
+            color: ${base0B};
+            padding: 0 5px;
+        }
+        #custom-playerctl.foward {
+            color: ${base0E};
+            border-radius: 0px 10px 24px 0px;
+            padding-right: 12px;
+            margin-right: 7px
+        }
+        #custom-playerlabel {
+            background: ${base01};
+            color: ${base08};
+            padding: 0 20px;
+            border-radius: 24px 10px 24px 10px;
+            margin: 5px 0;
+            font-weight: bold;
+        }
+        #window{
+            background: ${base01};
+            padding-left: 15px;
+            padding-right: 15px;
+            border-radius: 16px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            font-weight: normal;
+            font-style: normal;
+        }
+      '';
+    };
   };
 }

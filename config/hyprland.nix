@@ -68,8 +68,8 @@ with lib;
             border_size = 2
             layout = dwindle
             resize_on_border = true
-            col.active_border = rgb(${config.stylix.base16Scheme.base08}) rgb(${config.stylix.base16Scheme.base0C}) 45deg
-            col.inactive_border = rgb(${config.stylix.base16Scheme.base01})
+            col.active_border = rgb(${config.lib.stylix.colors.withHashtag.base08}) rgb(${config.lib.stylix.colors.withHashtag.base0C}) 45deg
+            col.inactive_border = rgb(${config.lib.stylix.colors.withHashtag.base01})
           }
           input {
             kb_layout = us
@@ -81,13 +81,10 @@ with lib;
             sensitivity = 0 # -1.0 - 1.0, 0 means no modification.
             accel_profile = flat
           }
-          windowrule = noborder,^(wofi)$
-          windowrule = center,^(wofi)$
-          windowrule = center,^(steam)$
-          windowrule = float, nm-connection-editor|blueman-manager
-          windowrule = float, swayimg|vlc|Viewnior|pavucontrol
-          windowrule = float, nwg-look|qt5ct
-          windowrule = float, zoom
+          windowrule = float, class:(nm-connection-editor|blueman-manager)
+          windowrule = float, class:(swayimg|vlc|Viewnior|pavucontrol)
+          windowrule = float, class:(nwg-look|qt5ct)
+          windowrule = float, class:(zoom)
           windowrulev2 = float,class:(xdg-desktop-portal-gtk)
           windowrulev2 = stayfocused, title:^()$,class:^(steam)$
           windowrulev2 = minsize 1 1, title:^()$,class:^(steam)$
@@ -135,7 +132,7 @@ with lib;
               color = rgba(1a1a1aee)
             }
             blur {
-                enabled = true
+                enabled = false
                 size = 12
                 passes = 3
                 new_optimizations = true

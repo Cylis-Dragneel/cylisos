@@ -504,6 +504,26 @@
         "type": "github"
       }
     },
+    "nh": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1744449289,
+        "narHash": "sha256-Nkh3nT0T8bhxFqnB9zhV00WvHnQ4cHEKYwKa4vwJUYg=",
+        "owner": "unixpariah",
+        "repo": "nh",
+        "rev": "f4e823b88a5e1cc4c08fd8f99510b271a71e4d6d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "unixpariah",
+        "repo": "nh",
+        "type": "github"
+      }
+    },
     "niri": {
       "inputs": {
         "niri-stable": "niri-stable",
@@ -754,6 +774,7 @@
         "home-manager": "home-manager",
         "hyprpanel": "hyprpanel",
         "jerry": "jerry",
+        "nh": "nh",
         "niri": "niri",
         "nixpkgs": "nixpkgs_3",
         "nixpkgs-stable": "nixpkgs-stable_2",

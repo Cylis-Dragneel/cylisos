@@ -11,7 +11,7 @@
   installVimSyntax = true;
   settings = {
     theme = "/home/${username}/.config/ghostty/tokyonight_storm";
-    font-size = 11.3;
+    font-size = 11;
     font-family = [
       ""
       "Maple Mono"
@@ -27,7 +27,7 @@
     cursor-style = "underline";
     mouse-hide-while-typing = true;
     background-opacity = 0.7;
-    background-blur-radius = 15;
+    # background-blur-radius = 30;
     unfocused-split-opacity = 0.7;
     title = "Ghostty";
     keybind = [
