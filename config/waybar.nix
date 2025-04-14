@@ -29,6 +29,7 @@ in
         margin-left = 0;
         margin-right = 0;
         modules-left = [
+          "custom/power"
           "custom/launcher"
           "custom/playerlabel"
           "custom/playerctl#backward"
@@ -126,6 +127,12 @@ in
             "<span>▇</span>"
             "<span>█</span>"
           ];
+        };
+        "custom/power" = {
+          # Power button
+          format = "";
+          tooltip = false;
+          on-click = "wlogout";
         };
         "custom/notification" = {
           tooltip = false;
@@ -376,6 +383,14 @@ in
             margin-bottom: 5px;
             font-weight: normal;
             font-style: normal;
+        }
+        #custom-power {
+            background: ${base01};
+            color: ${base08};
+            padding: 0 20px;
+            border-radius: 24px 10px 24px 10px;
+            margin: 5px 0;
+            font-weight: bold;
         }
       '';
     };
