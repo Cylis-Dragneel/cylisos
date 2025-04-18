@@ -1,16 +1,14 @@
 {
   lib,
-  username,
   host,
-  inputs,
-  pkgs,
   config,
+  username,
   ...
 }:
 
 let
-  hyprplugins = inputs.hyprland-plugins.packages.${pkgs.system};
-  inherit (import ../hosts/${host}/variables.nix)
+  # hyprplugins = coinputs.hyprland-plugins.packages.${pkgs.system};
+  inherit (import ../../hosts/${host}/variables.nix)
     browser
     terminal
     extraMonitorSettings
@@ -57,8 +55,6 @@ with lib;
           exec-once = mpDris2
           exec-once = wl-paste --type text --watch cliphist store
           exec-once = wl-paste --type image --watch cliphist store
-          exec-once = battery & disown
-
 
           ${extraMonitorSettings}
           ${monitorSettings}
@@ -68,8 +64,8 @@ with lib;
             border_size = 2
             layout = dwindle
             resize_on_border = true
-            col.active_border = rgb(${config.lib.stylix.colors.withHashtag.base08}) rgb(${config.lib.stylix.colors.withHashtag.base0C}) 45deg
-            col.inactive_border = rgb(${config.lib.stylix.colors.withHashtag.base01})
+            col.active_border = rgb(${config.lib.stylix.colors.base08}) rgb(${config.lib.stylix.colors.base0C}) 45deg
+            col.inactive_border = rgb(${config.lib.stylix.colors.base01})
           }
           input {
             kb_layout = us

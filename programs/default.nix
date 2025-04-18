@@ -1,0 +1,20 @@
+{
+  ...
+}:
+{
+  imports = [
+    ./foot
+    ./ghostty
+    ./hypr
+    ./mpv
+    ./rofi
+    ./shells
+    ./spicetify
+    ./starship
+    ./swaync
+    ./tmux
+    ./vscode
+    ./waybar
+    ./wlogout
+  ];
+}

@@ -33,19 +33,12 @@ in
 
   # Import Program Configurations
   imports = [
-    ../../config/emoji.nix
-    ../../config/hyprland.nix
-    ../../config/neovim.nix
-    ../../config/rofi/rofi.nix
-    ../../config/rofi/config-emoji.nix
-    ../../config/rofi/config-long.nix
-    ../../config/swaync.nix
-    ../../config/waybar.nix
-    ../../config/wlogout.nix
-    ../../config/starship/starship.nix
-    ../../config/nushell.nix
     ../../modules/overlays.nix
-    # inputs.ags.homeManagerModules.default
+    ../../config/emoji.nix
+    ../../config/neovim.nix
+    ../../programs/rofi/config-emoji.nix
+    ../../programs/rofi/config-long.nix
+    ../../programs
   ];
 
   # Place Files Inside Home Directory
@@ -86,7 +79,7 @@ in
     recursive = true;
   };
   home.file.".config/wlogout/icons" = {
-    source = ../../config/wlogout;
+    source = ../../programs/wlogout/icons;
     recursive = true;
   };
   home.file.".face.icon".source = ../../config/face.jpg;
@@ -129,24 +122,6 @@ in
       enable = true;
       createDirectories = true;
     };
-    configFile."mpv/mpv.conf".text = ''
-      --input-ipc-server=/tmp/mpvsocket
-      --save-position-on-quit
-      --fullscreen
-      ytdl-raw-options=cookies-from-browser=firefox
-
-      # --- bonus mpv tips ---
-
-      # define the quality for mpv to use
-      ytdl-format="bestvideo[vcodec^=avc1]+bestaudio/best[vcodec^=avc1]/best"
-
-      # defines where screenshots will be saved
-      screenshot-directory=~/Pictures/Screenshots/
-
-      # enable hardware accelaration
-      hwdec=vaapi
-      vo=gpu
-    '';
   };
 
   nixpkgs.config = {
@@ -187,7 +162,7 @@ in
   stylix = {
     enable = true;
     image = ../../config/wallpapers/elden-ring-mohg.png;
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-macchiato.yaml";
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/rose-pine-moon.yaml";
     # base16Scheme = {
     # base00 = "24283B";
     # base01 = "16161E";
@@ -270,23 +245,6 @@ in
     pkgs.hyprpanel
   ];
 
-  # programs.ags.enable = true;
-  # systemd.user.services.ags = {
-  #   Unit = {
-  #     Description = "Aylur's Gtk Shell";
-  #     PartOf = [
-  #       "tray.target"
-  #       "graphical-session.target"
-  #     ];
-  #   };
-  #   Service = {
-  #     Environment = "PATH=/run/wrappers/bin:${lib.makeBinPath dependencies}";
-  #     ExecStart = "${cfg.package}/bin/ags -c ${config.xdg.configHome}/ags/config.js";
-  #     Restart = "on-failure";
-  #   };
-  #   Install.WantedBy = [ "graphical-session.target" ];
-  # };
-
   services = {
     gammastep = {
       enable = true;
@@ -353,29 +311,18 @@ in
   };
 
   programs = {
-    foot = import ../../config/foot.nix { inherit lib host; };
     nyaa = {
       enable = true;
       download_client = "DefaultApp";
       client.default_app.use_magnet = true;
       source.nyaa.default_sort = "Date";
     };
-    ghostty = import ../../config/ghostty.nix { inherit pkgs inputs username; };
     # hyprpanel = {
     #   enable = true;
     #   systemd.enable = true;
     #   hyprland.enable = true;
     #   # overwrite.enable = true;
     # };
-    mpv = {
-      enable = true;
-      scripts = with pkgs.mpvScripts; [
-        uosc
-        thumbfast
-        mpris
-        sponsorblock
-      ];
-    };
     carapace = {
       enable = false;
       enableNushellIntegration = true;
@@ -403,36 +350,45 @@ in
       enableNushellIntegration = true;
       nix-direnv.enable = true;
     };
-    vscode = import ../../config/vscode.nix { inherit pkgs host username; };
-    spicetify = import ../../config/spicetify.nix { inherit inputs pkgs; };
+
     wezterm = {
-      enable = false;
+      enable = true;
       enableZshIntegration = true;
       extraConfig = ''
         return {
           font = wezterm.font_with_fallback {
+                "Maple Mono",
+                "JetBrainsMono Nerd Font Mono",
+                "Noto Color Emoji",
                 "Pixilized",
                 "CozetteHiDpi",
                 "koishi",
                 "fairfax",
-                "JetBrains Mono Nerd Font Mono",
           },
-          font_size = 16.0,
-          color_scheme = "Catppuccin Macchiato",
+          font_size = 11.0,
+          color_scheme = "rose-pine-moon",
           hide_tab_bar_if_only_one_tab = true,
-          enable_wayland = false,
+          use_fancy_tab_bar = true,
+          enable_wayland = true,
+          term = "xterm-256color",
+          default_cursor_style = "BlinkingUnderline",
+          harfbuzz_features = {
+            "calt",
+            "cv01",
+            "cv02",
+            "cv03",
+            "cv31",
+            "ss03",
+          },
         }
       '';
     };
-    zsh = import ../../config/zsh.nix { inherit pkgs host username; };
-    bash = import ../../config/bash.nix { inherit host username; };
     zoxide = {
       enable = true;
       enableZshIntegration = true;
       enableNushellIntegration = true;
       options = [ "--cmd cd" ];
     };
-    tmux = import ../../config/tmux.nix { inherit pkgs; };
     gh.enable = true;
     btop = {
       enable = true;
@@ -460,6 +416,5 @@ in
       '';
     };
     home-manager.enable = true;
-    hyprlock = import ../../config/hyprlock.nix { inherit username; };
   };
 }

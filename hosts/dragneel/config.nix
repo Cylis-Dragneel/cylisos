@@ -384,6 +384,7 @@
     podman-compose
     fluent-reader
     ente-auth
+    go
     (emacsWithPackagesFromUsePackage {
       package = pkgs.emacs-unstable;
       config = ../../config/emacs/config.org;
