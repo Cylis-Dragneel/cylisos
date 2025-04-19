@@ -161,6 +161,8 @@
         obs-pipewire-audio-capture
       ];
     };
+    ssh.startAgent = false;
+    ssh.askPassword = lib.mkForce "${pkgs.seahorse}libexec/seahorse/ssh-askpass";
     zsh.enable = true;
     nano.enable = false;
     gamemode.enable = true;
@@ -171,6 +173,7 @@
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
+      pinentryPackage = lib.mkForce pkgs.pinentry-qt;
     };
     virt-manager.enable = true;
     steam = {
@@ -528,7 +531,9 @@
         variant = "";
       };
     };
-    desktopManager.plasma6.enable = false;
+    desktopManager.plasma6 = {
+      enable = true;
+    };
     greetd = {
       enable = true;
       vt = 2;
