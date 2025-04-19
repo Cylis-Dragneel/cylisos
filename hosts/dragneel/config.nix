@@ -82,8 +82,10 @@
     cursor.size = 32;
     fonts = {
       monospace = {
-        package = pkgs.nerd-fonts.jetbrains-mono;
-        name = "JetBrainsMono Nerd Font Mono";
+        # package = pkgs.nerd-fonts.jetbrains-mono;
+        package = pkgs.maple-mono.NF-CN;
+        # name = "JetBrainsMono Nerd Font Mono";
+        name = "Maple Mono";
       };
       sansSerif = {
         package = pkgs.montserrat;
@@ -568,20 +570,20 @@
       openFirewall = true;
     };
     ipp-usb.enable = true;
-    syncthing = {
-      enable = true;
-      user = "${username}";
-      dataDir = "/home/${username}";
-      configDir = "/home/${username}/.config/syncthing";
-      settings = {
-        folders = {
-          "/home/${username}/Documents/Main" = {
-            id = "obsidian";
-            devices = [ "mobile" ];
-          };
-        };
-      };
-    };
+    # syncthing = {
+    #   enable = true;
+    #   user = "${username}";
+    #   dataDir = "/home/${username}";
+    #   configDir = "/home/${username}/.config/syncthing";
+    #   settings = {
+    #     folders = {
+    #       "/home/${username}/Documents/Main" = {
+    #         id = "obsidian";
+    #         devices = [ "mobile" ];
+    #       };
+    #     };
+    #   };
+    # };
     pipewire = {
       enable = true;
       pulse.enable = true;

@@ -192,8 +192,10 @@ in
     cursor.size = 32;
     fonts = {
       monospace = {
-        package = pkgs.nerd-fonts.jetbrains-mono;
-        name = "JetBrainsMono Nerd Font Mono";
+        # package = pkgs.nerd-fonts.jetbrains-mono;
+        package = pkgs.maple-mono.NF-CN;
+        # name = "JetBrainsMono Nerd Font Mono";
+        name = "Maple Mono";
       };
       sansSerif = {
         package = pkgs.montserrat;
