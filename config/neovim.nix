@@ -37,7 +37,8 @@ in
         bash-language-server
         marksman
         luajitPackages.lua-lsp
-        #Misc.
+        # Debugging
+        delve
         # Formatters
         rustfmt
         clippy
@@ -47,17 +48,32 @@ in
         stylua
         prettierd
         nixfmt-rfc-style
+        ruff
       ];
       plugins = with pkgs.vimPlugins; [
+        # Colorschemes
+        tokyonight-nvim
+        catppuccin-vim
+        rose-pine
         smart-open-nvim
         neocord
+        # AI
         copilot-vim
         codecompanion-nvim
+        # LSP/Formatting/Completion
+        conform-nvim
         none-ls-nvim
+        nvim-cmp
+        cmp-nvim-lsp
+        cmp-buffer
+        luasnip
+        cmp_luasnip
+        friendly-snippets
+        lspkind-nvim
+        nvim-lspconfig
         vim-wakatime
         mini-nvim
         obsidian-nvim
-        tokyonight-nvim
         nvim-colorizer-lua
         alpha-nvim
         auto-session
@@ -71,25 +87,20 @@ in
         lualine-nvim
         nvim-autopairs
         nvim-web-devicons
-        nvim-cmp
-        nvim-lspconfig
-        cmp-nvim-lsp
-        cmp-buffer
-        luasnip
-        cmp_luasnip
-        friendly-snippets
-        lspkind-nvim
         comment-nvim
         nvim-ts-context-commentstring
         plenary-nvim
-        luasnip
         telescope-nvim
         todo-comments-nvim
         nvim-tree-lua
         telescope-fzf-native-nvim
         vim-tmux-navigator
-        # nvim-dap
-        # nvim-dap-ui
+        # Debugging
+        nvim-dap
+        nvim-dap-ui
+        nvim-dap-go
+        nvim-dap-virtual-text
+        persistent-breakpoints-nvim
       ];
       extraConfig = ''
         set noemoji
@@ -114,10 +125,11 @@ in
           ${builtins.readFile ./nvim/plugins/bufferline.lua}
           ${builtins.readFile ./nvim/plugins/whichkey.lua}
           ${builtins.readFile ./nvim/plugins/obsidian.lua}
-          ${builtins.readFile ./nvim/plugins/none.lua}
+          ${builtins.readFile ./nvim/plugins/conform.lua}
           ${builtins.readFile ./nvim/plugins/lualine.lua}
           ${builtins.readFile ./nvim/plugins/presence.lua}
           ${builtins.readFile ./nvim/plugins/copilot.lua}
+          ${builtins.readFile ./nvim/plugins/debugging.lua}
           require("ibl").setup()
           require("colorizer").setup()
         '';

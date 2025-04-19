@@ -5,5 +5,5 @@ require("lualine").setup({
     lualine_b = { "branch", "diff", "diagnostics" },
     lualine_z = { "location" },
   },
-  theme = "tokyonight-storm",
+  theme = "rose-pine",
 })

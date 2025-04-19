@@ -1,45 +1,66 @@
 local dap = require("dap")
 local dapui = require("dapui")
 
-require("dapui").setup()
+require("dap-go").setup()
+dapui.setup()
+require("nvim-dap-virtual-text").setup({
+	enabled = true,
+	enabled_commands = true,
+	highlight_changed_variables = true,
+	highlight_new_as_changed = false,
+	all_references = false,
+	virt_text_pos = "eol",
+	all_frames = false,
+	virt_lines = false,
+	virt_text_win_col = nil,
+})
+require("persistent-breakpoints").setup({
+	load_breakpoints_event = { "BufReadPost" },
+})
 
 dap.listeners.before.attach.dapui_config = function()
-  dapui.open()
+	dapui.open()
 end
 dap.listeners.before.launch.dapui_config = function()
-  dapui.open()
+	dapui.open()
 end
 dap.listeners.before.event_terminated.dapui_config = function()
-  dapui.close()
+	dapui.close()
 end
 dap.listeners.before.event_exited.dapui_config = function()
-  dapui.close()
+	dapui.close()
 end
 
-dap.adapters.bashdb = {
-  type = 'executable';
-  command = 'bashdb';
-  name = 'bashdb';
-}
+vim.fn.sign_define("DapBreakpoint", { text = "🔴", texthl = "", linehl = "", numhl = "" })
+vim.fn.sign_define("DapStopped", { text = "➡️", texthl = "", linehl = "", numhl = "" })
 
-dap.configurations.sh = {
-    type = 'bashdb';
-    request = 'launch';
-    name = "Launch file";
-    showDebugOutput = true;
-    pathBashdb = 'bashdb';
-    trace = true;
-    file = "${file}";
-    program = "${file}";
-    cwd = '${workspaceFolder}';
-    pathCat = "bat";
-    pathBash = "/usr/bin/env bash";
-    pathMkfifo = "mkfifo";
-    pathPkill = "pkill";
-    args = {};
-    env = {};
-    terminalKind = "integrated";
-}
+vim.keymap.set("n", "<leader>dt", require("persistent-breakpoints.api").toggle_breakpoint)
+-- vim.keymap.set("n", "<Leader>dt", dap.toggle_breakpoint, {})
+vim.keymap.set("n", "<leader>dc", dap.continue)
+vim.keymap.set("n", "<leader>du", dapui.toggle)
+vim.keymap.set("n", "<leader>dn", dap.step_over)
 
-vim.keymap.set("n", "<Leader>dt", "<cmd>DapToggleBreakpoint<CR>", {})
-vim.keymap.set("n", "<Leader>dc", "<cmd>DapContinue<CR>", {})
+-- dap.adapters.bashdb = {
+--   type = "executable",
+--   command = "bashdb",
+--   name = "bashdb",
+-- }
+--
+-- dap.configurations.sh = {
+--   type = "bashdb",
+--   request = "launch",
+--   name = "Launch file",
+--   showDebugOutput = true,
+--   pathBashdb = "bashdb",
+--   trace = true,
+--   file = "${file}",
+--   program = "${file}",
+--   cwd = "${workspaceFolder}",
+--   pathCat = "bat",
+--   pathBash = "/usr/bin/env bash",
+--   pathMkfifo = "mkfifo",
+--   pathPkill = "pkill",
+--   args = {},
+--   env = {},
+--   terminalKind = "integrated",
+-- }

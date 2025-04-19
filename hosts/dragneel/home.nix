@@ -82,6 +82,10 @@ in
     source = ../../programs/wlogout/icons;
     recursive = true;
   };
+  home.file.".config/kitty" = {
+    source = ../../config/kitty;
+    recursive = true;
+  };
   home.file.".face.icon".source = ../../config/face.jpg;
   home.file.".config/face.jpg".source = ../../config/face.jpg;
   home.file.".config/swappy/config".text = ''
@@ -185,7 +189,7 @@ in
     opacity.terminal = 0.7;
     cursor.package = pkgs.banana-cursor;
     cursor.name = "Banana";
-    cursor.size = 24;
+    cursor.size = 32;
     fonts = {
       monospace = {
         package = pkgs.nerd-fonts.jetbrains-mono;
@@ -413,6 +417,7 @@ in
         tab_fade 1
         active_tab_font_style   bold
         inactive_tab_font_style bold
+        include rose-pine-moon.conf
       '';
     };
     home-manager.enable = true;

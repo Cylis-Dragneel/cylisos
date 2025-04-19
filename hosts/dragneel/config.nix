@@ -79,7 +79,7 @@
     opacity.terminal = 0.8;
     cursor.package = pkgs.banana-cursor;
     cursor.name = "Banana";
-    cursor.size = 24;
+    cursor.size = 32;
     fonts = {
       monospace = {
         package = pkgs.nerd-fonts.jetbrains-mono;
@@ -270,7 +270,7 @@
     xorg.xev
     wev
     pamixer
-    gimp
+    gimp3
     # inkscape
     vesktop
     obsidian
@@ -347,7 +347,6 @@
     youtube-music
     redshift
     hyprpaper
-    godot_4
     kdePackages.kdenlive
     aseprite
     # libresprite
