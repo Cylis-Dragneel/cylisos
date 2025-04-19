@@ -186,7 +186,7 @@ in
     # base0F = "F7768E";
     # };
     polarity = "dark";
-    opacity.terminal = 0.7;
+    # opacity.terminal = 0.7;
     cursor.package = pkgs.banana-cursor;
     cursor.name = "Banana";
     cursor.size = 32;
@@ -323,6 +323,10 @@ in
       client.default_app.use_magnet = true;
       source.nyaa.default_sort = "Date";
     };
+    seto = {
+      enable = true;
+      package = inputs.seto.packages.${pkgs.system}.default;
+    };
     # hyprpanel = {
     #   enable = true;
     #   systemd.enable = true;
@@ -362,8 +366,9 @@ in
       enableZshIntegration = true;
       extraConfig = ''
         return {
+          window_background_opacity = 0.7,
           font = wezterm.font_with_fallback {
-                "Maple Mono",
+                "Maple Mono NF CN Medium",
                 "JetBrainsMono Nerd Font Mono",
                 "Noto Color Emoji",
                 "Pixilized",
@@ -412,13 +417,14 @@ in
         confirm_os_window_close = 0;
       };
       extraConfig = ''
-        font_family Maple Mono
+        font_family Maple Mono NF CN Medium
         font_size 11
         font_features +calt +cv01 +cv02 +cv03 +cv31 +ss03
         tab_bar_style fade
         tab_fade 1
         active_tab_font_style   bold
         inactive_tab_font_style bold
+        background_opacity 0.7
         include rose-pine-moon.conf
       '';
     };

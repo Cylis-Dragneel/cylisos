@@ -40,6 +40,10 @@
       url = "github:unixpariah/nh";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    seto = {
+      url = "github:unixpariah/seto";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # astal = {
     #   url = "github:aylur/astal";
     #   inputs.nixpkgs.follows = "nixpkgs";
@@ -136,6 +140,7 @@
           inputs.jerry.homeManagerModules.default
           inputs.spicetify-nix.homeManagerModules.default
           inputs.nyaa.homeManagerModule
+          inputs.seto.homeManagerModules.default
         ];
         extraSpecialArgs = {
           inherit

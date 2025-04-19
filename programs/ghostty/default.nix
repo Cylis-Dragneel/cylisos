@@ -17,7 +17,7 @@
       font-size = 11;
       font-family = [
         ""
-        "Maple Mono"
+        "Maple Mono NF CN Medium"
       ];
       font-feature = [
         "calt"

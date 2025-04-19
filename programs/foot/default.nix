@@ -10,7 +10,7 @@
     settings = {
       main = {
         term = "xterm-256color";
-        font = lib.mkForce "Maple Mono:size=11";
+        font = lib.mkForce "Maple Mono NF CN Medium:size=11";
         dpi-aware = lib.mkForce "yes";
       };
       mouse = {

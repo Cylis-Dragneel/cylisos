@@ -65,7 +65,7 @@
           "editor.wordWrap" = "on";
           "editor.formatOnSave" = true;
           "editor.minimap.enabled" = false;
-          "editor.fontFamily" = "Maple Mono";
+          "editor.fontFamily" = "Maple Mono NF CN Medium";
           "editor.suggestFontSize" = 13;
           "editor.fontSize" = 13;
           "editor.suggestLineHeight" = 30;
