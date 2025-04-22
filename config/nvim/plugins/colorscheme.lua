@@ -52,7 +52,7 @@
 require("rose-pine").setup({
 	variant = "moon",
 	dim_inactive_windows = true,
-	-- disable_background = true,
+	disable_background = true,
 	-- extended_background_behind_borders = false,
 	enable = {
 		terminal = true,
@@ -60,7 +60,7 @@ require("rose-pine").setup({
 	styles = {
 		bold = true,
 		italic = true,
-		transparency = false,
+		transparency = true,
 	},
 	highlight_groups = {
 		TelescopeBorder = { fg = "highlight_high", bg = "none" },

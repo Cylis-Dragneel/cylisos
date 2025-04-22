@@ -112,9 +112,9 @@ in
           ${builtins.readFile ./nvim/keymaps.lua}
           ${builtins.readFile ./nvim/plugins/colorscheme.lua}
           ${builtins.readFile ./nvim/plugins/alpha.lua}
-          ${builtins.readFile ./nvim/plugins/autopairs.lua}
           ${builtins.readFile ./nvim/plugins/auto-session.lua}
           ${builtins.readFile ./nvim/plugins/comment.lua}
+          ${builtins.readFile ./nvim/plugins/autopairs.lua}
           ${builtins.readFile ./nvim/plugins/cmp.lua}
           ${builtins.readFile ./nvim/plugins/new-lsp.lua}
           ${builtins.readFile ./nvim/plugins/nvim-tree.lua}

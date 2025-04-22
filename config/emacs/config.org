@@ -904,9 +904,10 @@ Load your own custom theme that will be placed in the themes directory of your e
   doom-themes-enable-italic t))
 ;; (load-theme 'Euphoria t)
 (setq doom-themes-enable-italic t)
-(load-theme 'doom-tokyo-night t)
+;; (load-theme 'doom-tokyo-night t)
 ;; fallback theme
 (use-package catppuccin-theme)
+(setq doom-theme 'doom-rose-pine-moon)
 ;;(load-theme 'catppuccin :no-confirm)
 #+end_src
 

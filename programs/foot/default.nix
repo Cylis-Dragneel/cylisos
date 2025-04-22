@@ -16,10 +16,10 @@
       mouse = {
         hide-when-typing = "yes";
       };
-      # colors = {
-      # alpha = lib.mkForce 0.5;
-      # background = lib.mkForce "1e1e2e";
-      # };
+      colors = {
+        alpha = lib.mkForce 0.7;
+        # background = lib.mkForce "1e1e2e";
+      };
       bell = {
         system = "no";
       };
