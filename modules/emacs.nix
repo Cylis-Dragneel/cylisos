@@ -6,7 +6,7 @@
     (import (
       builtins.fetchTarball {
         url = "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz";
-        sha256 = "1xak0y5f6mwndgzcg9w48xkzrd3j0kdyac4m3gki8l9bxlgwnkbq";
+        sha256 = "019q0hm6r05mqiqmfk1zgjqbq5xls4ykh72avdyyh74yhavd1hkb";
       }
     ))
   ];

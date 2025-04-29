@@ -389,6 +389,7 @@
     fluent-reader
     ente-auth
     go
+    feishin
     (emacsWithPackagesFromUsePackage {
       package = pkgs.emacs-unstable;
       config = ../../config/emacs/config.org;
@@ -428,6 +429,7 @@
       victor-mono
       iosevka
       departure-mono
+      nerd-fonts.jetbrains-mono
     ];
   };
 
@@ -727,8 +729,16 @@
   networking.firewall.allowedTCPPorts = [
     53317
     22050
+    993
+    5432
+    4950
+    4955
   ];
-  networking.firewall.allowedUDPPorts = [ 49152 ];
+  networking.firewall.allowedUDPPorts = [
+    49152
+    4950
+    4955
+  ];
   networking.networkmanager.insertNameservers = [
     "1.1.1.1"
     "1.0.0.1"

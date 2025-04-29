@@ -156,6 +156,7 @@ with lib;
           bind = ${modifier},E,exec,emopicker9000
           bind = ${modifier}SHIFT,E,exec,emacsclient -c
           bind = ,Print,exec,screenshootin
+          bind = ${modifier},Print,exec,hyprshot -m region --freeze --raw | wl-copy
           bind = ${modifier},D,exec,vesktop
           bind = ${modifier},O,exec,obsidian
           bind = ${modifier},C,exec,hyprpicker -a
@@ -163,7 +164,7 @@ with lib;
           bind = ${modifier},N,exec,thunar
           bind = ${modifier},M,exec,spotify
           # bind = ,F10,exec,jerry --rofi
-          bind = ,F1,exec,curd
+          bind = ${modifier},F1,exec,curd
           bind = ${modifier},V,exec,cliphist list | rofi -dmenu | cliphist decode | wl-copy
           bind = ${modifier},Q,killactive,
           bind = ${modifier},P,pseudo,
@@ -234,7 +235,7 @@ with lib;
           bind = ,XF86AudioPrev, exec, playerctl previous
           bind = ,F5, exec, playerctl previous
           binde = ,XF86MonBrightnessDown,exec,brightnessctl set 5%-
-          binde = ,F3,exec,brightnessctl set 5%-
+          binde = ${modifier},F3,exec,brightnessctl set 5%-
           binde = ,XF86MonBrightnessUp,exec,brightnessctl set +5%
           binde = ,F2,exec,brightnessctl set +5%
           # trigger when the switch is turning off

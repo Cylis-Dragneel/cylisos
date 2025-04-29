@@ -907,7 +907,7 @@ Load your own custom theme that will be placed in the themes directory of your e
 ;; (load-theme 'doom-tokyo-night t)
 ;; fallback theme
 (use-package catppuccin-theme)
-(setq doom-theme 'doom-rose-pine-moon)
+(load-theme 'doom-rose-pine-moon t)
 ;;(load-theme 'catppuccin :no-confirm)
 #+end_src
 

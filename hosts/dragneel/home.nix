@@ -18,6 +18,7 @@ in
     postActivateScript = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       if [ -f "/home/${username}/.config/emacs/config.el" ]; then
         rm /home/${username}/.config/emacs/config.el
+        ${pkgs.killall}/bin/killall emacs
       fi
       # if [[ "$0" == *zsh ]]; then
       #   source ~/.zshrc
