@@ -357,7 +357,7 @@
     # libresprite
     audacity
     nitch
-    nodejs_18
+    nodejs
     gammastep
     cartridges
     mgba
