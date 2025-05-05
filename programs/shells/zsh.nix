@@ -1,7 +1,6 @@
 {
   pkgs,
-  host,
-  username,
+  config,
   ...
 }:
 {
@@ -11,38 +10,9 @@
     enableCompletion = true;
     syntaxHighlighting.enable = true;
     shellAliases = {
-      sv = "sudo nvim";
-      # fr = "nh os switch --hostname ${host} /home/${username}/cylisos";
-      # fu = "nh os switch --hostname ${host} --update /home/${username}/cylisos";
-      # hms = "nh home switch /home/${username}/cylisos/";
-      fr = "nh os switch";
-      fu = "nh os switch --update";
-      hms = "nh home switch";
-      ncg = "nix-collect-garbage --delete-old && sudo nix-collect-garbage -d && sudo /run/current-system/bin/switch-to-configuration boot";
-      v = "tmux resize-pane -Z; nvim";
-      ls = "eza --icons";
-      ll = "eza -lh --icons --grid --group-directories-first";
-      la = "eza -lah --icons --grid --group-directories-first";
-      host = "nvim ~/cylisos/hosts/${host}/";
-      config = "nvim ~/cylisos/config/";
-      programs = "nvim ~/cylisos/programs/";
-      py-server = "python -m http.server 8040";
       rl = "source ~/.zshrc";
-      cmc = "cmus-remote -C 'clear'";
-      cma = "cmus-remote -C 'add ~/Music";
-      cmu = "cmus-remote -C 'update-cache -f'";
       nix-shell = "nix-shell --command zsh";
       nix-develop = "nix develop --command zsh";
-      ytmd = "yt-dlp --embed-metadata -x $(ytfzf -I l | grep 'https://')";
-      spotd = "spotdl download $1";
-      oo = "cd /home/${username}/Documents/Main/";
-      orv = "nvim '/home/${username}/Documents/Main/01 - Rough Notes/'*";
-      lz = "lazygit";
-      emd = "emacs --daemon";
-      emc = "emacsclient -c .";
-      zed = "zeditor --foreground ./";
-      pod-up = "podman-compose up -d";
-      pod-down = "podman-compose down";
     };
     defaultKeymap = "emacs";
     history = {
@@ -56,7 +26,7 @@
       #  exec awesome
       # fi
     '';
-    initExtra = ''
+    initContent = ''
       bindkey -e
       # bindkey '^F' autosuggest-accept
       # export KEYTIMEOUT=1
@@ -113,7 +83,7 @@
       preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
     '';
     oh-my-zsh = {
-      enable = true;
+      enable = false;
       plugins = [
         "git"
         "sudo"

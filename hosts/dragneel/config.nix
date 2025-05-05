@@ -55,7 +55,7 @@
   # Styling Options
   stylix = {
     enable = true;
-    image = ../../config/wallpapers/elden-ring-mohg.jpg;
+    image = ../../config/wallpapers/elden-ring-mohg.png;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-macchiato.yaml";
     # base16Scheme = {
     #   base00 = "24283B";
@@ -330,7 +330,6 @@
     rofi-pass
     corectrl
     yt-dlp
-    ytfzf
     localsend
     gpodder
     waypaper
@@ -535,16 +534,26 @@
         variant = "";
       };
     };
-    desktopManager.plasma6 = {
-      enable = true;
-    };
+    # displayManager = {
+    #   defaultSession = "plasma";
+    #   sddm = {
+    #     enable = true;
+    #     wayland.enable = true;
+    #     # greeter = {
+    #     #   theme = "niri";
+    #     # };
+    #   };
+    # };
+    # desktopManager.plasma6 = {
+    #   enable = true;
+    # };
     greetd = {
       enable = true;
       vt = 2;
       settings = {
         default_session = {
           user = username;
-          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd niri-session";
+          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
         };
       };
     };

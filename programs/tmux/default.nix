@@ -30,7 +30,7 @@ in
     disableConfirmationPrompt = true;
     keyMode = "vi";
     secureSocket = true; # temp
-    shell = "${pkgs.zsh}/bin/zsh";
+    shell = "${pkgs.fish}/bin/fish";
     prefix = "C-s";
     plugins = with pkgs.tmuxPlugins; [
       resurrect

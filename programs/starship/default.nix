@@ -12,6 +12,7 @@
     {
       enable = true;
       enableNushellIntegration = true;
+      enableFishIntegration = true;
       settings = rosePinePreset;
       enableTransience = true;
     };

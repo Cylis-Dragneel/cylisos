@@ -152,7 +152,7 @@ in
   };
 
   time = {
-    disabled = false;
+    disabled = true;
     format = " [](fg:overlay)[ $time 󰴈 ]($style)[](fg:overlay)";
     style = "bg:overlay fg:rose";
     time_format = "%H:%M";
