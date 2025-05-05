@@ -4,7 +4,7 @@
   ...
 }:
 let
-  finecmdline = pkgs.vimUtils.buildVimPlugin {
+  fine-cmdline = pkgs.vimUtils.buildVimPlugin {
     name = "fine-cmdline";
     src = inputs.fine-cmdline;
   };
@@ -82,7 +82,7 @@ in
         dressing-nvim
         indent-blankline-nvim
         nui-nvim
-        finecmdline
+        fine-cmdline
         nvim-treesitter.withAllGrammars
         lualine-nvim
         nvim-autopairs
@@ -113,7 +113,6 @@ in
           ${builtins.readFile ./nvim/plugins/colorscheme.lua}
           ${builtins.readFile ./nvim/plugins/alpha.lua}
           ${builtins.readFile ./nvim/plugins/auto-session.lua}
-          ${builtins.readFile ./nvim/plugins/comment.lua}
           ${builtins.readFile ./nvim/plugins/autopairs.lua}
           ${builtins.readFile ./nvim/plugins/cmp.lua}
           ${builtins.readFile ./nvim/plugins/new-lsp.lua}

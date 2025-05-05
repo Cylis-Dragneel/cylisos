@@ -22,3 +22,8 @@ startup_command = "yt-x"
 name = "Cloud ☁️"
 path = "~/Documents/Main/baks/selfhosting"
 startup_command = "pod-up"
+
+[[session]]
+name = "Notes 📝"
+path = "~/Documents/Main"
+startup_command = "nvim +GoToFile"

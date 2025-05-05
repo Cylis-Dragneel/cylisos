@@ -14,7 +14,7 @@
     interactiveShellInit = ''
       fzf_configure_bindings
       set fzf_preview_dir_cmd eza --all --color=always
-      bind \t '__fzf_cd_completion; or commandline -f complete'
+      # bind \t '__fzf_cd_completion; or commandline -f complete'
       # Case-insensitive tab completion (equivalent to matcher-list in ZSH)
       set -g fish_complete_path $fish_complete_path ~/.config/fish/completions
 

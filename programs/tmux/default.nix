@@ -1,26 +1,4 @@
 { pkgs, ... }:
-let
-  catppuccin = pkgs.tmuxPlugins.mkTmuxPlugin {
-    pluginName = "catppuccin";
-    version = "unstable-2023-01-06";
-    src = pkgs.fetchFromGitHub {
-      owner = "dreamsofcode-io";
-      repo = "catppuccin-tmux";
-      rev = "main";
-      sha256 = "sha256-FJHM6LJkiAwxaLd5pnAoF3a7AE1ZqHWoCpUJE0ncCA8=";
-    };
-  };
-  tokyo-night = pkgs.tmuxPlugins.mkTmuxPlugin {
-    pluginName = "tokyo-night";
-    version = "unstable-2023-01-06";
-    src = pkgs.fetchFromGitHub {
-      owner = "janoamaral";
-      repo = "tokyo-night-tmux";
-      rev = "master";
-      sha256 = "sha256-3rMYYzzSS2jaAMLjcQoKreE0oo4VWF9dZgDtABCUOtY=";
-    };
-  };
-in
 {
   programs.tmux = {
     enable = true;
@@ -34,8 +12,6 @@ in
     prefix = "C-s";
     plugins = with pkgs.tmuxPlugins; [
       resurrect
-      # tokyo-night
-      # catppuccin
       rose-pine
       yank
       sensible
@@ -72,27 +48,16 @@ in
       )\""
 
       # Theme Settings
-      # set -g @tokyo-night-tmux_window_id_style hsquare
-      # set -g @tokyo-night-tmux_show_datetime 1
-      # set -g @tokyo-night-tmux_date_format DMY
-      # set -g @tokyo-night-tmux_time_format 24H
-      # set -g @tokyo-night-tmux_show_path 0
-      # set -g @tokyo-night-tmux_show_git 1
       set -g @rose_pine_variant "moon"
       set -g @rose_pine_date_time "%a, %d %b, %H:%M"
-      set -g @rose_pine_directory "on" 
+      set -g @rose_pine_directory "off" 
 
-      # set -g @rose_pine_only_windows 'on' 
-      # set -g @rose_pine_disable_active_window_menu 'on' 
+      set -g @rose_pine_disable_active_window_menu 'off' 
 
-      # set -g @rose_pine_default_window_behavior 'on' 
-      # Previously set -g @rose_pine_window_tabs_enabled
+      set -g @rose_pine_show_current_program "off"
+      set -g @rose_pine_show_pane_directory "off"
 
-      # Example values for these can be:
-      set -g @rose_pine_left_separator ' > ' # The strings to use as separators are 1-space padded
-      set -g @rose_pine_right_separator ' < ' # Accepts both normal chars & nerdfont icons
-      set -g @rose_pine_field_separator ' | ' # Again, 1-space padding, it updates with prefix + I
-      set -g @rose_pine_window_separator ' - ' # Replaces the default `:` between the window number and name
+      set -g @rose_pine_default_window_behavior "off"
 
       # These are not padded
       set -g @rose_pine_session_icon '' 
@@ -104,11 +69,9 @@ in
       set -g @rose_pine_window_status_separator "  " 
 
 
-      set -g @rose_pine_prioritize_windows 'on' 
+      set -g @rose_pine_prioritize_windows "off" 
       set -g @rose_pine_width_to_hide '80' 
       set -g @rose_pine_window_count '5' 
-
-      # run-shell ${tokyo-night}/share/tmux-plugins/tokyo-night/tokyo-night.tmux
 
       # Settings
       set-option -g @resurrect-strategy-nvim 'session'
@@ -121,23 +84,6 @@ in
       set -g @continuum-restore 'on'
       set-option -g status-position top
       set -g detach-on-destroy off
-
-      # Old Catppuccin Settings
-      # set-option -g @catppuccin_flavour 'macchiato'
-      # set -g @catppuccin_window_left_separator ""
-      # set -g @catppuccin_window_right_separator " "
-      # set -g @catppuccin_window_middle_separator " █"
-      # set -g @catppuccin_window_number_position "right"
-      # set -g @catppuccin_window_default_fill "number"
-      # set -g @catppuccin_window_default_text "#W"
-      # set -g @catppuccin_window_current_fill "number"
-      # set -g @catppuccin_window_current_text "#W"
-      # set -g @catppuccin_status_modules_right "host session date_time"
-      # set -g @catppuccin_status_left_separator  " "
-      # set -g @catppuccin_status_right_separator ""
-      # set -g @catppuccin_status_fill "icon"
-      # set -g @catppuccin_status_connect_separator "no"
-      # set -g @catppuccin_directory_text "#{pane_current_path}"
     '';
   };
 }

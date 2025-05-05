@@ -21,16 +21,15 @@
       url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    zen.url = "github:0xc000022070/zen-browser-flake";
     fine-cmdline = {
       url = "github:VonHeikemen/fine-cmdline.nvim";
       flake = false;
     };
+    zen = {
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     niri.url = "github:sodiboo/niri-flake";
-    # umu = {
-    #   url = "git+https://github.com/Open-Wine-Components/umu-launcher/?dir=packaging\/nix&submodules=1";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
     yt-x.url = "github:Benexl/yt-x";
     curd = {
       url = "github:Wraient/curd";
@@ -44,16 +43,8 @@
       url = "github:unixpariah/seto";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # astal = {
-    #   url = "github:aylur/astal";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
     # aagl = {
     #   url = "github:ezKEa/aagl-gtk-on-nix";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
-    # ags = {
-    #   url = "github:aylur/ags/v1";
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
     hyprpanel.url = "github:jas-singhfsu/hyprpanel";
@@ -105,10 +96,9 @@
                   inputs.niri.overlays.niri
                 ];
                 environment.systemPackages = [
-                  inputs.zen.packages.x86_64-linux.default
+                  inputs.zen.packages.${pkgs.system}.twilight
                   pkgs.niri-unstable
-                  # inputs.umu.packages.${pkgs.system}.umu
-                  inputs.yt-x.packages."${system}".default
+                  inputs.yt-x.packages.${pkgs.system}.default
                   inputs.curd.packages.${pkgs.system}.default
                 ];
               }
@@ -118,7 +108,6 @@
       };
 
       homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
-        # pkgs = nixpkgs.legacyPackages.${system};
         pkgs = import nixpkgs {
           inherit system;
           overlays = [
@@ -131,7 +120,6 @@
             ];
             home.packages = [
               inputs.jerry.packages.${system}.default
-              # inputs.astal.packages.${system}.default
             ];
           }
           ./hosts/${host}/home.nix

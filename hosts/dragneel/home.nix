@@ -469,8 +469,8 @@ in
         font_features +calt +cv01 +cv02 +cv03 +cv31 +ss03
         tab_bar_style fade
         tab_fade 1
-        active_tab_font_style   bold
-        inactive_tab_font_style bold
+        active_tab_font_style medium
+        inactive_tab_font_style medium
         background_opacity 0.7
         include rose-pine-moon.conf
         map ctrl+backspace send_text all \x17

@@ -157,6 +157,7 @@ with lib;
           bind = ${modifier}SHIFT,E,exec,emacsclient -c
           bind = ,Print,exec,screenshootin
           bind = ${modifier},Print,exec,hyprshot -m region --freeze --raw | wl-copy
+          bind = ${modifier}SHIFT,Print,exec,hyprshot -m window --freeze --raw | wl-copy
           bind = ${modifier},D,exec,vesktop
           bind = ${modifier},O,exec,obsidian
           bind = ${modifier},C,exec,hyprpicker -a

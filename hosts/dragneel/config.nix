@@ -389,6 +389,7 @@
     ente-auth
     go
     feishin
+    dict
     (emacsWithPackagesFromUsePackage {
       package = pkgs.emacs-unstable;
       config = ../../config/emacs/config.org;

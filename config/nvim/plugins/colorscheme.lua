@@ -51,9 +51,9 @@
 
 require("rose-pine").setup({
 	variant = "moon",
-	dim_inactive_windows = true,
+	dim_inactive_windows = false,
 	disable_background = true,
-	-- extended_background_behind_borders = false,
+	extended_background_behind_borders = false,
 	enable = {
 		terminal = true,
 	},
@@ -71,7 +71,7 @@ require("rose-pine").setup({
 		TelescopePreview = { fg = "text", bg = "none" },
 		TelescopePreviewNormal = { fg = "text", bg = "none" },
 		TelescopeSelection = { fg = "text", bg = "none" },
-		TelescopeSelectionCaret = { fg = "rose", bg = "rose" },
+		TelescopeSelectionCaret = { fg = "rose", bg = "none" },
 		StatusLine = { fg = "love", bg = "love", blend = 10 },
 		StatusLineNC = { fg = "subtle", bg = "surface" },
 	},
