@@ -1,4 +1,5 @@
 local opt = vim.opt
+vim.loader.enable()
 opt.number = true
 opt.relativenumber = true
 opt.tabstop = 2
@@ -29,3 +30,18 @@ vim.g.mapleader = " "
 opt.conceallevel = 2
 opt.termguicolors = true
 opt.showmode = false
+
+opt.lazyredraw = true -- Don't redraw while executing macros
+opt.synmaxcol = 240 -- Only highlight the first 240 columns
+opt.updatetime = 250 -- Faster CursorHold events
+opt.timeoutlen = 300 -- Faster command timeout
+opt.redrawtime = 1500 -- Allow more time for redrawing
+opt.hidden = true -- Enable background buffers
+
+vim.g.loaded_gzip = 1
+vim.g.loaded_matchit = 1
+vim.g.loaded_netrwPlugin = 1
+vim.g.loaded_tarPlugin = 1
+vim.g.loaded_zipPlugin = 1
+vim.g.loaded_2html_plugin = 1
+vim.g.loaded_remote_plugins = 1

@@ -36,7 +36,7 @@ fzf.setup({
 	},
 	files = {
 		prompt = "Files❯ ",
-		cmd = "find . -type f -not -path '*/\\.git/*' -not -path '*/node_modules/*'",
+		cmd = "fd --type f --hidden --exclude .git --exclude node_modules --exclude .obsidian --exclude .direnv",
 		git_icons = true,
 		file_icons = true,
 		color_icons = true,
@@ -81,4 +81,4 @@ vim.keymap.set("n", "<leader>orz", function()
 end, { desc = "Live grep in Rough Notes" })
 
 -- Replace the vim.cmd command for telescope
-vim.cmd([[command! -nargs=0 GoToFile :lua require('fzf-lua').files()]])
+vim.cmd([[command! -nargs=0 GoToFile :lua require('fzf-lua').oldfiles()]])

@@ -61,8 +61,7 @@ in
         copilot-vim
         codecompanion-nvim
         # LSP/Formatting/Completion
-        conform-nvim
-        none-ls-nvim
+        conform-nvim # none-ls replacement
         nvim-cmp
         cmp-nvim-lsp
         cmp-buffer
@@ -72,27 +71,42 @@ in
         lspkind-nvim
         nvim-lspconfig
         vim-wakatime
-        mini-nvim
         obsidian-nvim
-        nvim-colorizer-lua
-        alpha-nvim
-        auto-session
+        nvim-colorizer-lua # Color previews
+        alpha-nvim # Dashboard
+        auto-session # Remembering open files
         which-key-nvim
         bufferline-nvim
-        dressing-nvim
-        indent-blankline-nvim
-        nui-nvim
-        fine-cmdline
-        nvim-treesitter.withAllGrammars
         lualine-nvim
-        nvim-autopairs
+        indent-blankline-nvim
+        fine-cmdline
+        (nvim-treesitter.withPlugins (
+          plugins: with plugins; [
+            bash
+            c
+            go
+            html
+            javascript
+            json
+            lua
+            markdown
+            nix
+            python
+            rust
+            toml
+            typescript
+            vim
+            yaml
+            zig
+          ]
+        ))
+        mini-pairs
         nvim-web-devicons
         comment-nvim
         nvim-ts-context-commentstring
-        plenary-nvim
-        telescope-nvim
+        fzf-lua # replacing telescope
         todo-comments-nvim
-        nvim-tree-lua
+        oil-nvim # replacing nvim-tree
         telescope-fzf-native-nvim
         vim-tmux-navigator
         # Debugging
@@ -101,6 +115,9 @@ in
         nvim-dap-go
         nvim-dap-virtual-text
         persistent-breakpoints-nvim
+        # Dependencies
+        plenary-nvim
+        nui-nvim
       ];
       extraConfig = ''
         set noemoji
@@ -116,8 +133,8 @@ in
           ${builtins.readFile ./nvim/plugins/autopairs.lua}
           ${builtins.readFile ./nvim/plugins/cmp.lua}
           ${builtins.readFile ./nvim/plugins/new-lsp.lua}
-          ${builtins.readFile ./nvim/plugins/nvim-tree.lua}
-          ${builtins.readFile ./nvim/plugins/telescope.lua}
+          ${builtins.readFile ./nvim/plugins/oil.lua}
+          ${builtins.readFile ./nvim/plugins/fzf.lua}
           ${builtins.readFile ./nvim/plugins/todo-comments.lua}
           ${builtins.readFile ./nvim/plugins/treesitter.lua}
           ${builtins.readFile ./nvim/plugins/fine-cmdline.lua}
