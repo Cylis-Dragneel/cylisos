@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  pkgs-stable,
   host,
   inputs,
   username,
@@ -206,220 +207,203 @@
     mutableUsers = true;
   };
 
-  environment.systemPackages = with pkgs; [
-    vim
-    wget
-    killall
-    eza
-    git
-    cmatrix
-    lolcat
-    fastfetch
-    htop
-    libvirt
-    lxqt.lxqt-policykit
-    lm_sensors
-    unzip
-    unrar
-    libnotify
-    v4l-utils
-    ydotool
-    duf
-    ncdu
-    wl-clipboard
-    pciutils
-    ffmpeg-full
-    socat
-    # pokemonsay
-    krabby
-    ripgrep
-    lshw
-    bat
-    pkg-config
-    hyprpicker
-    # brightnessctl
-    virt-viewer
-    swappy
-    appimage-run
-    networkmanagerapplet
-    yad
-    inxi
-    playerctl
-    nixfmt-rfc-style
-    libvirt
-    swww
-    grim
-    slurp
-    file-roller
-    swaynotificationcenter
-    imv
-    pavucontrol
-    tree
-    neovide
-    greetd.tuigreet
-    fzf
-    zsh
-    gamemode
-    deluge-gtk
-    zed-editor
-    nixd
-    vivaldi
-    vivaldi-ffmpeg-codecs
-    nextcloud-client
-    lazygit
-    xfce.tumbler
-    ffmpegthumbnailer
-    luajitPackages.luarocks
-    cliphist
-    scc
-    xorg.xev
-    wev
-    pamixer
-    gimp3
-    # inkscape
-    vesktop
-    obsidian
-    gitleaks
-    nvtopPackages.amd
-    amberol
-    pass
-    # rmpc
-    xournalpp
-    scrot
-    thefuck # Favorite package btw
-    exercism
-    tldr
-    protonvpn-cli
-    protonvpn-gui
-    pipes-rs
-    spotdl
-    screenkey
-    radeontop
-    aria2
-    foliate
-    cmus
-    cmusfm
-    zathura
-    vlc
-    qalculate-gtk
-    jdk
-    yazi
-    figlet
-    soulseekqt
-    yacreader
-    ripgrep
-    # lutgen
-    fd
-    spotify
-    sshfs
-    timg
-    # flowtime
-    mousam
-    freetube
-    anup
-    libreoffice
-    lutris
-    wine64
-    # wineWow64Packages.waylandFul
-    xwallpaper
-    # xbindkeys
-    polybar
-    xwayland-satellite-unstable
-    cloudflare-warp
-    stremio
-    rofi-pass
-    corectrl
-    yt-dlp
-    localsend
-    gpodder
-    waypaper
-    zoom-us
-    recordbox
-    gapless
-    parabolic
-    wine-staging
-    home-manager
-    vimPlugins.nvim-treesitter.withAllGrammars
-    dolphin-emu
-    duckstation
-    heroic
-    autorandr
-    xorg.libxcvt
-    mangohud
-    goverlay
-    gpu-screen-recorder-gtk
-    youtube-music
-    redshift
-    hyprpaper
-    kdePackages.kdenlive
-    aseprite
-    # libresprite
-    audacity
-    nitch
-    nodejs
-    gammastep
-    cartridges
-    mgba
-    ani-cli
-    ani-skip
-    python3
-    ueberzugpp
-    chafa
-    code-cursor
-    nitrogen
-    distrobox
-    umu-launcher
-    cosmic-files
-    fish
-    helix
-    jq
-    chromium
-    zip
-    p7zip
-    osu-lazer-bin
-    torzu
-    imagemagick
-    waytrogen
-    mpvpaper
-    gifsicle
-    wf-recorder
-    postgresql
-    podman-compose
-    fluent-reader
-    ente-auth
-    go
-    feishin
-    dict
-    bruno
-    hydralauncher
-    (emacsWithPackagesFromUsePackage {
-      package = pkgs.emacs-unstable;
-      config = ../../config/emacs/config.org;
-      alwaysEnsure = true;
-      alwaysTangle = true;
-      extraEmacsPackages = epkgs: [
-        # epkgs.dap-ui
-        pkgs.gofumpt
-        pkgs.gopls
-      ];
-    })
-    #Awesome related
-    xorg.xprop
-    xorg.xinit
-    # python312Packages.cmake
-    # luajitPackages.lgi
-    # luajit
-    # xorg.xorgproto
-    # xorg.libxcb
-    # xcb-util-cursor
-    # xorg.xcbutil
-    # xorg.xcbutilkeysyms
-    # cairo
-    # pango
-    # glib
-    # haskellPackages.gio
-    xclip
-  ];
+  environment.systemPackages =
+    (with pkgs; [
+      vim
+      wget
+      killall
+      eza
+      git
+      cmatrix
+      lolcat
+      fastfetch
+      htop
+      libvirt
+      lxqt.lxqt-policykit
+      lm_sensors
+      unzip
+      unrar
+      libnotify
+      v4l-utils
+      ydotool
+      duf
+      ncdu
+      wl-clipboard
+      pciutils
+      ffmpeg-full
+      socat
+      krabby
+      ripgrep
+      lshw
+      bat
+      pkg-config
+      hyprpicker
+      virt-viewer
+      swappy
+      appimage-run
+      networkmanagerapplet
+      yad
+      inxi
+      playerctl
+      nixfmt-rfc-style
+      libvirt
+      swww
+      grim
+      slurp
+      file-roller
+      swaynotificationcenter
+      imv
+      pavucontrol
+      tree
+      neovide
+      greetd.tuigreet
+      fzf
+      zsh
+      gamemode
+      deluge-gtk
+      zed-editor
+      nixd
+      vivaldi
+      vivaldi-ffmpeg-codecs
+      nextcloud-client
+      lazygit
+      xfce.tumbler
+      ffmpegthumbnailer
+      luajitPackages.luarocks
+      cliphist
+      scc
+      xorg.xev
+      wev
+      pamixer
+      gimp3
+      vesktop
+      obsidian
+      gitleaks
+      nvtopPackages.amd
+      amberol
+      pass
+      # rmpc
+      xournalpp
+      scrot
+      thefuck # Favorite package btw
+      exercism
+      tldr
+      protonvpn-cli
+      protonvpn-gui
+      pipes-rs
+      spotdl
+      screenkey
+      radeontop
+      aria2
+      foliate
+      cmus
+      cmusfm
+      zathura
+      vlc
+      qalculate-gtk
+      jdk
+      yazi
+      figlet
+      soulseekqt
+      yacreader
+      ripgrep
+      fd
+      spotify
+      sshfs
+      timg
+      mousam
+      freetube
+      anup
+      libreoffice
+      lutris
+      wine64
+      xwallpaper
+      polybar
+      xwayland-satellite-unstable
+      cloudflare-warp
+      stremio
+      rofi-pass
+      corectrl
+      yt-dlp
+      localsend
+      gpodder
+      waypaper
+      zoom-us
+      recordbox
+      gapless
+      parabolic
+      wine-staging
+      home-manager
+      vimPlugins.nvim-treesitter.withAllGrammars
+      dolphin-emu
+      duckstation
+      heroic
+      autorandr
+      xorg.libxcvt
+      mangohud
+      goverlay
+      gpu-screen-recorder-gtk
+      youtube-music
+      redshift
+      hyprpaper
+      kdePackages.kdenlive
+      aseprite
+      audacity
+      nitch
+      nodejs
+      gammastep
+      cartridges
+      mgba
+      ani-cli
+      ani-skip
+      python3
+      ueberzugpp
+      chafa
+      code-cursor
+      nitrogen
+      distrobox
+      umu-launcher
+      cosmic-files
+      fish
+      helix
+      jq
+      chromium
+      zip
+      p7zip
+      osu-lazer-bin
+      imagemagick
+      waytrogen
+      mpvpaper
+      gifsicle
+      wf-recorder
+      postgresql
+      podman-compose
+      fluent-reader
+      ente-auth
+      go
+      feishin
+      dict
+      bruno
+      hydralauncher
+      (emacsWithPackagesFromUsePackage {
+        package = pkgs.emacs-unstable;
+        config = ../../config/emacs/config.org;
+        alwaysEnsure = true;
+        alwaysTangle = true;
+        extraEmacsPackages = epkgs: [
+          # epkgs.dap-ui
+          pkgs.gofumpt
+          pkgs.gopls
+        ];
+      })
+      #Awesome related
+      xorg.xprop
+      xorg.xinit
+      xclip
+    ])
+    ++ (with pkgs-stable; [
+      torzu
+    ]);
 
   fonts = {
     packages = with pkgs; [
