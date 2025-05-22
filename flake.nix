@@ -43,6 +43,10 @@
       url = "github:unixpariah/seto";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # aagl = {
     #   url = "github:ezKEa/aagl-gtk-on-nix";
     #   inputs.nixpkgs.follows = "nixpkgs";
