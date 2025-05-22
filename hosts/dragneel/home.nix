@@ -145,7 +145,7 @@ in
       py-server = "python -m http.server 8040";
       ytmd = "yt-dlp --embed-metadata -x $(ytfzf -I l | grep 'https://')";
       spotd = "spotdl download";
-      oo = "cd /home/${username}/Documents/Main/";
+      oo = "cd /home/${username}/Documents/Main/ & nvim +GoToFile";
       orv = "nvim '/home/${username}/Documents/Main/01 - Rough Notes/'*";
       lz = "lazygit";
       emd = "emacs --daemon";
@@ -436,6 +436,7 @@ in
             "cv31",
             "ss03",
           },
+          front_end = "OpenGL",
         }
       '';
     };

@@ -390,6 +390,8 @@
     go
     feishin
     dict
+    bruno
+    hydralauncher
     (emacsWithPackagesFromUsePackage {
       package = pkgs.emacs-unstable;
       config = ../../config/emacs/config.org;
@@ -446,6 +448,7 @@
     CYLISOS = "true";
     ROC_ENABLE_PRE_VEGA = "1";
     HSA_OVERRIDE_GFX_VERSION = "8.0.0";
+    AMD_VULKAN_ICD = "RADV";
   };
 
   environment.pathsToLink = [ "/share/zsh" ];

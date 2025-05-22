@@ -135,7 +135,7 @@ lsp["yamlls"] = {
 lsp["bashls"] = {
 	capabilities = capabilities,
 	on_attach = on_attach,
-	filetypes = { "sh" },
+	filetypes = { "sh", "bash" },
 	cmd = { "bash-language-server", "start" },
 }
 
@@ -178,7 +178,6 @@ lsp["harperls"] = {
 	capabilities = capabilities,
 	on_attach = on_attach,
 	cmd = { "harper-ls", "--stdio" },
-	filetypes = { "markdown", "text" },
 	settings = {
 		["harper-ls"] = {
 			linters = {
@@ -203,11 +202,9 @@ lsp["harperls"] = {
 	},
 }
 
-vim.defer_fn(function()
-	for _, server in ipairs(servers) do
-		enable(server)
-	end
-end, 100)
+for _, server in ipairs(servers) do
+	enable(server)
+end
 
 vim.keymap.set("n", "<leader>lh", vim.lsp.buf.hover, { desc = "Hovering definition" })
 vim.keymap.set("n", "<leader>ld", vim.lsp.buf.definition, { desc = "Definition" })

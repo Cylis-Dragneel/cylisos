@@ -55,7 +55,6 @@ in
         tokyonight-nvim
         catppuccin-vim
         rose-pine
-        smart-open-nvim
         neocord
         # AI
         copilot-vim
@@ -78,6 +77,7 @@ in
         which-key-nvim
         bufferline-nvim
         lualine-nvim
+        snacks-nvim
         indent-blankline-nvim
         fine-cmdline
         (nvim-treesitter.withPlugins (
@@ -100,6 +100,9 @@ in
             zig
           ]
         ))
+        markdown-nvim
+        markdown-preview-nvim
+        clipboard-image-nvim
         mini-pairs
         nvim-web-devicons
         comment-nvim
@@ -107,7 +110,6 @@ in
         fzf-lua # replacing telescope
         todo-comments-nvim
         oil-nvim # replacing nvim-tree
-        telescope-fzf-native-nvim
         vim-tmux-navigator
         # Debugging
         nvim-dap
@@ -132,6 +134,7 @@ in
           ${builtins.readFile ./nvim/plugins/auto-session.lua}
           ${builtins.readFile ./nvim/plugins/autopairs.lua}
           ${builtins.readFile ./nvim/plugins/cmp.lua}
+          ${builtins.readFile ./nvim/plugins/markdown.lua}
           ${builtins.readFile ./nvim/plugins/new-lsp.lua}
           ${builtins.readFile ./nvim/plugins/oil.lua}
           ${builtins.readFile ./nvim/plugins/fzf.lua}

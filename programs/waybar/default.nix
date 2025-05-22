@@ -1,398 +1,292 @@
 {
-  pkgs,
   config,
-  lib,
-  system_type,
   ...
 }:
 with config.lib.stylix.colors.withHashtag;
 with config.stylix.fonts;
 let
-  cfg = config.environment.statusBar;
-in
-{
-  options.environment.statusBar.enable = lib.mkOption {
-    type = lib.types.bool;
-    default = system_type == "desktop";
-  };
-
-  config = {
-    home.packages = lib.mkIf cfg.enable [ pkgs.playerctl ];
-    programs.waybar = {
-      inherit (cfg) enable;
-      systemd.enable = true;
-      settings.mainBar = {
-        position = "top";
-        layer = "top";
-        margin-top = 0;
-        margin-bottom = 0;
-        margin-left = 0;
-        margin-right = 0;
-        modules-left = [
-          "custom/power"
-          "custom/launcher"
-          "custom/playerlabel"
-          "custom/playerctl#backward"
-          "custom/playerctl#play"
-          "custom/playerctl#foward"
-        ];
-        modules-center = [
-          "niri/workspaces"
-        ];
-        modules-right = [
-          "custom/notification"
-          "tray"
-          "battery"
-          "pulseaudio"
-          "backlight"
-          "clock"
-        ];
-        clock = {
-          # format = "󰥔  {:%a, %d %b, %I:%M %p}";
-          format = "󰥔  {:%a, %d %b, %H:%M}";
-          tooltip = "true";
-          tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
-          format-alt = "   {:%d/%m}";
+  waybar_config = {
+    mainBar = {
+      layer = "top";
+      position = "top";
+      modules-left = [
+        "custom/nix"
+        "hyprland/workspaces"
+        "niri/workspaces"
+        "custom/sep"
+        "cpu"
+        "memory"
+        "custom/sep"
+        "mpris"
+      ];
+      modules-center = [
+        "clock"
+      ];
+      modules-right = [
+        "network"
+        "pulseaudio"
+        "custom/sep"
+        "custom/notification"
+        "tray"
+        "custom/power"
+      ];
+      output = [ "HDMI-A-1" ];
+      "hyprland/workspaces" = {
+        disable-scroll = true;
+        sort-by-name = true;
+        format = "{icon}";
+        format-icons = {
+          empty = "";
+          active = "";
+          default = "";
         };
-        "hyprland/workspaces" = {
-          active-only = false;
-          all-outputs = false;
-          disable-scroll = false;
-          on-scroll-up = "hyprctl dispatch workspace e-1";
-          on-scroll-down = "hyprctl dispatch workspace e+1";
-          format = "{name}";
-          on-click = "activate";
-          format-icons = {
-            urgent = "";
-            active = "";
-            default = "";
-            sort-by-number = true;
-          };
-        };
-        "niri/workspaces" = {
-          all-outputs = false;
-          current-only = true;
-          format = "{index}";
-          disable-click = true;
-          disable-markup = true;
-        };
-        "cava#left" = {
-          framerate = 60;
-          autosens = 0;
-          sensitivity = 5;
-          bars = 16;
-          lower_cutoff_freq = 50;
-          higher_cutoff_freq = 10000;
-          method = "pipewire";
-          source = "auto";
-          stereo = true;
-          reverse = false;
-          bar_delimiter = 0;
-          monstercat = false;
-          waves = false;
-          input_delay = 2;
-          format-icons = [
-            "<span>▁</span>"
-            "<span>▂</span>"
-            "<span>▃</span>"
-            "<span>▄</span>"
-            "<span>▅</span>"
-            "<span>▆</span>"
-            "<span>▇</span>"
-            "<span>█</span>"
-          ];
-        };
-        "cava#right" = {
-          framerate = 60;
-          autosens = 0;
-          sensitivity = 5;
-          bars = 16;
-          lower_cutoff_freq = 50;
-          higher_cutoff_freq = 10000;
-          method = "pipewire";
-          source = "auto";
-          stereo = true;
-          reverse = false;
-          bar_delimiter = 0;
-          monstercat = false;
-          waves = false;
-          input_delay = 2;
-          format-icons = [
-            "<span>▁</span>"
-            "<span>▂</span>"
-            "<span>▃</span>"
-            "<span>▄</span>"
-            "<span>▅</span>"
-            "<span>▆</span>"
-            "<span>▇</span>"
-            "<span>█</span>"
-          ];
-        };
-        "custom/power" = {
-          # Power button
-          format = "";
-          tooltip = false;
-          on-click = "wlogout";
-        };
-        "custom/notification" = {
-          tooltip = false;
-          format = "{icon} {}";
-          format-icons = {
-            notification = "<span foreground='red'><sup></sup></span>";
-            none = "";
-            dnd-notification = "<span foreground='red'><sup></sup></span>";
-            dnd-none = "";
-            inhibited-notification = "<span foreground='red'><sup></sup></span>";
-            inhibited-none = "";
-            dnd-inhibited-notification = "<span foreground='red'><sup></sup></span>";
-            dnd-inhibited-none = "";
-          };
-          return-type = "json";
-          exec-if = "which swaync-client";
-          exec = "swaync-client -swb";
-          on-click = "sleep 0.1 && task-waybar";
-          escape = true;
-        };
-        "custom/playerctl#backward" = {
-          format = "󰙣 ";
-          on-click = "playerctl previous";
-          on-scroll-up = "playerctl volume .05+";
-          on-scroll-down = "playerctl volume .05-";
-        };
-        "custom/playerctl#play" = {
-          format = "{icon}";
-          return-type = "json";
-          exec = "playerctl -a metadata --format '{\"text\": \"{{artist}} - {{markup_escape(title)}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F";
-          on-click = "playerctl play-pause";
-          on-scroll-up = "playerctl volume .05+";
-          on-scroll-down = "playerctl volume .05-";
-          format-icons = {
-            Playing = "<span>󰏥 </span>";
-            Paused = "<span> </span>";
-            Stopped = "<span> </span>";
-          };
-        };
-        "custom/playerctl#foward" = {
-          format = "󰙡 ";
-          on-click = "playerctl next";
-          on-scroll-up = "playerctl volume .05+";
-          on-scroll-down = "playerctl volume .05-";
-        };
-        "custom/playerlabel" = {
-          format = "<span>󰎈 {} 󰎈</span>";
-          return-type = "json";
-          max-length = 40;
-          exec = "playerctl -a metadata --format '{\"text\": \"{{artist}} - {{markup_escape(title)}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F";
-          on-click = "";
-        };
-        battery = {
-          states = {
-            good = 95;
-            warning = 30;
-            critical = 15;
-          };
-          format = "{icon}  {capacity}%";
-          format-charging = "  {capacity}%";
-          format-plugged = " {capacity}% ";
-          format-alt = "{icon} {time}";
-          format-icons = [
-            ""
-            ""
-            ""
-            ""
-            ""
-          ];
-        };
-
-        memory = {
-          format = "󰍛 {}%";
-          format-alt = "󰍛 {used}/{total} GiB";
-          interval = 5;
-        };
-        cpu = {
-          format = "󰻠 {usage}%";
-          format-alt = "󰻠 {avg_frequency} GHz";
-          interval = 5;
-        };
-        network = {
-          format-wifi = "  {signalStrength}%";
-          format-ethernet = "󰈀 100% ";
-          tooltip-format = "Connected to {essid} {ifname} via {gwaddr}";
-          format-linked = "{ifname} (No IP)";
-          format-disconnected = "󰖪 0% ";
-        };
-        tray = {
-          icon-size = 20;
-          spacing = 8;
-        };
-        backlight = {
-          format = "{icon} {percent}%";
-          format-icons = {
-            default = [
-              ""
-              ""
-              ""
-              ""
-              ""
-              ""
-              ""
-              ""
-              ""
-            ];
-          };
-        };
-        pulseaudio = {
-          format = "{icon} {volume}%";
-          format-muted = "󰝟";
-          format-icons = {
-            default = [
-              "󰕿"
-              "󰖀"
-              "󰕾"
-            ];
-          };
-          # on-scroll-up= "bash ~/.scripts/volume up";
-          # on-scroll-down= "bash ~/.scripts/volume down";
-          scroll-step = 5;
-          on-click = "pavucontrol";
+        icon-size = 9;
+        persistent-workspaces = {
+          "*" = 6;
         };
       };
-      style = ''
-        * {
-            border: none;
-            border-radius: 0px;
-            min-height: 0;
-        }
+      "niri/workspaces" = {
+        all-outputs = false;
+        current-only = true;
+        format = "{index}";
+        disable-click = true;
+        disable-markup = true;
+      };
+      "custom/power" = {
+        # Power button
+        format = " ";
+        tooltip = false;
+        on-click = "wlogout";
+      };
+      "custom/notification" = {
+        tooltip = false;
+        format = "{icon} {}";
+        format-icons = {
+          notification = "<span foreground='red'><sup></sup></span>";
+          none = "";
+          dnd-notification = "<span foreground='red'><sup></sup></span>";
+          dnd-none = "";
+          inhibited-notification = "<span foreground='red'><sup></sup></span>";
+          inhibited-none = "";
+          dnd-inhibited-notification = "<span foreground='red'><sup></sup></span>";
+          dnd-inhibited-none = "";
+        };
+        return-type = "json";
+        exec-if = "which swaync-client";
+        exec = "swaync-client -swb";
+        on-click = "sleep 0.1 && task-waybar";
+        escape = true;
+      };
+      cpu = {
+        interval = 1;
+        format = "  {usage}%";
+        max-length = 10;
+      };
+      network = {
+        format-wifi = "  {bandwidthTotalBytes}";
+        format-ethernet = "eth {ipaddr}/{cidr}";
+        format-disconnected = "net none";
+        tooltip-format = "{ifname} via {gwaddr}";
+        tooltip-format-wifi = "Connected to: {essid} {frequency} - ({signalStrength}%)";
+        tooltip-format-ethernet = "{ifname}";
+        tooltip-format-disconnected = "Disconnected";
+        max-length = 50;
+        interval = 5;
+      };
+      memory = {
+        interval = 2;
+        format = "  {used:0.2f}G";
+      };
+      hyprland.window.format = "{class}";
+      tray = {
+        icon-size = 18;
+        spacing = 10;
+      };
+      "custom/sep".format = "|";
 
-        window#waybar {
-            background-color: ${base00};
-        }
+      mpris = {
+        format = "  {title}";
+        max-length = 30;
+      };
 
-        #cava.left, #cava.right {
-            background: ${base01};
-            margin: 5px;
-            padding: 8px 16px;
-            color: ${base0E};
-        }
-        #cava.left {
-            border-radius: 24px 10px 24px 10px;
-        }
-        #cava.right {
-            border-radius: 10px 24px 10px 24px;
-        }
-        #workspaces {
-            background: ${base01};
-            margin: 5px 5px;
-            padding: 8px 5px;
-            border-radius: 16px;
-            color: ${base0E}
-        }
-        #workspaces button {
-            padding: 0px 5px;
-            margin: 0px 3px;
-            border-radius: 16px;
-            color: transparent;
-            background-color: ${base01};
-            transition: all 0.3s ease-in-out;
-        }
+      clock.format = "  {:%a, %d %b, %H:%M}";
 
-        #workspaces button.active {
-            background-color: ${base0B};
-            color: ${base01};
-            border-radius: 16px;
-            min-width: 50px;
-            background-size: 400% 400%;
-            transition: all 0.3s ease-in-out;
-        }
+      "custom/nix".format = "<span size='large'> </span>";
 
-        #workspaces button:hover {
-            background-color: ${base08};
-            color: ${base01};
-            border-radius: 16px;
-            min-width: 50px;
-            background-size: 400% 400%;
-        }
-
-        #custom-notification, #tray, #pulseaudio, #network, #battery, #backlight,
-        #custom-playerctl.backward, #custom-playerctl.play, #custom-playerctl.foward{
-            background: ${base01};
-            font-weight: bold;
-            margin: 5px 0px;
-        }
-        #custom-notification, #tray, #pulseaudio, #network, #backlight, #battery{
-            color: ${base0E};
-            border-radius: 10px 24px 10px 24px;
-            padding: 0 20px;
-            margin-left: 7px;
-        }
-        #clock {
-            color: ${base08};
-            background-color: ${base01};
-            border-radius: 0px 0px 0px 40px;
-            padding: 10px 10px 15px 25px;
-            margin-left: 7px;
-            font-weight: bold;
-            font-size: 16px;
-        }
-        #custom-launcher {
-            color: ${base0B};
-            background-color: ${base01};
-            border-radius: 0px 0px 40px 0px;
-            margin: 0px;
-            padding: 0px 35px 0px 15px;
-            font-size: 28px;
-        }
-
-        #custom-playerctl.backward, #custom-playerctl.play, #custom-playerctl.foward {
-            background: ${base01};
-            font-size: 22px;
-        }
-        #custom-playerctl.backward:hover, #custom-playerctl.play:hover, #custom-playerctl.foward:hover{
-            color: ${base08};
-        }
-        #custom-playerctl.backward {
-            color: ${base0E};
-            border-radius: 24px 0px 0px 10px;
-            padding-left: 16px;
-            margin-left: 7px;
-        }
-        #custom-playerctl.play {
-            color: ${base0B};
-            padding: 0 5px;
-        }
-        #custom-playerctl.foward {
-            color: ${base0E};
-            border-radius: 0px 10px 24px 0px;
-            padding-right: 12px;
-            margin-right: 7px
-        }
-        #custom-playerlabel {
-            background: ${base01};
-            color: ${base08};
-            padding: 0 20px;
-            border-radius: 24px 10px 24px 10px;
-            margin: 5px 0;
-            font-weight: bold;
-        }
-        #window{
-            background: ${base01};
-            padding-left: 15px;
-            padding-right: 15px;
-            border-radius: 16px;
-            margin-top: 5px;
-            margin-bottom: 5px;
-            font-weight: normal;
-            font-style: normal;
-        }
-        #custom-power {
-            background: ${base01};
-            color: ${base08};
-            padding: 0 20px;
-            border-radius: 24px 10px 24px 10px;
-            margin: 5px 0;
-            font-weight: bold;
-        }
-      '';
+      pulseaudio = {
+        format = "<span size='large'>󰕾 </span> {volume}%";
+        format-muted = "  0%";
+      };
     };
+    secondBar = {
+      layer = "top";
+      position = "top";
+      modules-left = [
+        "custom/nix"
+        "hyprland/workspaces"
+        "niri/workspaces"
+      ];
+      modules-center = [ "clock" ];
+      modules-right = [
+        "pulseaudio"
+        "custom/sep"
+        "tray"
+      ];
+      output = [ "DP-2" ];
+      "hyprland/workspaces" = {
+        disable-scroll = true;
+        sort-by-name = true;
+        format = "{icon}";
+        format-icons = {
+          empty = "";
+          active = "";
+          default = "";
+        };
+        icon-size = 9;
+        persistent-workspaces = {
+          "*" = 6;
+        };
+      };
+      tray = {
+        icon-size = 18;
+        spacing = 10;
+      };
+      "custom/sep".format = "|";
+      clock.format = "  {:%H:%M}";
+
+      "custom/nix".format = "<span size='large'> </span>";
+
+      pulseaudio = {
+        format = "<span size='large'>󰕾 </span> {volume}%";
+        format-muted = "  0%";
+      };
+    };
+  };
+in
+{
+  programs.waybar = {
+    enable = true;
+    systemd.enable = true;
+    settings = waybar_config;
+    style = ''
+      * {
+        border: none;
+        font-family: 'Maple Mono NF CN Medium';
+        font-size: 14px;
+        font-weight: 500;
+        min-height: 0;
+      }
+
+      #waybar {
+        background: ${base00};
+        padding-left: 1.5px;
+        padding-right: 1.5px;
+      }
+
+      /* Common styling for elements with margin, padding and border-radius */
+      #custom-nix, #workspaces, #window, #pulseaudio, #cpu, #memory, #mpris, #clock, #tray, #network {
+        margin: 7px;
+        padding: 5px;
+        padding-left: 8px;
+        padding-right: 8px;
+        border-radius: 4px;
+        background: ${base01};
+      }
+
+      #custom-notification {
+        margin: 7px;
+        padding-left: 8px;
+        padding-right: 5px;
+        border-radius: 4px 0 0 4px;
+        background: ${base01};
+        margin-right: 0;
+        border: none;
+      }
+      #custom-power {
+        margin: 7px;
+        padding: 5px;
+        padding-left: 14px;
+        padding-right: 14px;
+        border-radius: 4px;
+        background: ${base01};
+        color: ${base08};
+        font-weight: bold;
+      }
+
+      #workspaces {
+        margin: 7px;
+        padding: 4.5px;
+      }
+
+      #workspaces button {
+        padding: 0 2px;
+      }
+
+      #workspaces button:hover {
+        background: ${base01};
+        border: ${base00};
+        padding: 0 3px;
+      }
+
+      #workspaces button.active {
+        color: ${base0E};  /* Active workspace */
+      }
+
+      #workspaces button.empty {
+        color: ${base03};  /* Empty workspaces */
+      }
+
+      #workspaces button.default {
+        color: ${base04};  /* Occupied but not active workspaces */
+      }
+
+      #workspaces button.special {
+        color: ${base0C};  /* Special workspaces */
+      }
+
+      #workspaces button.urgent {
+        color: ${base08};  /* Urgent workspaces */
+      }
+
+      #custom-sep {
+        color: ${base02};
+      }
+
+      #cpu {
+        color: ${base0C};
+      }
+
+      #memory {
+        color: ${base0A};
+      }
+
+      #clock {
+        color: ${base0D};
+      }
+
+      #mpris {
+        color: ${base07};
+      }
+
+      #network {
+        color: ${base0C};
+      }
+
+      #network.disconnected {
+        color: ${base09};
+      }
+
+      #window {
+        color: ${base0D};
+      }
+
+      #custom-nix {
+        color: ${base0D};
+      }
+
+      #pulseaudio {
+        color: ${base0B};
+      }
+    '';
   };
 }

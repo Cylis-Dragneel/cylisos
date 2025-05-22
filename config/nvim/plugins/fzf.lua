@@ -81,4 +81,4 @@ vim.keymap.set("n", "<leader>orz", function()
 end, { desc = "Live grep in Rough Notes" })
 
 -- Replace the vim.cmd command for telescope
-vim.cmd([[command! -nargs=0 GoToFile :lua require('fzf-lua').oldfiles()]])
+vim.cmd([[command! -nargs=0 GoToFile :lua require('fzf-lua').files()]])
