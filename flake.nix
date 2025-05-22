@@ -74,6 +74,9 @@
       host = "dragneel";
       username = "cylis";
       system_type = "desktop";
+      pkgs-stable = import nixpkgs-stable {
+        inherit system;
+      };
     in
     {
       nixosConfigurations = {
@@ -83,6 +86,7 @@
             inherit inputs;
             inherit username;
             inherit host;
+            inherit pkgs-stable;
           };
           modules = [
             ./hosts/${host}/config.nix
