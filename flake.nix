@@ -131,7 +131,7 @@
             ];
           }
           ./hosts/${host}/home.nix
-          inputs.stylix.homeManagerModules.stylix
+          inputs.stylix.homeModules.stylix
           inputs.hyprpanel.homeManagerModules.hyprpanel
           inputs.jerry.homeManagerModules.default
           inputs.spicetify-nix.homeManagerModules.default

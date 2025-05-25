@@ -379,7 +379,6 @@
       postgresql
       podman-compose
       fluent-reader
-      ente-auth
       go
       feishin
       dict
