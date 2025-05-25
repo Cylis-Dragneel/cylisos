@@ -18,7 +18,7 @@
     ../../modules/vm-guest-services.nix
     ../../modules/local-hardware-clock.nix
     ../../modules/overlays.nix
-    ../../modules/emacs.nix
+    # ../../modules/emacs.nix
   ];
 
   boot = {

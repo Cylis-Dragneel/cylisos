@@ -47,6 +47,7 @@
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    emacs.url = "github:nix-community/emacs-overlay";
     # aagl = {
     #   url = "github:ezKEa/aagl-gtk-on-nix";
     #   inputs.nixpkgs.follows = "nixpkgs";
@@ -102,6 +103,7 @@
                 # };
                 nixpkgs.overlays = [
                   inputs.niri.overlays.niri
+                  inputs.emacs.overlay
                 ];
                 environment.systemPackages = [
                   inputs.zen.packages.${pkgs.system}.twilight
