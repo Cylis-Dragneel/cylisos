@@ -16,5 +16,6 @@
     ./vscode
     ./waybar
     ./wlogout
+    ./niri
   ];
 }

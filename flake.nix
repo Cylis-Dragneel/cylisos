@@ -102,12 +102,10 @@
                 #   honkers-railway-launcher.enable = true;
                 # };
                 nixpkgs.overlays = [
-                  inputs.niri.overlays.niri
                   inputs.emacs.overlay
                 ];
                 environment.systemPackages = [
                   inputs.zen.packages.${pkgs.system}.twilight
-                  pkgs.niri-unstable
                   inputs.yt-x.packages.${pkgs.system}.default
                   inputs.curd.packages.${pkgs.system}.default
                 ];
@@ -127,6 +125,7 @@
         modules = [
           {
             nixpkgs.overlays = [
+              inputs.niri.overlays.niri
             ];
             home.packages = [
               inputs.jerry.packages.${system}.default
@@ -139,6 +138,8 @@
           inputs.spicetify-nix.homeManagerModules.default
           inputs.nyaa.homeManagerModule
           inputs.seto.homeManagerModules.default
+          inputs.niri.homeModules.niri
+          inputs.niri.homeModules.stylix
         ];
         extraSpecialArgs = {
           inherit

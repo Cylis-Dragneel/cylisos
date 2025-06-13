@@ -319,7 +319,6 @@
       wine64
       xwallpaper
       polybar
-      xwayland-satellite-unstable
       cloudflare-warp
       stremio
       rofi-pass
