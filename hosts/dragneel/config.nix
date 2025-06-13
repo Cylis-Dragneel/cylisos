@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  pkgs-old,
   pkgs-stable,
   host,
   inputs,
@@ -323,7 +324,6 @@
       stremio
       rofi-pass
       corectrl
-      yt-dlp
       localsend
       gpodder
       waypaper
@@ -383,6 +383,7 @@
       dict
       bruno
       hydralauncher
+      miru
       (emacsWithPackagesFromUsePackage {
         package = pkgs.emacs-unstable;
         config = ../../config/emacs/config.org;
@@ -399,8 +400,11 @@
       xorg.xinit
       xclip
     ])
-    ++ (with pkgs-stable; [
+    ++ (with pkgs-old; [
       torzu
+    ])
+    ++ (with pkgs-stable; [
+      yt-dlp
     ]);
 
   fonts = {
@@ -470,6 +474,32 @@
     emacs = {
       enable = true;
       package = pkgs.emacs-unstable;
+    };
+    kmonad = {
+      enable = true;
+      keyboards.main = {
+        device = "/dev/input/by-path/pci-0000:00:14.0-usbv2-0:10:1.0-event-kbd";
+        defcfg = {
+          enable = true;
+          fallthrough = true;
+          allowCommands = false;
+        };
+        config = ''
+          (defsrc
+            caps
+            ralt
+          )
+
+          (defalias
+            caps-esc-ctrl (tap-hold-next-release 170 esc lctl)
+          )
+
+          (deflayer base
+            @caps-esc-ctrl
+            bspc
+          )
+        '';
+      };
     };
     kanata = {
       enable = false;
@@ -597,6 +627,9 @@
     };
   };
   systemd.services = {
+    kmonad-main = {
+      serviceConfig.User = lib.mkForce "root";
+    };
     flatpak-repo = {
       path = [ pkgs.flatpak ];
       script = ''flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo'';

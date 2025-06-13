@@ -5,10 +5,11 @@
 {
   xdg.configFile."mpv/mpv.conf".text = # conf
     ''
-      # script-opts=ytdl_hook-ytdl_path=${pkgs.yt-dlp}/bin/yt-dlp
       --input-ipc-server=/tmp/mpvsocket
       --save-position-on-quit
       --fullscreen
+      --save-watch-history
+      --write-filename-in-watch-later-config
       ytdl-raw-options=cookies-from-browser=firefox
 
       # --- bonus mpv tips ---

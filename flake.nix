@@ -8,7 +8,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs-old.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     stylix.url = "github:danth/stylix";
@@ -30,7 +31,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     niri.url = "github:sodiboo/niri-flake";
-    yt-x.url = "github:Benexl/yt-x";
+    yt-x = {
+      url = "github:Benexl/yt-x";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
     curd = {
       url = "github:Wraient/curd";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -66,6 +70,7 @@
     {
       nixpkgs,
       home-manager,
+      nixpkgs-old,
       nixpkgs-stable,
       spicetify-nix,
       ...
@@ -75,9 +80,10 @@
       host = "dragneel";
       username = "cylis";
       system_type = "desktop";
-      pkgs-stable = import nixpkgs-stable {
+      pkgs-old = import nixpkgs-old {
         inherit system;
       };
+      pkgs-stable = import nixpkgs-stable { inherit system; };
     in
     {
       nixosConfigurations = {
@@ -87,6 +93,7 @@
             inherit inputs;
             inherit username;
             inherit host;
+            inherit pkgs-old;
             inherit pkgs-stable;
           };
           modules = [
