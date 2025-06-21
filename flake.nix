@@ -15,8 +15,7 @@
     stylix.url = "github:danth/stylix";
     ghostty = {
       url = "github:ghostty-org/ghostty";
-      inputs.nixpkgs-unstable.follows = "nixpkgs";
-      inputs.nixpkgs-stable.follows = "nixpkgs";
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
@@ -110,6 +109,7 @@
                 # };
                 nixpkgs.overlays = [
                   inputs.emacs.overlay
+                  inputs.niri.overlays.niri
                 ];
                 environment.systemPackages = [
                   inputs.zen.packages.${pkgs.system}.twilight

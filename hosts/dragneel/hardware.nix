@@ -27,6 +27,10 @@
     "snd-aloop"
     "i2c-dev"
     "i2c-piix4"
+    "amdgpu"
+  ];
+  boot.kernelParams = [
+    "amdgpu.dc=0"
   ];
   boot.extraModulePackages = [ ];
 

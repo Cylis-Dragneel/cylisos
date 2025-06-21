@@ -125,6 +125,8 @@ in
       pkgs.hyprpanel
     ];
 
+    shell.enableShellIntegration = true;
+
     shellAliases = {
       ".." = "cd ..";
       sv = "sudo nvim";
@@ -358,7 +360,6 @@ in
   programs = {
     fzf = {
       enable = true;
-      enableFishIntegration = true;
     };
     nyaa = {
       enable = true;
@@ -378,37 +379,30 @@ in
     # };
     carapace = {
       enable = false;
-      enableNushellIntegration = true;
+      enableZshIntegration = false;
+      enableFishIntegration = false;
     };
     yazi = {
       enable = true;
-      enableNushellIntegration = true;
-      enableZshIntegration = true;
-      enableFishIntegration = true;
     };
-    thefuck = {
+    pay-respects = {
       enable = true;
-      enableNushellIntegration = true;
-      enableZshIntegration = true;
-      enableFishIntegration = true;
     };
     atuin = {
       enable = false;
       settings = {
         style = "compact";
       };
-      enableNushellIntegration = true;
+      enableZshIntegration = false;
+      enableFishIntegration = false;
     };
     direnv = {
       enable = true;
-      enableZshIntegration = true;
-      enableNushellIntegration = true;
       nix-direnv.enable = true;
     };
 
     wezterm = {
       enable = true;
-      enableZshIntegration = true;
       extraConfig = ''
         return {
           window_background_opacity = 0.7,
@@ -442,9 +436,6 @@ in
     };
     zoxide = {
       enable = true;
-      enableZshIntegration = true;
-      enableNushellIntegration = true;
-      enableFishIntegration = true;
       options = [ "--cmd cd" ];
     };
     gh.enable = true;

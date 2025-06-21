@@ -142,7 +142,7 @@
         niri = {
           prettyName = "Niri";
           comment = "Compositor managed by UWSM";
-          binPath = "/run/current-system/sw/bin/niri-session";
+          binPath = "${pkgs.niri-unstable}/bin/niri-session";
         };
       };
     };
@@ -286,7 +286,7 @@
       # rmpc
       xournalpp
       scrot
-      thefuck # Favorite package btw
+      pay-respects # New favorite package
       exercism
       tldr
       protonvpn-cli
@@ -305,7 +305,7 @@
       jdk
       yazi
       figlet
-      soulseekqt
+      nicotine-plus
       yacreader
       ripgrep
       fd
@@ -384,6 +384,7 @@
       bruno
       hydralauncher
       miru
+      nix-index
       (emacsWithPackagesFromUsePackage {
         package = pkgs.emacs-unstable;
         config = ../../config/emacs/config.org;
@@ -751,22 +752,29 @@
       libvdpau-va-gl
     ];
   };
+  powerManagement = {
+    enable = true;
+    cpuFreqGovernor = "ondemand";
+  };
   hardware.amdgpu.opencl.enable = true;
   hardware.i2c.enable = true;
-  # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [
-    53317
-    22050
-    993
-    5432
-    4950
-    4955
-  ];
-  networking.firewall.allowedUDPPorts = [
-    49152
-    4950
-    4955
-  ];
+  networking.firewall = {
+    trustedInterfaces = [ "tailscale0" ];
+    allowedTCPPorts = [
+      53317
+      22050
+      993
+      5432
+      4950
+      4955
+      25565
+    ];
+    allowedUDPPorts = [
+      49152
+      4950
+      4955
+    ];
+  };
   networking.networkmanager.insertNameservers = [
     "1.1.1.1"
     "1.0.0.1"

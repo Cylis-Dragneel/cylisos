@@ -120,6 +120,14 @@
           clip-to-geometry = true;
           draw-border-with-background = false;
         }
+        {
+          matches = [
+            {
+              title = "Bitwarden - Vivaldi";
+            }
+          ];
+          open-floating = true;
+        }
       ];
       binds = {
         "Mod+Shift+Slash".action.show-hotkey-overlay = { };
