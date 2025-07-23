@@ -19,7 +19,6 @@
     ../../modules/vm-guest-services.nix
     ../../modules/local-hardware-clock.nix
     ../../modules/overlays.nix
-    # ../../modules/emacs.nix
   ];
 
   boot = {
@@ -378,6 +377,7 @@
       postgresql
       podman-compose
       fluent-reader
+      piper
       go
       feishin
       dict
@@ -385,6 +385,11 @@
       hydralauncher
       miru
       nix-index
+      lact
+      protonup-rs
+      protonplus
+      pipeline
+      trackma-gtk
       (emacsWithPackagesFromUsePackage {
         package = pkgs.emacs-unstable;
         config = ../../config/emacs/config.org;
@@ -462,6 +467,15 @@
 
   # Services to start
   services = {
+    sonarr = {
+      enable = true;
+    };
+    jellyfin = {
+      enable = true;
+      openFirewall = true;
+    };
+    lact.enable = true;
+    ratbagd.enable = true;
     postgresql.enable = true;
     tumbler.enable = true;
     geoclue2 = {
@@ -761,12 +775,11 @@
   networking.firewall = {
     trustedInterfaces = [ "tailscale0" ];
     allowedTCPPorts = [
+      3000
       53317
       22050
       993
       5432
-      4950
-      4955
       25565
     ];
     allowedUDPPorts = [

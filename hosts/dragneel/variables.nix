@@ -11,6 +11,6 @@
   clock24h = true;
 
   # Program Options
-  browser = "zen"; # Set Default Browser (google-chrome-stable for google-chrome)
   terminal = "ghostty"; # Set Default System Terminal
+  browser = "vivaldi"; # Set Default Browser
 }

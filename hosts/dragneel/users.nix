@@ -29,6 +29,7 @@ in
       packages = with pkgs; [
       ];
     };
+
     # "newuser" = {
     #   homeMode = "755";
     #   isNormalUser = true;
@@ -38,5 +39,16 @@ in
     #   ignoreShellProgramCheck = true;
     #   packages = with pkgs; [];
     # };
+  };
+  users.groups = {
+    media = {
+      gid = 1800;
+      members = [
+        "sonarr"
+        "jackett"
+        "jellyfin"
+        "${username}"
+      ];
+    };
   };
 }

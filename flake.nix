@@ -51,6 +51,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     emacs.url = "github:nix-community/emacs-overlay";
+    wakatime-ls = {
+      url = "github:mrnossiom/wakatime-ls";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # aagl = {
     #   url = "github:ezKEa/aagl-gtk-on-nix";
     #   inputs.nixpkgs.follows = "nixpkgs";
@@ -115,6 +119,7 @@
                   inputs.zen.packages.${pkgs.system}.twilight
                   inputs.yt-x.packages.${pkgs.system}.default
                   inputs.curd.packages.${pkgs.system}.default
+                  inputs.wakatime-ls.packages.${pkgs.system}.default
                 ];
               }
             )

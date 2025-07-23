@@ -52,6 +52,7 @@
   - [[#disabling-electric-indent][Disabling Electric Indent]]
   - [[#diminish-org-indent-mode][Diminish Org Indent Mode]]
   - [[#source-code-block-tag-expansion][Source Code Block Tag Expansion]]
+- [[#pdf][PDF]]
 - [[#perspective][PERSPECTIVE]]
 - [[#projectile][Projectile]]
 - [[#rainbow-delimiters][RAINBOW DELIMITERS]]
@@ -802,6 +803,14 @@ Org-tempo is not a separate package but a module within org that can be enabled.
 
 #+begin_src emacs-lisp
 (require 'org-tempo)
+#+end_src
+
+* PDF
+#+begin_src emacs-lisp
+(use-package pdf-tools
+  :ensure t
+  :config
+  (pdf-tools-install))
 #+end_src
 
 * PERSPECTIVE
