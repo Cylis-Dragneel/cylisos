@@ -17,5 +17,8 @@
     ./waybar
     ./wlogout
     ./niri
+    ./helix
+    ./kitty
+    ./wezterm
   ];
 }

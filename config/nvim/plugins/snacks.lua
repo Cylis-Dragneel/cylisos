@@ -1,4 +1,5 @@
 require("snacks").setup({
+	input = {},
 	dashboard = {
 		enabled = true,
 		preset = {

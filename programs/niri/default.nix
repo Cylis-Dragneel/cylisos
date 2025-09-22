@@ -1,7 +1,14 @@
 {
   pkgs,
+  host,
   ...
 }:
+let
+  inherit (import ../../hosts/${host}/variables.nix)
+    browser
+    terminal
+    ;
+in
 {
   home.packages = [ pkgs.xwayland-satellite ];
 
@@ -134,7 +141,7 @@
         "Mod+Return".action.spawn = [
           "uwsm"
           "app"
-          "footclient"
+          "${terminal}"
         ];
         "Mod+Shift+Return".action.spawn = [
           "uwsm"
@@ -154,7 +161,7 @@
         "Mod+W".action.spawn = [
           "uwsm"
           "app"
-          "vivaldi"
+          "${browser}"
         ];
         "Mod+A".action.spawn = [
           "uwsm"

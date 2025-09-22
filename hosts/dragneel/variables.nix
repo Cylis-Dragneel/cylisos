@@ -11,6 +11,6 @@
   clock24h = true;
 
   # Program Options
-  terminal = "ghostty"; # Set Default System Terminal
   browser = "vivaldi"; # Set Default Browser
+  terminal = "ghostty"; # Set Default System Terminal
 }

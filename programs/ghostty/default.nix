@@ -1,7 +1,6 @@
 {
   inputs,
   pkgs,
-  username,
   ...
 }:
 {
@@ -30,7 +29,6 @@
       cursor-style = "underline";
       mouse-hide-while-typing = true;
       background-opacity = 0.7;
-      # background-blur-radius = 30;
       unfocused-split-opacity = 0.7;
       title = "Ghostty";
       keybind = [

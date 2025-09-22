@@ -59,8 +59,8 @@
     #   url = "github:ezKEa/aagl-gtk-on-nix";
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
-    hyprpanel.url = "github:jas-singhfsu/hyprpanel";
-    hyprpanel.inputs.nixpkgs.follows = "nixpkgs";
+    # hyprpanel.url = "github:jas-singhfsu/hyprpanel";
+    # hyprpanel.inputs.nixpkgs.follows = "nixpkgs";
     # This is required for plugin support.
     # hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     # hyprland-plugins = {
@@ -131,7 +131,6 @@
         pkgs = import nixpkgs {
           inherit system;
           overlays = [
-            inputs.hyprpanel.overlay
           ];
         };
         modules = [
@@ -145,7 +144,6 @@
           }
           ./hosts/${host}/home.nix
           inputs.stylix.homeModules.stylix
-          inputs.hyprpanel.homeManagerModules.hyprpanel
           inputs.jerry.homeManagerModules.default
           inputs.spicetify-nix.homeManagerModules.default
           inputs.nyaa.homeManagerModule

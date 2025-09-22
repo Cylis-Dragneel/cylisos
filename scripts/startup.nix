@@ -1,4 +1,4 @@
-{ pkgs, username }:
+{ pkgs, ... }:
 pkgs.writeShellScriptBin "startup" # bash
   ''
     dbus-update-activation-environment --systemd --all

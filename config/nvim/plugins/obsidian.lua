@@ -1,5 +1,6 @@
 local obsidian = require("obsidian")
 obsidian.setup({
+	legacy_commands = false,
 	workspaces = {
 		{
 			name = "main",
@@ -16,26 +17,6 @@ obsidian.setup({
 		nvim_cmp = true,
 		min_chars = 3,
 	},
-	mappings = {
-		["gf"] = {
-			action = function()
-				return obsidian.util.gf_passthrough()
-			end,
-			opts = { noremap = false, expr = true, buffer = true },
-		},
-		["<leader>oc"] = {
-			action = function()
-				return obsidian.util.toggle_checkbox()
-			end,
-			opts = { buffer = true },
-		},
-		["<cr>"] = {
-			action = function()
-				return obsidian.util.smart_action()
-			end,
-			opts = { buffer = true, expr = true },
-		},
-	},
 	new_notes_location = "01 - Rough Notes",
 	templates = {
 		folder = "06 - Templates",
@@ -44,7 +25,7 @@ obsidian.setup({
 		substitutions = {},
 	},
 	picker = {
-		name = "telescope.nvim",
+		name = "fzf-lua",
 		note_mappings = {
 			new = "<C-x>",
 			insert_link = "<C-l>",
@@ -96,7 +77,7 @@ obsidian.setup({
 })
 -- vim.keymap.set("n", "<leader>of", ":%s/^# \\d\\{2}-\\d\\{2}-\\d\\{4} - \\(\\w\\+\\)/# \\u\\1/<cr>", { desc = "Format Title" })
 vim.keymap.set("n", "<leader>of", ":%s/^# \\(\\w\\+\\)/# \\u\\1/<cr>", { desc = "Format Title" })
-vim.keymap.set("n", "<leader>on", ":ObsidianTemplate New Note<cr>", { desc = "Use New Note Template" })
+vim.keymap.set("n", "<leader>on", ":Obsidian Template New Note<cr>", { desc = "Use New Note Template" })
 vim.keymap.set(
 	"n",
 	"<leader>omk",
@@ -122,6 +103,9 @@ vim.keymap.set(
 	{ desc = "Move Tag" }
 )
 vim.keymap.set("n", "<leader>odd", ":!rm '%:p'<cr>:bd<cr>", { desc = "Delete currently open file" })
+vim.keymap.set("n", "gf",function() return obsidian.util.gf_passthrough() end, {})
+vim.keymap.set("n", "<leader>oc",function() return obsidian.util.toggle_checkbox() end, {})
+vim.keymap.set("n", "<cr>",function() return obsidian.util.smart_action() end, {})
 
 -- vim.keymap.set("n", "<leader>os", function()
 --   require("telescope.builtin").find_files({

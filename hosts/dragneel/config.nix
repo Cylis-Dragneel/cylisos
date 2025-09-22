@@ -24,7 +24,6 @@
   boot = {
     # Kernel
     kernelPackages = pkgs.linuxPackages_latest;
-    #kernelPackages = pkgs.linuxPackages_zen;
 
     # This is for OBS Virtual Cam Support
     kernelModules = [ "v4l2loopback" ];
@@ -58,26 +57,8 @@
     enable = true;
     image = ../../config/wallpapers/elden-ring-mohg.png;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-macchiato.yaml";
-    # base16Scheme = {
-    #   base00 = "24283B";
-    #   base01 = "16161E";
-    #   base02 = "343A52";
-    #   base03 = "444B6A";
-    #   base04 = "787C99";
-    #   base05 = "A9B1D6";
-    #   base06 = "CBCCD1";
-    #   base07 = "D5D6DB";
-    #   base08 = "C0CAF5";
-    #   base09 = "A9B1D6";
-    #   base0A = "0DB9D7";
-    #   base0B = "9ECE6A";
-    #   base0C = "B4F9F8";
-    #   base0D = "2AC3DE";
-    #   base0E = "BB9AF7";
-    #   base0F = "F7768E";
-    # };
     polarity = "dark";
-    opacity.terminal = 0.8;
+    opacity.terminal = 0.7;
     cursor.package = pkgs.banana-cursor;
     cursor.name = "Banana";
     cursor.size = 32;
@@ -112,9 +93,35 @@
   local.hardware-clock.enable = false;
 
   # Enable networking
-  networking.networkmanager.enable = true;
-  networking.hostName = host;
-  networking.timeServers = options.networking.timeServers.default ++ [ "pool.ntp.org" ];
+  networking = {
+    networkmanager = {
+      enable = true;
+      insertNameservers = [
+        "1.1.1.1"
+        "1.0.0.1"
+        "8.8.8.8"
+      ];
+    };
+    hostName = host;
+    timeServers = options.networking.timeServers.default ++ [ "pool.ntp.org" ];
+    firewall = {
+      trustedInterfaces = [ "tailscale0" ];
+      allowedTCPPorts = [
+        3000
+        53317
+        22050
+        993
+        5432
+        25565
+      ];
+      allowedUDPPorts = [
+        49152
+        4950
+        4955
+      ];
+    };
+    enableIPv6 = false;
+  };
 
   # Set your time zone.
   time.timeZone = "Asia/Karachi";
@@ -265,7 +272,6 @@
       nixd
       vivaldi
       vivaldi-ffmpeg-codecs
-      nextcloud-client
       lazygit
       xfce.tumbler
       ffmpegthumbnailer
@@ -282,7 +288,6 @@
       nvtopPackages.amd
       amberol
       pass
-      # rmpc
       xournalpp
       scrot
       pay-respects # New favorite package
@@ -290,7 +295,6 @@
       tldr
       protonvpn-cli
       protonvpn-gui
-      pipes-rs
       spotdl
       screenkey
       radeontop
@@ -321,13 +325,11 @@
       polybar
       cloudflare-warp
       stremio
-      rofi-pass
       corectrl
       localsend
       gpodder
       waypaper
       zoom-us
-      recordbox
       gapless
       parabolic
       wine-staging
@@ -357,36 +359,28 @@
       python3
       ueberzugpp
       chafa
-      code-cursor
       nitrogen
       distrobox
       umu-launcher
       cosmic-files
-      fish
-      helix
       jq
-      chromium
       zip
       p7zip
       osu-lazer-bin
       imagemagick
       waytrogen
       mpvpaper
-      gifsicle
       wf-recorder
       postgresql
       podman-compose
       fluent-reader
       piper
       go
-      feishin
       dict
       bruno
       hydralauncher
-      miru
       nix-index
       lact
-      protonup-rs
       protonplus
       pipeline
       trackma-gtk
@@ -469,10 +463,45 @@
   services = {
     sonarr = {
       enable = true;
+      user = "sonarr";
+      group = "media";
+      dataDir = "/home/${username}/Downloads/Sonarr";
+    };
+    prowlarr = {
+      enable = true;
     };
     jellyfin = {
       enable = true;
       openFirewall = true;
+    };
+    deluge = {
+      enable = true;
+      user = "${username}";
+      group = "media";
+      web = {
+        enable = true;
+        port = 8112;
+      };
+      declarative = true;
+      config = {
+        download_location = "/home/${username}/Downloads";
+        allow_remote = true;
+        listen_ports = [
+          6881
+          6891
+        ];
+        enabled_plugins = [
+          "Label"
+          "WebUi"
+        ];
+        sequential_download = true;
+        auto_managed = true;
+        max_active_limit = 7;
+        max_active_downloading = 1;
+        max_active_seeding = 6;
+      };
+      openFirewall = true;
+      authFile = "/home/${username}/.config/deluge/auth";
     };
     lact.enable = true;
     ratbagd.enable = true;
@@ -772,26 +801,7 @@
   };
   hardware.amdgpu.opencl.enable = true;
   hardware.i2c.enable = true;
-  networking.firewall = {
-    trustedInterfaces = [ "tailscale0" ];
-    allowedTCPPorts = [
-      3000
-      53317
-      22050
-      993
-      5432
-      25565
-    ];
-    allowedUDPPorts = [
-      49152
-      4950
-      4955
-    ];
-  };
-  networking.networkmanager.insertNameservers = [
-    "1.1.1.1"
-    "1.0.0.1"
-  ];
+
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
   system.stateVersion = "23.11";

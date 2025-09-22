@@ -26,8 +26,8 @@ in
       ];
       shell = pkgs.fish;
       ignoreShellProgramCheck = true;
-      packages = with pkgs; [
-      ];
+      # packages = with pkgs; [
+      # ];
     };
 
     # "newuser" = {
@@ -48,6 +48,7 @@ in
         "jackett"
         "jellyfin"
         "${username}"
+        "deluge"
       ];
     };
   };
