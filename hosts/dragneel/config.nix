@@ -336,7 +336,6 @@
       home-manager
       vimPlugins.nvim-treesitter.withAllGrammars
       dolphin-emu
-      duckstation
       heroic
       autorandr
       xorg.libxcvt
@@ -405,6 +404,7 @@
     ])
     ++ (with pkgs-stable; [
       yt-dlp
+      duckstation
     ]);
 
   fonts = {
