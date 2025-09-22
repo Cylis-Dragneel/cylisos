@@ -311,10 +311,6 @@ in
       client.default_app.use_magnet = true;
       source.nyaa.default_sort = "Date";
     };
-    seto = {
-      enable = true;
-      package = inputs.seto.packages.${pkgs.system}.default;
-    };
     carapace = {
       enable = false;
       enableZshIntegration = false;

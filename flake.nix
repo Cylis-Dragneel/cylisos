@@ -42,10 +42,6 @@
       url = "github:unixpariah/nh";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    seto = {
-      url = "github:unixpariah/seto";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -147,7 +143,6 @@
           inputs.jerry.homeManagerModules.default
           inputs.spicetify-nix.homeManagerModules.default
           inputs.nyaa.homeManagerModule
-          inputs.seto.homeManagerModules.default
           inputs.niri.homeModules.niri
           inputs.niri.homeModules.stylix
         ];

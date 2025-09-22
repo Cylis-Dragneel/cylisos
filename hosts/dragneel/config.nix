@@ -263,7 +263,7 @@
       pavucontrol
       tree
       neovide
-      greetd.tuigreet
+      tuigreet
       fzf
       zsh
       gamemode
@@ -324,7 +324,7 @@
       xwallpaper
       polybar
       cloudflare-warp
-      stremio
+      # stremio
       corectrl
       localsend
       gpodder
@@ -383,6 +383,7 @@
       protonplus
       pipeline
       trackma-gtk
+      discord
       (emacsWithPackagesFromUsePackage {
         package = pkgs.emacs-unstable;
         config = ../../config/emacs/config.org;
@@ -612,7 +613,7 @@
       settings = {
         default_session = {
           user = username;
-          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
+          command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd Hyprland";
         };
       };
     };
