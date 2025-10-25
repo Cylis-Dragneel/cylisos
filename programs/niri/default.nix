@@ -4,6 +4,7 @@
   ...
 }:
 let
+  # hyprplugins = coinputs.hyprland-plugins.packages.${pkgs.system};
   inherit (import ../../hosts/${host}/variables.nix)
     browser
     terminal
@@ -110,7 +111,7 @@ in
           ];
         }
       ];
-      screenshot-path = null;
+      screenshot-path = "~/Pictures/Screenshots/Screenshot from %d-%m-%Y %H-%M-%S.png";
       animations.enable = true;
       window-rules = [
         {
@@ -135,12 +136,20 @@ in
           ];
           open-floating = true;
         }
+        {
+          matches = [ { title = "Picture in picture"; } ];
+          open-floating = true;
+        }
+      ];
+      layer-rules = [
+        {
+          matches = [ { namespace = "^hyprpaper$"; } ];
+          place-within-backdrop = true;
+        }
       ];
       binds = {
         "Mod+Shift+Slash".action.show-hotkey-overlay = { };
         "Mod+Return".action.spawn = [
-          "uwsm"
-          "app"
           "${terminal}"
         ];
         "Mod+Shift+Return".action.spawn = [
@@ -179,9 +188,11 @@ in
           "emopicker9000"
         ];
         "Mod+Shift+F1".action.spawn = [
-          "uwsm"
-          "app"
           "curd"
+        ];
+        "Mod+Alt+F1".action.spawn = [
+          "curd"
+          "-c"
         ];
         "Mod+Alt+L".action.spawn = [
           "uwsm"
@@ -191,6 +202,21 @@ in
         "Mod+E".action.spawn = [
           "emacsclient"
           "-c"
+        ];
+        "Mod+O".action.spawn = [
+          "uwsm"
+          "app"
+          "obsidian"
+        ];
+        "Mod+Alt+O".action.spawn = [
+          "uwsm"
+          "app"
+          "obs"
+        ];
+        "Mod+S".action.spawn = [
+          "uwsm"
+          "app"
+          "steam"
         ];
         "Mod+F10".action.spawn = [
           "pamixer"

@@ -60,7 +60,7 @@ let
       };
       "custom/notification" = {
         tooltip = false;
-        format = "{icon} {}";
+        format = "{icon} {text}";
         format-icons = {
           notification = "<span foreground='red'><sup></sup></span>";
           none = "";

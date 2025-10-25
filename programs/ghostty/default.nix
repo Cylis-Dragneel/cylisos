@@ -6,13 +6,14 @@
 {
   programs.ghostty = {
     enable = true;
-    package = inputs.ghostty.packages.${pkgs.system}.default;
+    # package = inputs.ghostty.packages.${pkgs.system}.default;
+    package = pkgs.ghostty;
     enableZshIntegration = true;
     installBatSyntax = true;
     installVimSyntax = true;
     settings = {
       # theme = "/home/${username}/.config/ghostty/tokyonight_storm";
-      theme = "rose-pine-moon";
+      theme = "Rose Pine Moon";
       font-size = 11;
       font-family = [
         ""

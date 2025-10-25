@@ -18,7 +18,7 @@ in
 with lib;
 {
   wayland.windowManager.hyprland = {
-    enable = true;
+    enable = false;
     xwayland.enable = true;
     systemd.enable = true;
     # plugins = [

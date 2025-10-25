@@ -153,7 +153,7 @@
       };
     };
     nh = {
-      package = inputs.nh.packages.${pkgs.system}.default;
+      # package = inputs.nh.packages.${pkgs.system}.default;
       enable = true;
       flake = "/home/${username}/cylisos";
       clean = {
@@ -208,7 +208,12 @@
     };
   };
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs = {
+    config = {
+      allowUnfree = true;
+      permittedInsecurePackages = [ "mbedtls-2.28.10" ];
+    };
+  };
 
   users = {
     mutableUsers = true;
@@ -267,7 +272,6 @@
       fzf
       zsh
       gamemode
-      deluge-gtk
       zed-editor
       nixd
       vivaldi
@@ -293,7 +297,6 @@
       pay-respects # New favorite package
       exercism
       tldr
-      protonvpn-cli
       protonvpn-gui
       spotdl
       screenkey
@@ -335,7 +338,6 @@
       wine-staging
       home-manager
       vimPlugins.nvim-treesitter.withAllGrammars
-      dolphin-emu
       heroic
       autorandr
       xorg.libxcvt
@@ -383,7 +385,18 @@
       protonplus
       pipeline
       trackma-gtk
+      tuba
       discord
+      jujutsu
+      just
+      pokemmo-installer
+      inputs.quickshell.packages.${pkgs.system}.default
+      jellyfin-rpc
+      jellyfin-tui
+      jellycli
+      jftui
+      delfin
+      clickup
       (emacsWithPackagesFromUsePackage {
         package = pkgs.emacs-unstable;
         config = ../../config/emacs/config.org;
@@ -406,11 +419,13 @@
     ++ (with pkgs-stable; [
       yt-dlp
       duckstation
+      azahar
+      dolphin-emu
     ]);
 
   fonts = {
     packages = with pkgs; [
-      noto-fonts-emoji
+      noto-fonts-color-emoji
       noto-fonts-cjk-sans
       font-awesome
       symbola
@@ -462,6 +477,159 @@
 
   # Services to start
   services = {
+    homepage-dashboard = {
+      enable = true;
+      allowedHosts = "dragneel:8082";
+
+      widgets = [
+        {
+          type = "resources";
+          label = "System";
+          cpu = true;
+          memory = true;
+          disk = "/";
+          uptime = true;
+        }
+        {
+          type = "datetime";
+          locale = "en";
+          format = {
+            timeStyle = "short";
+            hourCycle = "h23";
+            dateStyle = "medium";
+          };
+        }
+      ];
+
+      services = [
+        {
+          "Media" = [
+            {
+              "Jellyfin" = {
+                icon = "jellyfin.png";
+                href = "http://dragneel:8096";
+                description = "Media Server";
+                widget = {
+                  type = "jellyfin";
+                  url = "http://localhost:8096";
+                  key = "cfaba9595fe1428f8c459a4e06bcce5b"; # optional, for stats
+                };
+              };
+            }
+            {
+              "Komga" = {
+                icon = "komga.png";
+                href = "http://dragneel:8080";
+                description = "Comic/Manga Server";
+                widget = {
+                  type = "komga";
+                  url = "http://localhost:8080";
+                  username = "cylis.dragneel@gmail.com";
+                  password = "25831";
+                };
+              };
+            }
+          ];
+        }
+        {
+          "Downloads" = [
+            {
+              "Sonarr" = {
+                icon = "sonarr.png";
+                href = "http://dragneel:8989";
+                description = "TV Show Manager";
+                widget = {
+                  type = "sonarr";
+                  url = "http://localhost:8989";
+                  key = "b54c04fa09b345b78027c517e432871b";
+                  enableQueue = true;
+                };
+              };
+            }
+            {
+              "Prowlarr" = {
+                icon = "prowlarr.png";
+                href = "http://dragneel:9696";
+                description = "Indexer Manager";
+                widget = {
+                  type = "prowlarr";
+                  url = "http://localhost:9696";
+                  key = "e589307e37e141be88d9e55d4adc0b01";
+                };
+              };
+            }
+            {
+              "Deluge" = {
+                icon = "deluge.png";
+                href = "http://dragneel:8112";
+                description = "Torrent Client";
+                widget = {
+                  type = "deluge";
+                  url = "http://localhost:8112";
+                  password = "deluge"; # plain text, or use secrets
+                };
+              };
+            }
+          ];
+        }
+        {
+          "Sync" = [
+            {
+              "Syncthing" = {
+                icon = "syncthing.png";
+                href = "http://localhost:8384";
+                description = "File Sync";
+              };
+            }
+          ];
+        }
+      ];
+
+      # Optional: themes, bookmarks, etc.
+      bookmarks = [
+        {
+          Developer = [
+            {
+              NixOS = [
+                {
+                  abbr = "Nix";
+                  href = "https://search.nixos.org/packages";
+                  icon = "nixos.png";
+                }
+              ];
+            }
+            {
+              GitHub = [
+                {
+                  abbr = "GH";
+                  href = "https://github.com";
+                  icon = "github.png";
+                }
+              ];
+            }
+          ];
+        }
+
+      ];
+
+      settings = {
+        title = "My Homelab";
+        theme = "dark";
+        color = "slate";
+        layout = {
+          Media = {
+            style = "row";
+            columns = 3;
+          };
+        };
+      };
+    };
+    komga = {
+      enable = true;
+      settings = {
+        server.port = 8080;
+      };
+    };
     sonarr = {
       enable = true;
       user = "sonarr";
@@ -613,7 +781,7 @@
       settings = {
         default_session = {
           user = username;
-          command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd Hyprland";
+          command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd uwsm start niri";
         };
       };
     };
@@ -630,33 +798,21 @@
     };
     flatpak.enable = true;
     printing = {
-      enable = true;
+      enable = false;
     };
     gnome.gnome-keyring = {
       enable = true;
     };
     avahi = {
-      enable = true;
+      enable = false;
       nssmdns4 = true;
       openFirewall = true;
     };
-    ipp-usb.enable = true;
-    # syncthing = {
-    #   enable = true;
-    #   user = "${username}";
-    #   dataDir = "/home/${username}";
-    #   configDir = "/home/${username}/.config/syncthing";
-    #   settings = {
-    #     folders = {
-    #       "/home/${username}/Documents/Main" = {
-    #         id = "obsidian";
-    #         devices = [ "mobile" ];
-    #       };
-    #     };
-    #   };
-    # };
+    ipp-usb.enable = false;
     pipewire = {
       enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
       pulse.enable = true;
       wireplumber.enable = true;
       jack.enable = true;
@@ -790,8 +946,7 @@
     enable = true;
     extraPackages = with pkgs; [
       rocmPackages.clr.icd
-      amdvlk
-      vaapiVdpau
+      libva-vdpau-driver
       libvdpau-va-gl
     ];
   };
@@ -801,6 +956,7 @@
   };
   hardware.amdgpu.opencl.enable = true;
   hardware.i2c.enable = true;
+  hardware.enableAllFirmware = true;
 
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;

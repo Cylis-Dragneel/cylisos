@@ -2,7 +2,6 @@
   pkgs,
   username,
   host,
-  inputs,
   lib,
   ...
 }:
@@ -31,15 +30,6 @@ in
           rm /home/${username}/.config/emacs/config.el
           ${pkgs.killall}/bin/killall emacs
         fi
-        # if [[ "$0" == *zsh ]]; then
-        #   source ~/.zshrc
-        # fi
-        # if [[ "$0" == *bash ]]; then
-        #   source ~/.bashrc
-        # fi
-        # if [[ "$0" == *nushell ]]; then
-        #   source ~/.config/nushell/config.nu
-        # fi
       '';
     };
 
@@ -154,9 +144,14 @@ in
   # Install & Configure Git
   programs.git = {
     enable = true;
-    userName = "${gitUsername}";
-    userEmail = "${gitEmail}";
-    extraConfig = {
+    settings = {
+      user = {
+        name = "${gitUsername}";
+        email = "${gitEmail}";
+      };
+      lfs = {
+        enable = true;
+      };
       init.defaultBranch = "main";
       color.ui = "auto";
       pull.rebase = false;
@@ -164,12 +159,13 @@ in
         pr = "pull --rebase";
       };
     };
+
   };
   i18n.inputMethod = {
     enable = true;
     type = "fcitx5";
     fcitx5.addons = with pkgs; [
-      fcitx5-configtool
+      qt6Packages.fcitx5-configtool
       fcitx5-mozc
     ];
   };
@@ -188,7 +184,7 @@ in
   xsession = {
     windowManager = {
       awesome = {
-        enable = true;
+        enable = false;
         package = pkgs.awesomeGit;
       };
     };
@@ -216,6 +212,7 @@ in
     hyprlock.enable = false;
     mpv.enable = false;
     starship.enable = false;
+    vicinae.enable = false;
   };
 
   stylix = {
@@ -269,6 +266,9 @@ in
   };
 
   services = {
+    jellyfin-mpv-shim = {
+      enable = true;
+    };
     gammastep = {
       enable = true;
       provider = "manual";

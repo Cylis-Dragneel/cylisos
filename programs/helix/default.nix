@@ -6,10 +6,13 @@
 {
   programs.helix = {
     enable = true;
+    defaultEditor = true;
     extraPackages = with pkgs; [
       prettier
       lldb
       delve
+      just-formatter
+      just-lsp
     ];
     languages = {
       language-server = {
@@ -46,6 +49,15 @@
             ];
           };
           language-servers = [ "wakatime" ];
+        }
+        {
+          name = "just";
+          auto-format = true;
+          language-servers = [
+            "just-lsp"
+            "wakatime"
+          ];
+          formatter.command = "justformatter";
         }
         {
           name = "cpp";
@@ -90,7 +102,7 @@
             "gopls"
             "wakatime"
           ];
-          formatter.command = "gofmt";
+          formatter.command = "gofumpt";
         }
         {
           name = "zig";
@@ -211,7 +223,7 @@
       ];
     };
     settings = {
-      theme = "rose_pine_moon";
+      theme = "rose_transparent";
       editor = {
         line-number = "relative";
         true-color = true;

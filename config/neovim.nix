@@ -13,7 +13,7 @@ in
   programs = {
     neovim = {
       enable = true;
-      defaultEditor = true;
+      defaultEditor = false;
       viAlias = false;
       vimAlias = false;
       vimdiffAlias = true;
