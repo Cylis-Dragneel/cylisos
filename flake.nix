@@ -53,8 +53,8 @@
       url = "github:mrnossiom/wakatime-ls";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    quickshell = {
-      url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
+    noctalia = {
+      url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -95,21 +95,15 @@
             (
               { pkgs, ... }:
               {
-                # imports = [ inputs.aagl.nixosModules.default ];
-                # nix.settings = inputs.aagl.nixConfig;
-                # programs = {
-                #   sleepy-launcher.enable = true;
-                #   honkers-railway-launcher.enable = true;
-                # };
                 nixpkgs.overlays = [
                   inputs.emacs.overlay
                   inputs.niri.overlays.niri
                 ];
                 environment.systemPackages = [
-                  inputs.zen.packages.${pkgs.system}.twilight
-                  inputs.yt-x.packages.${pkgs.system}.default
-                  inputs.curd.packages.${pkgs.system}.default
-                  inputs.wakatime-ls.packages.${pkgs.system}.default
+                  inputs.zen.packages.${pkgs.stdenv.hostPlatform.system}.twilight
+                  inputs.yt-x.packages.${pkgs.stdenv.hostPlatform.system}.default
+                  inputs.curd.packages.${pkgs.stdenv.hostPlatform.system}.default
+                  inputs.wakatime-ls.packages.${pkgs.stdenv.hostPlatform.system}.default
                 ];
               }
             )
@@ -124,14 +118,17 @@
           ];
         };
         modules = [
-          {
-            nixpkgs.overlays = [
-              inputs.niri.overlays.niri
-            ];
-            home.packages = [
-              inputs.jerry.packages.${system}.default
-            ];
-          }
+          (
+            { pkgs, ... }:
+            {
+              nixpkgs.overlays = [
+                inputs.niri.overlays.niri
+              ];
+              home.packages = [
+                inputs.jerry.packages.${pkgs.stdenv.hostPlatform.system}.default
+              ];
+            }
+          )
           ./hosts/${host}/home.nix
           inputs.stylix.homeModules.stylix
           inputs.jerry.homeManagerModules.default
@@ -139,6 +136,7 @@
           inputs.nyaa.homeManagerModule
           inputs.niri.homeModules.niri
           inputs.niri.homeModules.stylix
+          inputs.noctalia.homeModules.default
         ];
         extraSpecialArgs = {
           inherit

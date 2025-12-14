@@ -16,10 +16,27 @@
     ];
     languages = {
       language-server = {
-        wakatime.command = "${inputs.wakatime-ls.packages.${pkgs.system}.default}/bin/wakatime-ls";
+        wakatime.command = "${
+          inputs.wakatime-ls.packages.${pkgs.stdenv.hostPlatform.system}.default
+        }/bin/wakatime-ls";
         rust-analyzer.config = {
           checkOnSave.command = "clippy";
           cargo.allFeatures = true;
+        };
+        clangd = {
+          command = "clangd";
+          args = [
+            "--background-index"
+            "--clang-tidy"
+            "--header-insertion=iwyu"
+          ];
+        };
+        nixd = {
+          command = "${pkgs.nixd}/bin/nixd";
+          args = [
+            "--semantic-tokens=true"
+            "--inlay-hints=true"
+          ];
         };
         tailwindcss = {
           command = "tailwindcss-language-server";

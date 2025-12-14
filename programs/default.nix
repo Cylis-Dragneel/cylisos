@@ -20,5 +20,6 @@
     ./helix
     ./kitty
     ./wezterm
+    ./noctalia
   ];
 }

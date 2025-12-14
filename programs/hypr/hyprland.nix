@@ -7,7 +7,6 @@
 }:
 
 let
-  # hyprplugins = coinputs.hyprland-plugins.packages.${pkgs.system};
   inherit (import ../../hosts/${host}/variables.nix)
     browser
     terminal

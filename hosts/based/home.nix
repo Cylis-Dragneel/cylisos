@@ -157,7 +157,6 @@ in
 
   # Scripts
   home.packages = [
-    inputs.jerry.packages.${pkgs.system}.default
     (import ../../scripts/emopicker9000.nix { inherit pkgs; })
     (import ../../scripts/task-waybar.nix { inherit pkgs; })
     (import ../../scripts/battery.nix { inherit pkgs; })
@@ -282,7 +281,7 @@ in
     };
     spicetify =
       let
-        spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.system};
+        spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.stdenv.hostPlatform.system};
       in
       {
         enable = true;

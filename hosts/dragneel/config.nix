@@ -101,6 +101,7 @@
         "1.0.0.1"
         "8.8.8.8"
       ];
+      dns = "systemd-resolved";
     };
     hostName = host;
     timeServers = options.networking.timeServers.default ++ [ "pool.ntp.org" ];
@@ -121,6 +122,7 @@
       ];
     };
     enableIPv6 = false;
+    resolvconf.enable = false;
   };
 
   # Set your time zone.
@@ -153,7 +155,6 @@
       };
     };
     nh = {
-      # package = inputs.nh.packages.${pkgs.system}.default;
       enable = true;
       flake = "/home/${username}/cylisos";
       clean = {
@@ -390,13 +391,11 @@
       jujutsu
       just
       pokemmo-installer
-      inputs.quickshell.packages.${pkgs.system}.default
       jellyfin-rpc
-      jellyfin-tui
-      jellycli
-      jftui
       delfin
+      jellytui
       clickup
+      android-tools
       (emacsWithPackagesFromUsePackage {
         package = pkgs.emacs-unstable;
         config = ../../config/emacs/config.org;
@@ -477,6 +476,12 @@
 
   # Services to start
   services = {
+    resolved = {
+      enable = true;
+      extraConfig = ''
+        DNSStubListener=yes
+      '';
+    };
     homepage-dashboard = {
       enable = true;
       allowedHosts = "dragneel:8082";
@@ -759,7 +764,7 @@
       windowManager.i3.enable = true;
       xkb = {
         layout = "us,jp";
-        options = "grp:win_space_toggle";
+        options = "grp:win_shift_space_toggle";
         variant = "";
       };
     };
@@ -781,7 +786,7 @@
       settings = {
         default_session = {
           user = username;
-          command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd uwsm start niri";
+          command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd 'uwsm start -F niri-session'";
         };
       };
     };

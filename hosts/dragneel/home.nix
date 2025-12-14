@@ -144,13 +144,21 @@ in
   # Install & Configure Git
   programs.git = {
     enable = true;
+    ignores = [
+      ".direnv/"
+      ".env"
+      "*.db"
+      "*.sqlite"
+      "target/"
+    ];
+    lfs = {
+      enable = true;
+      package = pkgs.git-lfs;
+    };
     settings = {
       user = {
         name = "${gitUsername}";
         email = "${gitEmail}";
-      };
-      lfs = {
-        enable = true;
       };
       init.defaultBranch = "main";
       color.ui = "auto";
@@ -276,7 +284,7 @@ in
       longitude = 74.2;
     };
     flameshot = {
-      enable = true;
+      enable = false;
       package = pkgs.flameshot;
     };
     hypridle = {

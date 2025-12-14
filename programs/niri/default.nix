@@ -4,7 +4,6 @@
   ...
 }:
 let
-  # hyprplugins = coinputs.hyprland-plugins.packages.${pkgs.system};
   inherit (import ../../hosts/${host}/variables.nix)
     browser
     terminal
@@ -83,12 +82,12 @@ in
             "WAYLAND_DISPLAY"
           ];
         }
-        {
-          command = [
-            "waytrogen"
-            "--restore"
-          ];
-        }
+        # {
+        #   command = [
+        #     "waytrogen"
+        #     "--restore"
+        #   ];
+        # }
         {
           command = [
             "uwsm"
@@ -117,7 +116,7 @@ in
         {
           geometry-corner-radius =
             let
-              radius = 12.0;
+              radius = 20.0;
             in
             {
               bottom-left = radius;
@@ -149,134 +148,234 @@ in
       ];
       binds = {
         "Mod+Shift+Slash".action.show-hotkey-overlay = { };
-        "Mod+Return".action.spawn = [
-          "${terminal}"
-        ];
-        "Mod+Shift+Return".action.spawn = [
-          "uwsm"
-          "app"
-          "rofi-launcher"
-        ];
-        "Mod+D".action.spawn = [
-          "uwsm"
-          "app"
-          "vesktop"
-        ];
-        "Mod+V".action.spawn = [
-          "uwsm"
-          "app"
-          "clip"
-        ];
-        "Mod+W".action.spawn = [
-          "uwsm"
-          "app"
-          "${browser}"
-        ];
-        "Mod+A".action.spawn = [
-          "uwsm"
-          "app"
-          "miru"
-        ];
-        "Mod+M".action.spawn = [
-          "uwsm"
-          "app"
-          "spotify"
-        ];
-        "Mod+Alt+E".action.spawn = [
-          "uwsm"
-          "app"
-          "emopicker9000"
-        ];
-        "Mod+Shift+F1".action.spawn = [
-          "curd"
-        ];
-        "Mod+Alt+F1".action.spawn = [
-          "curd"
-          "-c"
-        ];
-        "Mod+Alt+L".action.spawn = [
-          "uwsm"
-          "app"
-          "hyprlock"
-        ];
-        "Mod+E".action.spawn = [
-          "emacsclient"
-          "-c"
-        ];
-        "Mod+O".action.spawn = [
-          "uwsm"
-          "app"
-          "obsidian"
-        ];
-        "Mod+Alt+O".action.spawn = [
-          "uwsm"
-          "app"
-          "obs"
-        ];
-        "Mod+S".action.spawn = [
-          "uwsm"
-          "app"
-          "steam"
-        ];
-        "Mod+F10".action.spawn = [
-          "pamixer"
-          "-i"
-          "5"
-        ];
-        "Mod+F11".action.spawn = [
-          "pamixer"
-          "-d"
-          "5"
-        ];
-        "Mod+F12".action.spawn = [
-          "pamixer"
-          "-t"
-        ];
-        "Mod+F9".action.spawn = [
-          "wpctl"
-          "set-mute"
-          "@DEFAULT_AUDIO_SOURCE@"
-          "toggle"
-        ];
-        "Mod+F6".action.spawn = [
-          "brightnessctl"
-          "set"
-          "+5%"
-        ];
-        "Mod+F7".action.spawn = [
-          "brightnessctl"
-          "set"
-          "5%-"
-        ];
-        "Mod+F1".action.spawn = [
-          "playerctl"
-          "prev"
-        ];
-        "Mod+F2".action.spawn = [
-          "playerctl"
-          "play"
-        ];
-        "Mod+F3".action.spawn = [
-          "playerctl"
-          "pause"
-        ];
-        "Mod+F4".action.spawn = [
-          "playerctl"
-          "next"
-        ];
+        "Mod+Alt+F" = {
+          hotkey-overlay.title = "Toggle floating";
+          action.toggle-window-floating = { };
+        };
+        "Mod+Space" = {
+          hotkey-overlay.title = "Noctalia Launcher";
+          action.spawn = [
+            "noctalia-shell"
+            "ipc"
+            "call"
+            "launcher"
+            "toggle"
+          ];
+        };
+        "Mod+P" = {
+          hotkey-overlay.title = "Noctalia Power Menu";
+          action.spawn = [
+            "noctalia-shell"
+            "ipc"
+            "call"
+            "sessionMenu"
+            "toggle"
+          ];
+        };
+        "Mod+Return" = {
+          hotkey-overlay.title = "Spawn ${terminal}";
+          action.spawn = [
+            "${terminal}"
+          ];
+        };
+        "Mod+Shift+Return" = {
+          hotkey-overlay.hidden = true;
+          action.spawn = [
+            "uwsm"
+            "app"
+            "rofi-launcher"
+          ];
+        };
+        "Mod+D" = {
+          hotkey-overlay.hidden = true;
+          action.spawn = [
+            "uwsm"
+            "app"
+            "vesktop"
+          ];
+        };
+        "Mod+V" = {
+          hotkey-overlay.title = "Clipboard Manager";
+          action.spawn = [
+            "noctalia-shell"
+            "ipc"
+            "call"
+            "launcher"
+            "clipboard"
+          ];
+        };
+        "Mod+W" = {
+          hotkey-overlay.hidden = true;
+          action.spawn = [
+            "uwsm"
+            "app"
+            "${browser}"
+          ];
+        };
+        "Mod+M" = {
+          hotkey-overlay.hidden = true;
+          action.spawn = [
+            "uwsm"
+            "app"
+            "spotify"
+          ];
+        };
+        # "Mod+Alt+E" = {
+        #   hotkey-overlay.title = "Emoji Picker";
+        #   action.spawn = [
+        #     "uwsm"
+        #     "app"
+        #     "emopicker9000"
+        #   ];
+        # };
+        "Mod+Alt+E" = {
+          hotkey-overlay.title = "Emoji Picker";
+          action.spawn = [
+            "noctalia-shell"
+            "ipc"
+            "call"
+            "launcher"
+            "emoji"
+          ];
+        };
+        "Mod+Shift+F1" = {
+          hotkey-overlay.hidden = true;
+          action.spawn = [
+            "curd"
+          ];
+        };
+        "Mod+Alt+L" = {
+          hotkey-overlay.title = "Lockscreen";
+          action.spawn = [
+            "noctalia-shell"
+            "ipc"
+            "call"
+            "lockScreen"
+            "lock"
+          ];
+        };
+        "Mod+E" = {
+          hotkey-overlay.hidden = true;
+          action.spawn = [
+            "emacsclient"
+            "-c"
+          ];
+        };
+        "Mod+O" = {
+          hotkey-overlay.hidden = true;
+          action.spawn = [
+            "uwsm"
+            "app"
+            "obsidian"
+          ];
+        };
+        "Mod+Alt+O" = {
+          hotkey-overlay.hidden = true;
+          action.spawn = [
+            "uwsm"
+            "app"
+            "obs"
+          ];
+        };
+        "Mod+Shift+O".action.toggle-overview = { };
+        "Mod+S" = {
+          hotkey-overlay.hidden = true;
+          action.spawn = [
+            "uwsm"
+            "app"
+            "steam"
+          ];
+        };
+        "Mod+F10" = {
+          hotkey-overlay.hidden = true;
+          action.spawn = [
+            "pamixer"
+            "-i"
+            "5"
+          ];
+        };
+        "Mod+F11" = {
+          hotkey-overlay.hidden = true;
+          action.spawn = [
+            "pamixer"
+            "-d"
+            "5"
+          ];
+        };
+        "Mod+F12" = {
+          hotkey-overlay.hidden = true;
+          action.spawn = [
+            "pamixer"
+            "-t"
+          ];
+        };
+        "Mod+F9" = {
+          hotkey-overlay.hidden = true;
+          action.spawn = [
+            "wpctl"
+            "set-mute"
+            "@DEFAULT_AUDIO_SOURCE@"
+            "toggle"
+          ];
+        };
+        "Mod+F6" = {
+          hotkey-overlay.hidden = true;
+          action.spawn = [
+            "brightnessctl"
+            "set"
+            "+5%"
+          ];
+        };
+        "Mod+F7" = {
+          hotkey-overlay.hidden = true;
+          action.spawn = [
+            "brightnessctl"
+            "set"
+            "5%-"
+          ];
+        };
+        "Mod+F1" = {
+          hotkey-overlay.hidden = true;
+          action.spawn = [
+            "playerctl"
+            "prev"
+          ];
+        };
+        "Mod+F2" = {
+          hotkey-overlay.hidden = true;
+          action.spawn = [
+            "playerctl"
+            "play"
+          ];
+        };
+        "Mod+F3" = {
+          hotkey-overlay.hidden = true;
+          action.spawn = [
+            "playerctl"
+            "pause"
+          ];
+        };
+        "Mod+F4" = {
+          hotkey-overlay.hidden = true;
+          action.spawn = [
+            "playerctl"
+            "next"
+          ];
+        };
         "XF86AudioRaiseVolume".action.spawn = [
-          "pamixer"
-          "-i"
-          "5"
+          "noctalia"
+          "volume"
+          "increase"
         ];
         "XF86AudioLowerVolume".action.spawn = [
-          "pamixer"
-          "-d"
-          "5"
+          "noctalia"
+          "volume"
+          "decrease"
         ];
         "XF86AudioMute".action.spawn = [
-          "pamixer"
-          "-t"
+          "noctalia"
+          "volume"
+          "muteOutput"
         ];
         "XF86AudioMicMute".action.spawn = [
           "wpctl"
