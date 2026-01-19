@@ -144,6 +144,7 @@
   };
 
   programs = {
+    kdeconnect.enable = true;
     uwsm = {
       enable = true;
       waylandCompositors = {
@@ -392,10 +393,11 @@
       just
       pokemmo-installer
       jellyfin-rpc
-      delfin
+      tsukimi
       jellytui
       clickup
       android-tools
+      cozy
       (emacsWithPackagesFromUsePackage {
         package = pkgs.emacs-unstable;
         config = ../../config/emacs/config.org;
@@ -476,12 +478,14 @@
 
   # Services to start
   services = {
+    audiobookshelf.enable = true;
     resolved = {
       enable = true;
       extraConfig = ''
         DNSStubListener=yes
       '';
     };
+    flaresolverr.enable = true;
     homepage-dashboard = {
       enable = true;
       allowedHosts = "dragneel:8082";
@@ -641,12 +645,18 @@
       group = "media";
       dataDir = "/home/${username}/Downloads/Sonarr";
     };
-    prowlarr = {
+    prowlarr.enable = true;
+    radarr = {
       enable = true;
+      group = "media";
     };
     jellyfin = {
       enable = true;
       openFirewall = true;
+    };
+    bazarr = {
+      enable = true;
+      group = "media";
     };
     deluge = {
       enable = true;
@@ -681,11 +691,11 @@
     ratbagd.enable = true;
     postgresql.enable = true;
     tumbler.enable = true;
-    geoclue2 = {
-      enable = true;
-      enableDemoAgent = true;
-      enableWifi = true;
-    };
+    # geoclue2 = {
+    #   enable = true;
+    #   enableDemoAgent = true;
+    #   enableWifi = true;
+    # };
     dbus.packages = [ pkgs.gcr ];
     timesyncd.enable = true;
     cloudflare-warp.enable = true;
@@ -768,28 +778,17 @@
         variant = "";
       };
     };
-    # displayManager = {
-    #   defaultSession = "plasma";
-    #   sddm = {
-    #     enable = true;
-    #     wayland.enable = true;
-    #     # greeter = {
-    #     #   theme = "niri";
-    #     # };
+    displayManager.cosmic-greeter.enable = true;
+    desktopManager.cosmic.enable = true;
+    # greetd = {
+    #   enable = false;
+    #   settings = {
+    #     default_session = {
+    #       user = username;
+    #       command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd 'uwsm start -F niri-session'";
+    #     };
     #   };
     # };
-    # desktopManager.plasma6 = {
-    #   enable = true;
-    # };
-    greetd = {
-      enable = true;
-      settings = {
-        default_session = {
-          user = username;
-          command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd 'uwsm start -F niri-session'";
-        };
-      };
-    };
     smartd = {
       enable = false;
       autodetect = true;
@@ -921,6 +920,7 @@
         "https://hyprland.cachix.org"
         "https://nix-community.cachix.org"
         "https://ezkea.cachix.org"
+        "https://cosmic.cachix.org/"
       ];
       trusted-public-keys = [
         "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
@@ -929,6 +929,7 @@
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
         "ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI="
+        "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE="
       ];
     };
     # gc = {

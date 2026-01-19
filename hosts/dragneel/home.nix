@@ -315,9 +315,16 @@ in
     };
     nyaa = {
       enable = true;
+      default_theme = "Dracula";
+      # download_client = "RunCommand";
       download_client = "DefaultApp";
       client.default_app.use_magnet = true;
+      client.cmd = {
+        cmd = "curl -d '{\"method\": \"core.add_torrent_magnet\", \"params\": [\"{magnet}\", {}], \"id\": 1}' -K /home/${username}/Downloads/curl.cfg";
+        # shell_cmd = "sh -c";
+      };
       source.nyaa.default_sort = "Date";
+      clipboard.osc52 = false;
     };
     carapace = {
       enable = false;

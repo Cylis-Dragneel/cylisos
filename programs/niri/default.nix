@@ -17,7 +17,11 @@ in
     package = pkgs.niri-unstable;
     settings = {
       input = {
+        keyboard = {
+          numlock = true;
+        };
         touchpad = {
+          enable = false;
           tap = true;
           accel-profile = "flat";
           natural-scroll = false;

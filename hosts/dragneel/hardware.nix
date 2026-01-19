@@ -19,6 +19,7 @@
     "ehci_pci"
     "ahci"
     "usbhid"
+    "usb_storage"
     "sd_mod"
   ];
   boot.initrd.kernelModules = [ "amdgpu" ];
@@ -29,13 +30,11 @@
     "i2c-piix4"
     "amdgpu"
   ];
-  boot.kernelParams = [
-    "amdgpu.dc=0"
-  ];
+  boot.kernelParams = [ "amdgpu.dc=0" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/4dfdf2f1-2360-496f-af97-e40e5ef79eb4";
+    device = "/dev/disk/by-uuid/7f10016d-9539-48cd-98e7-d55611d2d88e";
     fsType = "ext4";
   };
 
@@ -45,16 +44,16 @@
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/EEDB-4446";
+    device = "/dev/disk/by-uuid/54A6-4701";
     fsType = "vfat";
     options = [
-      "fmask=0022"
-      "dmask=0022"
+      "fmask=0077"
+      "dmask=0077"
     ];
   };
 
   swapDevices = [
-    { device = "/dev/disk/by-uuid/a672bfeb-a6a2-48c6-bfdf-1910714dc18f"; }
+    { device = "/dev/disk/by-uuid/ff02849a-0190-4ccc-bd7e-fd0e71e38976"; }
   ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
@@ -63,8 +62,7 @@
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.enp3s0.useDHCP = lib.mkDefault true;
-  # networking.interfaces.tailscale0.useDHCP = lib.mkDefault true;
-  # networking.interfaces.wlp0s20u10.useDHCP = lib.mkDefault true;
+  # networking.interfaces.wlp0s20u3.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

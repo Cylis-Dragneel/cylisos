@@ -23,6 +23,8 @@ in
         "uinput"
         "i2c"
         "podman"
+        "avahi"
+        "media"
       ];
       shell = pkgs.fish;
       ignoreShellProgramCheck = true;
