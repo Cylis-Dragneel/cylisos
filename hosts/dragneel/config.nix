@@ -201,8 +201,7 @@
     };
     thunar = {
       enable = true;
-      plugins = with pkgs.xfce; [
-        thunar-archive-plugin
+      plugins = with pkgs; [
         thunar-volman
         thunar-archive-plugin
         thunar-media-tags-plugin
@@ -259,7 +258,7 @@
       yad
       inxi
       playerctl
-      nixfmt-rfc-style
+      nixfmt
       libvirt
       swww
       grim
@@ -279,7 +278,7 @@
       vivaldi
       vivaldi-ffmpeg-codecs
       lazygit
-      xfce.tumbler
+      tumbler
       ffmpegthumbnailer
       luajitPackages.luarocks
       cliphist
@@ -346,7 +345,7 @@
       mangohud
       goverlay
       gpu-screen-recorder-gtk
-      youtube-music
+      pear-desktop
       redshift
       hyprpaper
       kdePackages.kdenlive
@@ -398,6 +397,10 @@
       clickup
       android-tools
       cozy
+      bluetui
+      maa-assistant-arknights
+      maa-cli
+      # android-studio
       (emacsWithPackagesFromUsePackage {
         package = pkgs.emacs-unstable;
         config = ../../config/emacs/config.org;
@@ -481,9 +484,7 @@
     audiobookshelf.enable = true;
     resolved = {
       enable = true;
-      extraConfig = ''
-        DNSStubListener=yes
-      '';
+      settings.Resolve.DNSStubListener = true;
     };
     flaresolverr.enable = true;
     homepage-dashboard = {
@@ -697,6 +698,10 @@
     #   enableWifi = true;
     # };
     dbus.packages = [ pkgs.gcr ];
+    ollama = {
+      enable = false;
+      package = pkgs.ollama-vulkan;
+    };
     timesyncd.enable = true;
     cloudflare-warp.enable = true;
     emacs = {
