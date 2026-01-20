@@ -40,7 +40,7 @@
               name = "errorlens";
               publisher = "usernamehw";
               version = "3.24.0";
-              sha256 = "sha256-Y3M/A5rYLkxQPRIZ0BUjhlkvixDae+wIRUsBn4tREFw=";
+              sha256 = "sha256-r5xXR4rDbP+2bk66yqPoLod8IZXFrntcKHuWbAiFWwE=";
             }
             {
               name = "vscode-wakatime";
