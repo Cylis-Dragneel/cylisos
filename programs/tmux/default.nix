@@ -8,7 +8,7 @@
     disableConfirmationPrompt = true;
     keyMode = "vi";
     secureSocket = true; # temp
-    shell = "${pkgs.fish}/bin/fish";
+    shell = "${pkgs.nushell}/bin/nu";
     prefix = "C-s";
     plugins = with pkgs.tmuxPlugins; [
       resurrect

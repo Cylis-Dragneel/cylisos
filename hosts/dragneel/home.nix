@@ -3,6 +3,7 @@
   username,
   host,
   lib,
+  config,
   ...
 }:
 let
@@ -28,29 +29,32 @@ in
       postActivateScript = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         if [ -f "/home/${username}/.config/emacs/config.el" ]; then
           rm /home/${username}/.config/emacs/config.el
-          ${pkgs.killall}/bin/killall emacs
         fi
       '';
     };
 
     # Place Files Inside Home Directory
     file = {
-      "Pictures/Wallpapers" = {
-        source = ../../config/wallpapers;
+      "Pictures/Wallpapers/Landscape" = {
+        source = ../../config/wallpapers/Landscape;
         recursive = true;
       };
-      ".config/fastfetch" = {
-        source = ../../config/fastfetch;
+      "Pictures/Wallpapers/Portrait" = {
+        source = ../../config/wallpapers/Portrait;
         recursive = true;
       };
+      # ".config/fastfetch" = {
+      #   source = ../../config/fastfetch;
+      #   recursive = true;
+      # };
       ".config/ghostty" = {
         source = ../../config/ghostty;
         recursive = true;
       };
-      ".config/awesome" = {
-        source = ../../config/awesome;
-        recursive = true;
-      };
+      # ".config/awesome" = {
+      #   source = ../../config/awesome;
+      #   recursive = true;
+      # };
       ".config/i3" = {
         source = ../../config/i3;
         recursive = true;
@@ -59,10 +63,10 @@ in
         source = ../../config/jerry;
         recursive = true;
       };
-      ".config/anup" = {
-        source = ../../config/anup;
-        recursive = true;
-      };
+      # ".config/anup" = {
+      #   source = ../../config/anup;
+      #   recursive = true;
+      # };
       ".config/emacs" = {
         source = ../../config/emacs;
         recursive = true;
@@ -112,7 +116,7 @@ in
       (import ../../scripts/list-hypr-bindings.nix { inherit pkgs host; })
       (import ../../scripts/fr-hms.nix { inherit pkgs; })
       (import ../../scripts/sesh.nix { inherit pkgs; })
-      pkgs.hyprpanel
+      (import ../../scripts/import-cursor.nix { inherit pkgs; })
     ];
 
     shell.enableShellIntegration = true;
@@ -122,10 +126,10 @@ in
       fr = "nh os switch";
       fu = "nh os switch --update";
       hms = "nh home switch";
-      ncg = "nix-collect-garbage --delete-old && sudo nix-collect-garbage -d && sudo /run/current-system/bin/switch-to-configuration boot";
-      ls = "eza --icons";
-      ll = "eza -lh --icons --grid --group-directories-first";
-      la = "eza -lah --icons --grid --group-directories-first";
+      # ncg = "nix-collect-garbage --delete-old && sudo nix-collect-garbage -d && sudo /run/current-system/bin/switch-to-configuration boot";
+      # ls = "eza --icons";
+      # ll = "eza -lh --icons --grid --group-directories-first";
+      # la = "eza -lah --icons --grid --group-directories-first";
       host = "hx ~/cylisos/hosts/${host}/";
       config = "hx ~/cylisos/config/";
       programs = "hx ~/cylisos/programs/";
@@ -167,7 +171,6 @@ in
         pr = "pull --rebase";
       };
     };
-
   };
   i18n.inputMethod = {
     enable = true;
@@ -183,6 +186,7 @@ in
     userDirs = {
       enable = true;
       createDirectories = true;
+      setSessionVariables = true;
     };
   };
 
@@ -206,32 +210,22 @@ in
   };
 
   # Styling Options
-  stylix.targets = {
-    helix.enable = false;
-    waybar.enable = false;
-    rofi.enable = false;
-    hyprland.enable = false;
-    kde.enable = false;
-    spicetify.enable = false;
-    neovim.enable = false;
-    tmux.enable = false;
-    vesktop.enable = false;
-    vscode.enable = false;
-    hyprlock.enable = false;
-    mpv.enable = false;
-    starship.enable = false;
-    vicinae.enable = false;
-  };
-
   stylix = {
     enable = true;
-    image = ../../config/wallpapers/elden-ring-mohg.png;
+    image = ../../config/wallpapers/Landscape/carlotta_1.jpg;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/rose-pine-moon.yaml";
     polarity = "dark";
     opacity.terminal = 0.7;
-    cursor.package = pkgs.banana-cursor;
-    cursor.name = "Banana";
-    cursor.size = 32;
+    # cursor.package = pkgs.banana-cursor;
+    # cursor.name = "Banana";
+    # cursor.size = 32;
+    cursor = {
+      # name = "touhou-reimu";
+      # package = inputs.anime-cursors.packages.${pkgs.stdenv.hostPlatform.system}.cursors;
+      name = "carlotta-cursor";
+      package = pkgs.callPackage ../../modules/carlotta-cursor.nix { };
+      size = 48;
+    };
     fonts = {
       monospace = {
         # package = pkgs.nerd-fonts.jetbrains-mono;
@@ -254,6 +248,22 @@ in
         popups = 12;
       };
     };
+    targets = {
+      helix.enable = false;
+      waybar.enable = false;
+      rofi.enable = false;
+      hyprland.enable = false;
+      kde.enable = false;
+      spicetify.enable = false;
+      neovim.enable = false;
+      tmux.enable = false;
+      vesktop.enable = false;
+      vscode.enable = false;
+      hyprlock.enable = false;
+      mpv.enable = false;
+      starship.enable = false;
+      vicinae.enable = false;
+    };
   };
   gtk = {
     iconTheme = {
@@ -263,8 +273,11 @@ in
     gtk3.extraConfig = {
       gtk-application-prefer-dark-theme = 1;
     };
-    gtk4.extraConfig = {
-      gtk-application-prefer-dark-theme = 1;
+    gtk4 = {
+      theme = config.gtk.theme;
+      extraConfig = {
+        gtk-application-prefer-dark-theme = 1;
+      };
     };
   };
   qt = {
@@ -310,6 +323,184 @@ in
   };
 
   programs = {
+    dank-material-shell = {
+      enable = true;
+      systemd = {
+        enable = true;
+        restartIfChanged = true;
+      };
+      enableSystemMonitoring = true;
+      enableVPN = true;
+      enableDynamicTheming = true;
+      enableCalendarEvents = true;
+      settings = {
+        useAutoLocation = true;
+        blurredWallpaperLayer = true;
+        powerMenuDefaultAction = "suspend";
+        lockBeforeSuspend = true;
+        barConfigs = [
+          {
+            id = "default";
+            name = "Main Bar";
+            enabled = true;
+            position = 0;
+            screenPreferences = [
+              {
+                name = "HDMI-A-2";
+                model = "LC27RG50";
+              }
+            ];
+            showOnLastDisplay = true;
+            leftWidgets = [
+              "launcherButton"
+              "focusedWindow"
+            ];
+            centerWidgets = [
+              "music"
+              "clock"
+              "weather"
+            ];
+            rightWidgets = [
+              "systemTray"
+              "clipboard"
+              "cpuUsage"
+              "memUsage"
+              "notificationButton"
+              # "battery"
+              "controlCenterButton"
+            ];
+            spacing = 4;
+            innerPadding = 4;
+            bottomGap = 0;
+            transparency = 1;
+            widgetTransparency = 1;
+            squareCorners = false;
+            noBackground = false;
+            gothCornersEnabled = false;
+            gothCornerRadiusOverride = false;
+            gothCornerRadiusValue = 12;
+            borderEnabled = false;
+            borderColor = "surfaceText";
+            borderOpacity = 1;
+            borderThickness = 1;
+            fontScale = 1;
+            autoHide = false;
+            autoHideDelay = 250;
+            openOnOverview = false;
+            visible = true;
+            popupGapsAuto = true;
+            popupGapsManual = 4;
+          }
+          {
+            id = "bar1772908491336";
+            name = "Bar 2";
+            enabled = true;
+            position = 0;
+            screenPreferences = [
+              {
+                name = "DP-2";
+                model = "BK550Y";
+              }
+            ];
+            showOnLastDisplay = false;
+            leftWidgets = [ "focusedWindow" ];
+            centerWidgets = [ "clock" ];
+            rightWidgets = [
+              "clipboard"
+              "notificationButton"
+              "battery"
+              "controlCenterButton"
+            ];
+            spacing = 4;
+            innerPadding = 4;
+            bottomGap = 0;
+            transparency = 1;
+            widgetTransparency = 1;
+            squareCorners = false;
+            noBackground = false;
+            gothCornersEnabled = false;
+            gothCornerRadiusOverride = false;
+            gothCornerRadiusValue = 12;
+            borderEnabled = false;
+            borderColor = "surfaceText";
+            borderOpacity = 1;
+            borderThickness = 1;
+            widgetOutlineEnabled = false;
+            widgetOutlineColor = "primary";
+            widgetOutlineOpacity = 1;
+            widgetOutlineThickness = 1;
+            widgetPadding = 8;
+            maximizeWidgetIcons = false;
+            maximizeWidgetText = false;
+            removeWidgetPadding = false;
+            fontScale = 1;
+            iconScale = 1;
+            autoHide = false;
+            autoHideDelay = 250;
+            showOnWindowsOpen = false;
+            openOnOverview = false;
+            visible = true;
+            popupGapsAuto = true;
+            popupGapsManual = 4;
+            maximizeDetection = true;
+            scrollEnabled = true;
+            scrollXBehavior = "column";
+            scrollYBehavior = "workspace";
+            shadowIntensity = 0;
+            shadowOpacity = 60;
+            shadowDirectionMode = "inherit";
+            shadowDirection = "top";
+            shadowColorMode = "default";
+            shadowCustomColor = "#000000";
+
+          }
+        ];
+      };
+
+      session = {
+        isLightMode = false;
+        doNotDisturb = false;
+        perMonitorWallpaper = true;
+        monitorWallpapers = {
+          HDMI-A-2 = "/home/cylis/Pictures/Wallpapers/Landscape/wallhaven_gpgx33.jpg";
+          DP-2 = "/home/cylis/Pictures/Wallpapers/Portrait/cart-mobile.jpg";
+        };
+        wallpaperTransition = "random";
+        includedTransitions = [
+          "fade"
+          "wipe"
+          "disc"
+          "stripes"
+          "iris bloom"
+          "pixelate"
+          "portal"
+        ];
+        monitorCyclingSettings = {
+          DP-2 = {
+            enabled = true;
+            mode = "interval";
+            interval = 300;
+            time = "06:00";
+          };
+          HDMI-A-2 = {
+            enabled = true;
+            mode = "interval";
+            interval = 300;
+            time = "06:00";
+          };
+        };
+      };
+      # niri = {
+      #   enableSpawn = true;
+      #   enableKeybinds = true;
+      # };
+    };
+    gazelle = {
+      enable = true;
+      settings = {
+        theme = "tokyo-night";
+      };
+    };
     fzf = {
       enable = true;
     };
@@ -333,6 +524,7 @@ in
     };
     yazi = {
       enable = true;
+      shellWrapperName = "y";
     };
     pay-respects = {
       enable = true;
@@ -348,6 +540,7 @@ in
     direnv = {
       enable = true;
       nix-direnv.enable = true;
+      silent = true;
     };
 
     zoxide = {

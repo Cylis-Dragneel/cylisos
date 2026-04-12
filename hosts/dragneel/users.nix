@@ -1,8 +1,4 @@
-{
-  pkgs,
-  username,
-  ...
-}:
+{ pkgs, username, ... }:
 
 let
   inherit (import ./variables.nix) gitUsername;
@@ -26,7 +22,7 @@ in
         "avahi"
         "media"
       ];
-      shell = pkgs.fish;
+      shell = pkgs.nushell;
       ignoreShellProgramCheck = true;
       # packages = with pkgs; [
       # ];

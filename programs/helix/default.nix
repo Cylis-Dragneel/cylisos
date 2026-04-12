@@ -1,8 +1,4 @@
-{
-  pkgs,
-  inputs,
-  ...
-}:
+{ pkgs, inputs, ... }:
 {
   programs.helix = {
     enable = true;
@@ -108,7 +104,7 @@
             "wakatime"
           ];
           formatter = {
-            command = "${pkgs.nixfmt-rfc-style}/bin/nixfmt-rfc-style";
+            command = "${pkgs.nixfmt}/bin/nixfmt";
             args = [ "-s" ];
           };
         }
@@ -285,9 +281,7 @@
       };
       keys = {
         insert = {
-          j.k = [
-            "normal_mode"
-          ];
+          j.k = [ "normal_mode" ];
         };
         normal = {
           g.a = [

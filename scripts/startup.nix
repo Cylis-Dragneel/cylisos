@@ -7,5 +7,5 @@ pkgs.writeShellScriptBin "startup" # bash
     playerctld daemon & disown
     wl-paste --type text --watch cliphist store & disown
     wl-paste --type image --watch cliphist store & disown
-    uwsm app gammastep-indicator & disown
+    gammastep-indicator & disown
   ''

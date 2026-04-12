@@ -57,6 +57,13 @@
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    ai-tools.url = "github:numtide/nix-ai-tools";
+    gazelle.url = "github:Zeus-Deus/gazelle-tui";
+    dms = {
+      url = "github:AvengeMedia/DankMaterialShell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    anime-cursors.url = "github:ashuramaruzxc/anime-cursors";
     # nixos-cosmic = {
     #   url = "github:lilyinstarlight/nixos-cosmic";
     #   inputs.nixpkgs.follows = "nixpkgs";
@@ -77,9 +84,7 @@
       host = "dragneel";
       username = "cylis";
       system_type = "desktop";
-      pkgs-old = import nixpkgs-old {
-        inherit system;
-      };
+      pkgs-old = import nixpkgs-old { inherit system; };
       pkgs-stable = import nixpkgs-stable { inherit system; };
     in
     {
@@ -109,6 +114,7 @@
                   inputs.yt-x.packages.${pkgs.stdenv.hostPlatform.system}.default
                   inputs.curd.packages.${pkgs.stdenv.hostPlatform.system}.default
                   inputs.wakatime-ls.packages.${pkgs.stdenv.hostPlatform.system}.default
+                  inputs.ai-tools.packages.${pkgs.stdenv.hostPlatform.system}.crush
                 ];
               }
             )
@@ -119,18 +125,16 @@
       homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [
-          ];
+          overlays = [ ];
         };
         modules = [
           (
             { pkgs, ... }:
             {
-              nixpkgs.overlays = [
-                inputs.niri.overlays.niri
-              ];
+              nixpkgs.overlays = [ inputs.niri.overlays.niri ];
               home.packages = [
                 inputs.jerry.packages.${pkgs.stdenv.hostPlatform.system}.default
+                inputs.gazelle.packages.${pkgs.stdenv.hostPlatform.system}.default
               ];
             }
           )
@@ -142,6 +146,9 @@
           inputs.niri.homeModules.niri
           inputs.niri.homeModules.stylix
           inputs.noctalia.homeModules.default
+          inputs.dms.homeModules.dank-material-shell
+          inputs.dms.homeModules.niri
+          inputs.gazelle.homeModules.gazelle
         ];
         extraSpecialArgs = {
           inherit

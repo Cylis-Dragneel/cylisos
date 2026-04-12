@@ -45,7 +45,6 @@
       _comp_options+=(globdots)
       eval "$(fzf --zsh)"
       eval $(thefuck --alias tf)
-      export MANPAGER='nvim +Man!'
       mpv-script() {
         local script_name="$1"
         if [[ -z "$script_name" ]]; then

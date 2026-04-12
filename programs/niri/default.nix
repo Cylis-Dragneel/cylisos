@@ -156,26 +156,26 @@ in
           hotkey-overlay.title = "Toggle floating";
           action.toggle-window-floating = { };
         };
-        "Mod+Space" = {
-          hotkey-overlay.title = "Noctalia Launcher";
-          action.spawn = [
-            "noctalia-shell"
-            "ipc"
-            "call"
-            "launcher"
-            "toggle"
-          ];
-        };
-        "Mod+P" = {
-          hotkey-overlay.title = "Noctalia Power Menu";
-          action.spawn = [
-            "noctalia-shell"
-            "ipc"
-            "call"
-            "sessionMenu"
-            "toggle"
-          ];
-        };
+        # "Mod+Space" = {
+        #   hotkey-overlay.title = "Noctalia Launcher";
+        #   action.spawn = [
+        #     "noctalia-shell"
+        #     "ipc"
+        #     "call"
+        #     "launcher"
+        #     "toggle"
+        #   ];
+        # };
+        # "Mod+P" = {
+        #   hotkey-overlay.title = "Noctalia Power Menu";
+        #   action.spawn = [
+        #     "noctalia-shell"
+        #     "ipc"
+        #     "call"
+        #     "sessionMenu"
+        #     "toggle"
+        #   ];
+        # };
         "Mod+Return" = {
           hotkey-overlay.title = "Spawn ${terminal}";
           action.spawn = [
@@ -201,11 +201,6 @@ in
         "Mod+V" = {
           hotkey-overlay.title = "Clipboard Manager";
           action.spawn = [
-            "noctalia-shell"
-            "ipc"
-            "call"
-            "launcher"
-            "clipboard"
           ];
         };
         "Mod+W" = {
@@ -232,16 +227,16 @@ in
         #     "emopicker9000"
         #   ];
         # };
-        "Mod+Alt+E" = {
-          hotkey-overlay.title = "Emoji Picker";
-          action.spawn = [
-            "noctalia-shell"
-            "ipc"
-            "call"
-            "launcher"
-            "emoji"
-          ];
-        };
+        # "Mod+Alt+E" = {
+        #   hotkey-overlay.title = "Emoji Picker";
+        #   action.spawn = [
+        #     "noctalia-shell"
+        #     "ipc"
+        #     "call"
+        #     "launcher"
+        #     "emoji"
+        #   ];
+        # };
         "Mod+Shift+F1" = {
           hotkey-overlay.hidden = true;
           action.spawn = [

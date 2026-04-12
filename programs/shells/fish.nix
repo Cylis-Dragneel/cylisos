@@ -1,7 +1,4 @@
-{
-  pkgs,
-  ...
-}:
+{ pkgs, ... }:
 {
   programs.fish = {
     enable = true;
@@ -39,7 +36,6 @@
 
       # Custom key binding for directory navigation (Alt+C)
       bind \ec 'fzf-cd-widget'
-      set -x MANPAGER "nvim +Man!"
     '';
     plugins = [
       {

@@ -1,8 +1,4 @@
-{
-  pkgs,
-  inputs,
-  ...
-}:
+{ pkgs, inputs, ... }:
 let
   fine-cmdline = pkgs.vimUtils.buildVimPlugin {
     name = "fine-cmdline";
@@ -18,6 +14,8 @@ in
       vimAlias = false;
       vimdiffAlias = true;
       withNodeJs = true;
+      withRuby = false;
+      withPython3 = false;
       extraPackages = with pkgs; [
         # LSP
         vscode-langservers-extracted
@@ -32,7 +30,7 @@ in
         vtsls
         # haskell-language-server
         gopls
-        basedpyright
+        # basedpyright
         vim-language-server
         bash-language-server
         marksman
@@ -47,7 +45,7 @@ in
         goimports-reviser
         stylua
         prettierd
-        nixfmt-rfc-style
+        nixfmt
         ruff
       ];
       plugins = with pkgs.vimPlugins; [
@@ -125,7 +123,7 @@ in
         set noemoji
         nnoremap : <cmd>FineCmdline<CR>
       '';
-      extraLuaConfig = # lua
+      initLua = # lua
         ''
           ${builtins.readFile ./nvim/options.lua}
           ${builtins.readFile ./nvim/keymaps.lua}

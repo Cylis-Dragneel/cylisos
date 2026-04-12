@@ -1,7 +1,7 @@
 { ... }:
 {
   programs.noctalia-shell = {
-    enable = true;
+    enable = false;
     systemd.enable = true;
     settings = {
       appLauncher = {
@@ -86,9 +86,7 @@
             }
           ];
           right = [
-            {
-              id = "ScreenRecorder";
-            }
+            { id = "ScreenRecorder"; }
             {
               colorizeIcons = false;
               drawerEnabled = true;

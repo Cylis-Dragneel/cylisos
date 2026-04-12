@@ -55,13 +55,20 @@
   # Styling Options
   stylix = {
     enable = true;
-    image = ../../config/wallpapers/elden-ring-mohg.png;
+    image = ../../config/wallpapers/Landscape/carlotta_1.jpg;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-macchiato.yaml";
     polarity = "dark";
     opacity.terminal = 0.7;
-    cursor.package = pkgs.banana-cursor;
-    cursor.name = "Banana";
-    cursor.size = 32;
+    # cursor.package = pkgs.banana-cursor;
+    # cursor.name = "Banana";
+    # cursor.size = 32;
+    cursor = {
+      # name = "touhou-reimu";
+      # package = inputs.anime-cursors.packages.${pkgs.stdenv.hostPlatform.system}.cursors;
+      name = "zani-cursor";
+      package = pkgs.callPackage ../../modules/zani-cursor.nix { };
+      size = 48;
+    };
     fonts = {
       monospace = {
         # package = pkgs.nerd-fonts.jetbrains-mono;
@@ -260,7 +267,7 @@
       playerctl
       nixfmt
       libvirt
-      swww
+      awww
       grim
       slurp
       file-roller
@@ -283,22 +290,23 @@
       luajitPackages.luarocks
       cliphist
       scc
-      xorg.xev
+      xev
       wev
       pamixer
       gimp3
+      # inkscape
       vesktop
       obsidian
       gitleaks
       nvtopPackages.amd
       amberol
       pass
-      xournalpp
+      # xournalpp
       scrot
       pay-respects # New favorite package
       exercism
       tldr
-      protonvpn-gui
+      proton-vpn
       spotdl
       screenkey
       radeontop
@@ -341,23 +349,23 @@
       vimPlugins.nvim-treesitter.withAllGrammars
       heroic
       autorandr
-      xorg.libxcvt
-      mangohud
-      goverlay
+      libxcvt
+      # mangohud
+      # goverlay
       gpu-screen-recorder-gtk
       pear-desktop
       redshift
       hyprpaper
       kdePackages.kdenlive
-      aseprite
-      audacity
+      # aseprite
+      # libresprite
+      # audacity
       nitch
       nodejs
       gammastep
       cartridges
       mgba
       ani-cli
-      ani-skip
       python3
       ueberzugpp
       chafa
@@ -394,12 +402,28 @@
       jellyfin-rpc
       tsukimi
       jellytui
-      clickup
       android-tools
       cozy
       bluetui
-      maa-assistant-arknights
-      maa-cli
+      # maa-assistant-arknights
+      # maa-cli
+      grayjay
+      fcast-receiver
+      fcast-client
+      seanime
+      opencode
+      ytcast
+      go2tv
+      isponsorblocktv
+      popcorntime
+      kdePackages.kasts
+      rclone
+      gallery-dl
+      gh-dash
+      libretro.swanstation
+      azahar
+      dolphin-emu
+      (callPackage ../../modules/anymex.nix { })
       # android-studio
       (emacsWithPackagesFromUsePackage {
         package = pkgs.emacs-unstable;
@@ -407,25 +431,18 @@
         alwaysEnsure = true;
         alwaysTangle = true;
         extraEmacsPackages = epkgs: [
-          # epkgs.dap-ui
+          # LSP servers and formatters
           pkgs.gofumpt
           pkgs.gopls
         ];
       })
       #Awesome related
-      xorg.xprop
-      xorg.xinit
+      xprop
+      xinit
       xclip
     ])
-    ++ (with pkgs-old; [
-      torzu
-    ])
-    ++ (with pkgs-stable; [
-      yt-dlp
-      duckstation
-      azahar
-      dolphin-emu
-    ]);
+    ++ (with pkgs-old; [ torzu ])
+    ++ (with pkgs-stable; [ yt-dlp ]);
 
   fonts = {
     packages = with pkgs; [
@@ -438,6 +455,7 @@
       iosevka
       departure-mono
       nerd-fonts.jetbrains-mono
+      liberation_ttf
     ];
   };
 
@@ -642,14 +660,16 @@
     };
     sonarr = {
       enable = true;
-      user = "sonarr";
+      user = "cylis";
       group = "media";
       dataDir = "/home/${username}/Downloads/Sonarr";
     };
     prowlarr.enable = true;
     radarr = {
       enable = true;
+      user = "cylis";
       group = "media";
+      dataDir = "/home/${username}/Downloads/Radarr";
     };
     jellyfin = {
       enable = true;
@@ -783,17 +803,17 @@
         variant = "";
       };
     };
-    displayManager.cosmic-greeter.enable = true;
-    desktopManager.cosmic.enable = true;
-    # greetd = {
-    #   enable = false;
-    #   settings = {
-    #     default_session = {
-    #       user = username;
-    #       command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd 'uwsm start -F niri-session'";
-    #     };
-    #   };
-    # };
+    displayManager.cosmic-greeter.enable = false;
+    desktopManager.cosmic.enable = false;
+    greetd = {
+      enable = true;
+      settings = {
+        default_session = {
+          user = username;
+          command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd 'uwsm start -F niri-session' -g 'Kill Yourself!' -r";
+        };
+      };
+    };
     smartd = {
       enable = false;
       autodetect = true;
@@ -841,7 +861,7 @@
     };
     flatpak-repo = {
       path = [ pkgs.flatpak ];
-      script = ''flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo'';
+      script = "flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo";
     };
     warp-log-cleanup = {
       description = "Clean up Cloudflare WARP logs";
@@ -853,6 +873,26 @@
     cloudflare-warp.environment = {
       WARP_DEBUG_LEVEL = "error";
     };
+    sponsorblock = {
+      description = "Sponsorblock for Youtube on TV";
+      wants = [ "network-online.target" ];
+      after = [
+        "network-online.target"
+        "multi-user.target"
+      ];
+      wantedBy = [
+        "multi-user.target"
+        "default.target"
+      ];
+      serviceConfig = {
+        Type = "simple";
+        ExecStart = "${pkgs.isponsorblocktv}/bin/iSponsorBlockTV";
+        Restart = "always";
+        TimeoutStartSec = 900;
+        User = "${username}";
+      };
+    };
+    virt-secret-init-encryption.enable = false;
   };
   systemd.timers = {
     warp-log-cleanup = {
@@ -877,6 +917,7 @@
       General = {
         Enable = "Source,Sink,Media,Socket";
         Experimental = true;
+        FastConnectable = true;
       };
       Policy = {
         AutoEnable = true;
