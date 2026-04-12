@@ -518,7 +518,7 @@ in
       clipboard.osc52 = false;
     };
     carapace = {
-      enable = false;
+      enable = true;
       enableZshIntegration = false;
       enableFishIntegration = false;
     };
@@ -555,5 +555,22 @@ in
       };
     };
     home-manager.enable = true;
+  };
+
+  systemd.user.services.seanime = {
+    Unit = {
+      Description = "Seanime WebServer";
+      After = "network.service";
+      X-SwitchMethod = "restart";
+    };
+
+    Install = {
+      WantedBy = [ "default.target" ];
+    };
+
+    Service = {
+      ExecStartPre = "${pkgs.coreutils}/bin/sleep 10"; # Add a 10-second delay
+      ExecStart = "${pkgs.seanime}/bin/seanime";
+    };
   };
 }
