@@ -284,9 +284,9 @@
           j.k = [ "normal_mode" ];
         };
         normal = {
-          g.a = [
-            "code_action"
-          ];
+          g.a = [ "code_action" ];
+          C-p = [ ":pipe bun --silent paste-image" ];
+          C-e = [ ":pipe bun --silent paste-emoji" ];
         };
       };
     };

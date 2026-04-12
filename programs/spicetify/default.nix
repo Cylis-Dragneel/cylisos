@@ -7,21 +7,18 @@ in
   programs.spicetify = {
     enable = true;
     enabledExtensions = with spicePkgs.extensions; [
-      adblock
-      fullScreen
-      volumePercentage
-      showQueueDuration
-      goToSong
-      powerBar
-      skipOrPlayLikedSongs
       # volumeProfiles
-      playNext
+      adblock
+      goToSong
       history
       keyboardShortcut
-      shuffle
       phraseToPlaylist
-      betterGenres
-      lastfm
+      playNext
+      powerBar
+      showQueueDuration
+      shuffle
+      skipOrPlayLikedSongs
+      volumePercentage
     ];
     # theme = spicePkgs.themes.nightlight;
     theme = spicePkgs.themes.ziro;

@@ -953,6 +953,7 @@
 
   # Optimization settings and garbage collection automation
   nix = {
+    package = pkgs.lixPackageSets.stable.lix;
     settings = {
       auto-optimise-store = true;
       experimental-features = [
