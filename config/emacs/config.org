@@ -138,25 +138,23 @@ By default, Emacs creates automatic backups of files in their original directori
 * COMPANY
 Company is a text completion framework for Emacs. The name stands for “complete anything”.  Completion will start automatically after you type a few letters. Use M-n and M-p to select, <return> to complete or <tab> to complete the common part.
 #+begin_src emacs-lisp
-    (use-package company
-      :after lsp-mode
-      :hook (lsp-mode . company-mode)
-      :diminish
-      :bind (:map company-active-map
-    		  ("<tab>" . company-complete-selection))
-            (:map lsp-mode-map
-                ("<tab>" . company-indent-or-complete-common))
-      :custom
-      (company-begin-commands '(self-insert-command))
-      (company-idle-delay 0.0)
-      (company-minimum-prefix-length 1)
-      (company-tooltip-align-annotations 't)
-      (global-company-mode t))
+(use-package company
+  :after lsp-mode
+  :hook (after-init . global-company-mode)
+  :diminish
+  :bind (:map company-active-map
+              ("<tab>" . company-complete-selection)
+              ("TAB" . company-complete-selection))
+  :custom
+  (company-begin-commands '(self-insert-command))
+  (company-idle-delay 0.0)
+  (company-minimum-prefix-length 1)
+  (company-tooltip-align-annotations t))
 
-    (use-package company-box
-      :after company
-      :diminish
-      :hook (company-mode . company-box-mode))
+(use-package company-box
+  :after company
+  :diminish
+  :hook (company-mode . company-box-mode))
 #+end_src
 
 * CLIPBOARD
@@ -182,19 +180,23 @@ Company is a text completion framework for Emacs. The name stands for “complet
 Emacs Dashboard is an extensible startup screen showing you recent files, bookmarks, agenda items and an Emacs banner.
 #+begin_src emacs-lisp
 (use-package dashboard
-  :ensure t 
+  :ensure t
   :init
-  (setq initial-buffer-choice 'dashboard-open)
-  (setq dashboard-set-heading-icons t)
-  (setq dashboard-set-file-icons t)
-  (setq dashboard-banner-logo-title "Emacs Is A Goddamn Operating System!")
-  (setq dashboard-startup-banner "/home/cylis/.config/emacs/images/emacs-dash.png")  ;; use custom image as banner
-  (setq dashboard-center-content t) 
-  (setq dashboard-items '((recents . 5)
-                          (agenda . 5 )
-                          (bookmarks . 3)
-                          (projects . 3)
-                          (registers . 3)))
+  (setq initial-buffer-choice 'dashboard-open
+        dashboard-set-heading-icons t
+        dashboard-set-file-icons t
+        dashboard-banner-logo-title "Emacs Is A Goddamn Operating System!"
+        dashboard-startup-banner "/home/cylis/.config/emacs/images/emacs-dash.png"
+        dashboard-center-content t
+        dashboard-projects-backend 'projectile
+        dashboard-projects-switch-function 'projectile-switch-project-by-name
+        dashboard-week-agenda t
+        dashboard-agenda-prefix-format "%?-12t% s"
+        dashboard-items '((agenda . 7)
+                          (projects . 5)
+                          (bookmarks . 5)
+                          (registers . 5)
+                          (recents . 5)))
   :custom
   (dashboard-modify-heading-icons '((recents . "file-text")
                                     (bookmarks . "book")))
@@ -491,8 +493,12 @@ Basic Keybindings, these keybindings use Space key as the leader key (meaning al
     (cylis/leader-keys
       "o" '(:ignore t :wk "Org")
       "o a" '(org-agenda :wk "Org agenda")
+      "o c" '(org-capture :wk "Org capture")
       "o e" '(org-export-dispatch :wk "Org export dispatch")
       "o i" '(org-toggle-item :wk "Org toggle item")
+      "o o" '((lambda () (interactive) (find-file org-default-notes-file)) :wk "Open inbox")
+      "o p" '((lambda () (interactive) (find-file (expand-file-name "projects.org" org-directory))) :wk "Open projects")
+      "o C" '((lambda () (interactive) (find-file (expand-file-name "calendar.org" org-directory))) :wk "Open calendar")
       ;; This is necessarry as sometimes org mode glitches out(showing asterisks in subheadings) requiring it to be restarted.
       "o r" '(org-mode-restart :wk "Restart Org Mode")
       "o t" '(org-todo :wk "Org todo")
@@ -657,6 +663,9 @@ Emacs has built-in programming language for Lisp, Scheme, DSSSL, Ada, ASM, AWK, 
       :config
       (setq ))
     (use-package zig-mode)
+    (use-package rust-mode
+      :mode "\\.rs\\'"
+      :hook (rust-mode . lsp-deferred))
     (use-package go-mode
         :mode "\\.go\\'"
         :hook (go-mode . lsp-deferred)
@@ -683,32 +692,40 @@ A minor mode that is used in combination with AUCTex. It can auto insert specifi
 * LSP
 ** Getting Packages needed for interaction with language servers
 #+begin_src emacs-lisp
-  (use-package lsp-mode
-      :init
-      (setq lsp-keymap-prefix "C-c l")
-      :hook ((nix-mode . lsp)
-              (js-mode . lsp)
-              (go-mode . lsp)
-              (lsp-mode . lsp-enable-which-key-integration))
-      :commands (lsp lsp-deferred)
-      :config (lsp-enable-which-key-integration t))
-  (with-eval-after-load 'lsp-mode
+(use-package lsp-mode
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  :hook ((nix-mode . lsp-deferred)
+         (js-mode . lsp-deferred)
+         (go-mode . lsp-deferred)
+         (lsp-mode . lsp-enable-which-key-integration))
+  :custom
+  (lsp-completion-provider :none)
+  :commands (lsp lsp-deferred)
+  :config
+  (lsp-enable-which-key-integration t)
+  (add-hook 'lsp-completion-mode-hook
+            (lambda ()
+              (setq-local company-backends '(company-capf)))))
+
+(with-eval-after-load 'lsp-mode
   (lsp-register-client
-      (make-lsp-client :new-connection (lsp-stdio-connection "nixd")
-                      :major-modes '(nix-mode)
-                      :priority 0
-                      :server-id 'nixd)))
-  (use-package lsp-ui
-      :hook (lsp-mode . lsp-ui-mode)
-      :custom (lsp-ui-doc-position 'bottom)
-      :commands (lsp-ui-mode))
-  ;; if you are helm user
-  ;; (use-package helm-lsp :commands helm-lsp-workspace-symbol)
-  ;; if you are ivy user
-  (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
-  (use-package lsp-treemacs
-    :after lsp
-    :commands lsp-treemacs-errors-list)
+   (make-lsp-client :new-connection (lsp-stdio-connection "nixd")
+                    :major-modes '(nix-mode)
+                    :priority 0
+                    :server-id 'nixd)))
+
+(use-package lsp-ui
+  :hook (lsp-mode . lsp-ui-mode)
+  :custom
+  (lsp-ui-doc-position 'bottom)
+  :commands (lsp-ui-mode))
+
+(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+
+(use-package lsp-treemacs
+  :after lsp
+  :commands lsp-treemacs-errors-list)
 #+end_src
 
 ** Setting up debugging
@@ -758,6 +775,32 @@ A file tree viewer.
 #+end_src
 
 * ORG MODE
+#+begin_src emacs-lisp
+(use-package org
+  :ensure nil
+  :init
+  (setq org-directory "~/Documents/Main/org"
+        org-default-notes-file (expand-file-name "inbox.org" org-directory)
+        org-agenda-files (list (expand-file-name "inbox.org" org-directory)
+                               (expand-file-name "projects.org" org-directory)
+                               (expand-file-name "calendar.org" org-directory))
+        org-log-done 'time
+        org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)" "CANCELLED(c)"))
+        org-capture-templates
+        '(("t" "Todo" entry (file+headline org-default-notes-file "Tasks")
+           "* TODO %?\n  %U\n  %a")
+          ("n" "Note" entry (file+headline org-default-notes-file "Notes")
+           "* %?\n  %U\n  %a")))
+  :config
+  (unless (file-directory-p org-directory)
+    (make-directory org-directory t))
+  (dolist (file '("inbox.org" "projects.org" "calendar.org"))
+    (let ((path (expand-file-name file org-directory)))
+      (unless (file-exists-p path)
+        (with-temp-buffer
+          (write-file path))))))
+#+end_src
+
 ** Enabling Table of Contents
 #+begin_src emacs-lisp
 (use-package toc-org
@@ -808,9 +851,8 @@ Org-tempo is not a separate package but a module within org that can be enabled.
 * PDF
 #+begin_src emacs-lisp
 (use-package pdf-tools
-  :ensure t
-  :config
-  (pdf-tools-install))
+  :mode ("\\.pdf\\'" . pdf-view-mode)
+  :defer t)
 #+end_src
 
 * PERSPECTIVE
@@ -840,16 +882,21 @@ Perspective provides multiple named workspaces (or “perspectives”) in Emacs,
 * Projectile
 A project interaction library for Emacs.
 #+begin_src emacs-lisp
-        (use-package projectile
-          :diminish projectile-mode
-          :config (projectile-mode 1)
-          :custom ((projectile-completion-system 'ivy))
-          :init
-    (when (file-directory-p "~/src")
-      (setq projectile-project-earch-path '("~/src")))
-    (setq projectile-switch-project-action #'projectile-dired))
-    (use-package counsel-projectile
-      :config (counsel-projectile-mode))
+(use-package projectile
+  :diminish projectile-mode
+  :custom
+  (projectile-completion-system 'ivy)
+  :config
+  (projectile-mode 1)
+  (setq projectile-project-search-path '(("~/src" . 2)
+                                         ("~/cylisos" . 2))
+        projectile-switch-project-action #'projectile-dired)
+  (add-to-list 'projectile-known-projects "~/cylisos"))
+
+(use-package counsel-projectile
+  :after projectile
+  :config
+  (counsel-projectile-mode))
 #+end_src
 
 * RAINBOW DELIMITERS

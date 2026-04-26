@@ -1,14 +1,14 @@
 { pkgs, ... }:
 pkgs.stdenvNoCC.mkDerivation {
-  pname = "zani-cursor";
+  pname = "chisa-cursor";
   version = "1.0";
-  src = ../config/cursors/zani;
+  src = ../config/cursors/chisa;
   installPhase = ''
     runHook preInstall
-    mkdir -p $out/share/icons/zani-cursor
-    cp -r . $out/share/icons/zani-cursor
+    mkdir -p $out/share/icons/chisa-cursor
+    cp -r . $out/share/icons/chisa-cursor
 
-    cd $out/share/icons/zani-cursor/cursors
+    cd $out/share/icons/chisa-cursor/cursors
 
     cp -f Normal left_ptr
     cp -f Normal arrow
@@ -113,10 +113,10 @@ pkgs.stdenvNoCC.mkDerivation {
     cp -f Alternate right_ptr
     cp -f Alternate context_menu
 
-    cat > $out/share/icons/zani-cursor/index.theme << 'EOF'
+    cat > $out/share/icons/chisa-cursor/index.theme << 'EOF'
     [Icon Theme]
-    Name=zani-cursor
-    Comment=Zani Anime Cursor Theme
+    Name=chisa-cursor
+    Comment=chisa Anime Cursor Theme
     EOF
 
     runHook postInstall

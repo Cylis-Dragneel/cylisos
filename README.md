@@ -1,54 +1,90 @@
 # CylisOS
 
-**This is my own personal NixOS Flake, others are free to use it and build upon it.**
+Personal NixOS flake setup. You can reuse it, fork it, or use it as a template.
 
-## Requirements:
+## What this flake currently does
 
-Ensure git and vim are installed
+- Builds one active NixOS host from `flake.nix` (`host` + `username` in the `let` block)
+- Host configs live in `hosts/<name>/`
+- Home Manager config is wired through the same flake
+- Program modules are split under `programs/`
+- Extra system modules are under `modules/`
+
+---
+
+## Prerequisites
+
+From a NixOS live ISO (or any system with Nix + flakes):
 
 ```bash
 nix-shell -p git vim
 ```
 
-## How to Install
+---
 
-1. Get the git repo:
+## Install / deploy this flake
 
-```bash
-cd
-git clone https://github.com/Cylis-Dragneel/dotfiles.git -b NixOS cylisos
-```
-
-2. Go into the directory and in the `flake.nix` change the username to whatever you want and the host variable to a predefined host(based/dragneel) or your own:
+### 1) Clone the repo
 
 ```bash
-cd cylisos
-vim flake.nix # change host and username on line 55 & 56 respectively
+cd ~
+git clone https://github.com/Cylis-Dragneel/cylisos.git
+cd ~/cylisos
 ```
 
-3. If you chose to make your own host do the following:
+### 2) Set your active host + username in `flake.nix`
+
+Edit the `let` block in `flake.nix` and set:
+
+- `host = "...";`
+- `username = "...";`
+
+If you use an existing host profile, pick one that already exists under `hosts/`.
+
+### 3) (Optional) Create your own host profile
 
 ```bash
-cd hosts
-cp -r default ${your_chosen_hostname}
+cp -r hosts/default hosts/<your-hostname>
 ```
 
-4. Generate your hardware configuration:
+Then set `host = "<your-hostname>";` in `flake.nix`.
+
+### 4) Generate hardware config for that host
 
 ```bash
-sudo nixos-generate-config --show-hardware-config > ./hosts/${your_chosen_hostname}/hardware.nix
+sudo nixos-generate-config --show-hardware-config > hosts/<your-hostname>/hardware.nix
 ```
 
-5. Finally build your configuration:
+If you’re using an existing host profile instead of a new one, update that host’s `hardware.nix` instead.
+
+### 5) Rebuild
 
 ```bash
-NIX_CONFIG="experimental-features = nix-command flakes" nixos-rebuild switch --flake ~/cylisos/#${your_chosen_hostname} --use-remote-sudo
+sudo nixos-rebuild switch --flake ~/cylisos#<your-hostname>
 ```
 
-## Tips & Aliases
+---
 
-**Some basic Aliases are setup to make navigation easier**:
-`fr` - to rebuild your flake
-`fu` - to update your flake
-`host` - to edit your host specific configuration
-`config` - to edit config files of apps
+## Typical workflow after install
+
+Inside `~/cylisos`:
+
+```bash
+# apply config changes
+sudo nixos-rebuild switch --flake .#<your-hostname>
+
+# update inputs
+nix flake update
+```
+
+If your shell aliases are enabled, you can also use:
+
+- `fr` → rebuild
+- `fu` → rebuild with update
+- `hms` → Home Manager switch
+
+---
+
+## Notes
+
+- Some host configs include machine-specific values/services. Copying `hosts/default` is usually the safest base.

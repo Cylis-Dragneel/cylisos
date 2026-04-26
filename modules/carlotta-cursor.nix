@@ -115,7 +115,7 @@ pkgs.stdenvNoCC.mkDerivation {
 
     cat > $out/share/icons/carlotta-cursor/index.theme << 'EOF'
     [Icon Theme]
-    Name=carlotta
+    Name=carlotta-cursor
     Comment=carlotta Anime Cursor Theme
     EOF
 

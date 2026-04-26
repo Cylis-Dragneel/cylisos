@@ -148,7 +148,7 @@ in
       orv = "nvim '/home/${username}/Documents/Main/01 - Rough Notes/'*";
       lz = "lazygit";
       emd = "emacs --daemon";
-      emc = "emacsclient -c .";
+      emc = "emacsclient -c -n -a ''";
       zed = "zeditor --foreground ./";
       pod-up = "podman-compose up -d";
       pod-down = "podman-compose down";

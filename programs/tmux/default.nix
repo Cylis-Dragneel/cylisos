@@ -79,11 +79,12 @@
       set-option -ga terminal-overrides ',xterm*:Ss=\E[%p1%d q:Se=\E[ q'
       set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'  # undercurl support
       set -as terminal-overrides ',*:Setulc=\E[58::2::::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'  # underscore colours - needs tmux-3.0
-      set -g default-terminal "tmux"
+      set -g default-terminal "screen-256color"
       set -g @resurrect-capture-pane-contents 'on'
       set -g @continuum-restore 'on'
       set-option -g status-position top
       set -g detach-on-destroy off
+      set -g allow-passthrough on
     '';
   };
 }

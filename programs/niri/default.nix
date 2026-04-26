@@ -1,13 +1,6 @@
-{
-  pkgs,
-  host,
-  ...
-}:
+{ pkgs, host, ... }:
 let
-  inherit (import ../../hosts/${host}/variables.nix)
-    browser
-    terminal
-    ;
+  inherit (import ../../hosts/${host}/variables.nix) browser terminal;
 in
 {
   home.packages = [ pkgs.xwayland-satellite ];
@@ -35,7 +28,9 @@ in
         };
       };
       hotkey-overlay.skip-at-startup = true;
-      cursor.hide-when-typing = true;
+      cursor = {
+        hide-when-typing = true;
+      };
       outputs = {
         "HDMI-A-1" = {
           mode = {
@@ -132,11 +127,7 @@ in
           draw-border-with-background = false;
         }
         {
-          matches = [
-            {
-              title = "Bitwarden - Vivaldi";
-            }
-          ];
+          matches = [ { title = "Bitwarden - Vivaldi"; } ];
           open-floating = true;
         }
         {
@@ -178,9 +169,7 @@ in
         # };
         "Mod+Return" = {
           hotkey-overlay.title = "Spawn ${terminal}";
-          action.spawn = [
-            "${terminal}"
-          ];
+          action.spawn = [ "${terminal}" ];
         };
         "Mod+Shift+Return" = {
           hotkey-overlay.hidden = true;
@@ -200,8 +189,7 @@ in
         };
         "Mod+V" = {
           hotkey-overlay.title = "Clipboard Manager";
-          action.spawn = [
-          ];
+          action.spawn = [ ];
         };
         "Mod+W" = {
           hotkey-overlay.hidden = true;
@@ -239,9 +227,7 @@ in
         # };
         "Mod+Shift+F1" = {
           hotkey-overlay.hidden = true;
-          action.spawn = [
-            "curd"
-          ];
+          action.spawn = [ "curd" ];
         };
         "Mod+Alt+L" = {
           hotkey-overlay.title = "Lockscreen";
@@ -258,6 +244,9 @@ in
           action.spawn = [
             "emacsclient"
             "-c"
+            "-n"
+            "-a"
+            ""
           ];
         };
         "Mod+O" = {

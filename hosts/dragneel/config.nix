@@ -19,6 +19,7 @@
     ../../modules/vm-guest-services.nix
     ../../modules/local-hardware-clock.nix
     ../../modules/overlays.nix
+    ../../modules/navidrome.nix
   ];
 
   boot = {
@@ -65,8 +66,8 @@
     cursor = {
       # name = "touhou-reimu";
       # package = inputs.anime-cursors.packages.${pkgs.stdenv.hostPlatform.system}.cursors;
-      name = "zani-cursor";
-      package = pkgs.callPackage ../../modules/zani-cursor.nix { };
+      name = "chisa-cursor";
+      package = pkgs.callPackage ../../modules/chisa-cursor.nix { };
       size = 48;
     };
     fonts = {
@@ -98,6 +99,10 @@
   drivers.intel.enable = false;
   vm.guest-services.enable = false;
   local.hardware-clock.enable = false;
+  media.navidrome = {
+    enable = true;
+    environmentFile = "/var/lib/secrets/navidrome.env";
+  };
 
   # Enable networking
   networking = {
@@ -423,6 +428,10 @@
       libretro.swanstation
       azahar
       dolphin-emu
+      maa-assistant-arknights
+      maa-cli
+      feishin
+      aonsoku
       (callPackage ../../modules/anymex.nix { })
       # android-studio
       (emacsWithPackagesFromUsePackage {
@@ -701,9 +710,9 @@
         ];
         sequential_download = true;
         auto_managed = true;
-        max_active_limit = 7;
+        max_active_limit = 20;
         max_active_downloading = 1;
-        max_active_seeding = 6;
+        max_active_seeding = 19;
       };
       openFirewall = true;
       authFile = "/home/${username}/.config/deluge/auth";
@@ -810,7 +819,7 @@
       settings = {
         default_session = {
           user = username;
-          command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd 'uwsm start -F niri-session' -g 'Kill Yourself!' -r";
+          command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd 'uwsm start -F niri-session' -g 'Kill Yourself!' --remember --user-menu";
         };
       };
     };

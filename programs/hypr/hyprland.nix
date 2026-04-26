@@ -153,7 +153,7 @@ with lib;
           bind = ${modifier}SHIFT,N,exec,swaync-client -rs
           bind = ${modifier},W,exec,${browser}
           bind = ${modifier},E,exec,emopicker9000
-          bind = ${modifier}SHIFT,E,exec,emacsclient -c
+          bind = ${modifier}SHIFT,E,exec,emacsclient -c -n -a ""
           bind = ,Print,exec,screenshootin
           bind = ${modifier},Print,exec,hyprshot -m region --freeze --raw | wl-copy
           bind = ${modifier}SHIFT,Print,exec,hyprshot -m output -s -z --clipboard-only
