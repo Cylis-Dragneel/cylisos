@@ -14,7 +14,6 @@ in
   imports = [
     ../../modules/overlays.nix
     ../../config/emoji.nix
-    ../../config/neovim.nix
     ../../programs/rofi/config-emoji.nix
     ../../programs/rofi/config-long.nix
     ../../programs
@@ -138,7 +137,7 @@ in
       orv = "hx '/home/${username}/Documents/Main/01 - Rough Notes/'*";
       lz = "lazygit";
       emd = "emacs --daemon";
-      emc = "emacsclient -c .";
+      emc = "emacsclient -c -n -a ''";
       zed = "zeditor --foreground ./";
       pod-up = "podman-compose up -d";
       pod-down = "podman-compose down";
@@ -222,8 +221,8 @@ in
     cursor = {
       # name = "touhou-reimu";
       # package = inputs.anime-cursors.packages.${pkgs.stdenv.hostPlatform.system}.cursors;
-      name = "carlotta-cursor";
-      package = pkgs.callPackage ../../modules/carlotta-cursor.nix { };
+      name = "chisa-cursor";
+      package = pkgs.callPackage ../../modules/chisa-cursor.nix { };
       size = 48;
     };
     fonts = {
@@ -505,7 +504,7 @@ in
       enable = true;
     };
     nyaa = {
-      enable = true;
+      enable = false;
       default_theme = "Dracula";
       # download_client = "RunCommand";
       download_client = "DefaultApp";

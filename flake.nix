@@ -108,6 +108,7 @@
                 nixpkgs.overlays = [
                   inputs.emacs.overlay
                   inputs.niri.overlays.niri
+                  (_: prev: { openldap = prev.openldap.overrideAttrs { doCheck = false; }; })
                 ];
                 environment.systemPackages = [
                   inputs.zen.packages.${pkgs.stdenv.hostPlatform.system}.twilight
@@ -140,6 +141,7 @@
           )
           ./hosts/${host}/home.nix
           inputs.stylix.homeModules.stylix
+          inputs.nixvim.homeModules.nixvim
           inputs.jerry.homeManagerModules.default
           inputs.spicetify-nix.homeManagerModules.default
           inputs.nyaa.homeManagerModule

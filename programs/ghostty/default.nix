@@ -1,7 +1,4 @@
-{
-  pkgs,
-  ...
-}:
+{ pkgs, ... }:
 {
   programs.ghostty = {
     enable = true;
@@ -40,7 +37,7 @@
       clipboard-read = "allow";
       clipboard-write = "allow";
       confirm-close-surface = false;
-      shell-integration-features = "cursor,no-sudo,title";
+      shell-integration-features = "cursor,no-sudo,title,ssh-terminfo";
       term = "xterm-ghostty";
     };
   };

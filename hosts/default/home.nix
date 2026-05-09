@@ -13,7 +13,6 @@ in
   imports = [
     ../../modules/overlays.nix
     ../../config/emoji.nix
-    ../../config/neovim.nix
     ../../config/rofi/config-emoji.nix
     ../../config/rofi/config-long.nix
     ../../programs

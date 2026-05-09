@@ -21,5 +21,6 @@
     ./kitty
     ./wezterm
     ./noctalia
+    ./nixvim
   ];
 }

@@ -8,7 +8,7 @@ in
 {
   programs = {
     neovim = {
-      enable = true;
+      enable = false;
       defaultEditor = false;
       viAlias = false;
       vimAlias = false;

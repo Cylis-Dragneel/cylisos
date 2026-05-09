@@ -34,8 +34,23 @@
       "vm.max_map_count" = 2147483642;
     };
     # Bootloader.
-    loader.systemd-boot.enable = true;
-    loader.efi.canTouchEfiVariables = true;
+    loader = {
+      timeout = 15;
+      limine = {
+        enable = true;
+        enableEditor = true;
+        style = {
+          wallpapers = [
+            "/home/${username}/Pictures/Wallpapers/Landscape/wallhaven_gwwvqe.jpg"
+            "/home/${username}/Pictures/Wallpapers/Landscape/wallhaven_g8j113.jpg"
+            "/home/${username}/Pictures/Wallpapers/Landscape/cantarella-14909.jpg"
+          ];
+          # backdrop = "1e1e2e";
+        };
+      };
+      systemd-boot.enable = false;
+      efi.canTouchEfiVariables = true;
+    };
     # Make /tmp a tmpfs
     tmp = {
       useTmpfs = false;
