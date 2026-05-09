@@ -12,6 +12,11 @@ in
 {
   options.media.navidrome = {
     enable = mkEnableOption "Enable Navidrome";
+    environmentFile = mkOption {
+      type = types.nullOr types.path;
+      default = null;
+      description = "Environment file containing ND_* secrets like ND_LASTFM_APIKEY and ND_LASTFM_SECRET";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -21,6 +26,7 @@ in
       openFirewall = true;
       user = username;
       group = "media";
+      environmentFile = cfg.environmentFile;
       settings = {
         Address = "0.0.0.0";
         Port = 4533;
@@ -39,7 +45,7 @@ in
         LastFM.Language = "en";
 
         AutoImportPlaylists = true;
-        PlaylistsPath = ".";
+        PlaylistsPath = ".navidrome/playlists";
         DefaultPlaylistPublicVisibility = false;
         EnableSharing = true;
         DefaultDownloadableShare = true;

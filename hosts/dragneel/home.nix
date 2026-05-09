@@ -96,6 +96,53 @@ in
         early_exit=true
         fill_shape=false
       '';
+      "Music/.navidrome/playlists/Daily Mix.nsp".text = ''
+        {
+          "name": "Daily Mix",
+          "comment": "Recent favorites and high-rated tracks for daily rotation",
+          "all": [
+            {
+              "any": [
+                { "inTheLast": { "lastPlayed": 30 } },
+                { "gt": { "playCount": 2 } },
+                { "gt": { "rating": 3 } },
+                { "is": { "loved": true } }
+              ]
+            }
+          ],
+          "sort": "random",
+          "limit": 80
+        }
+      '';
+      "Music/.navidrome/playlists/Weekly Mix.nsp".text = ''
+        {
+          "name": "Weekly Mix",
+          "comment": "Mixed weekly rotation from your core library",
+          "all": [
+            { "notInTheLast": { "lastPlayed": 2 } },
+            { "gt": { "playCount": 0 } }
+          ],
+          "sort": "random",
+          "limit": 150
+        }
+      '';
+      "Music/.navidrome/playlists/Discover Weekly.nsp".text = ''
+        {
+          "name": "Discover Weekly",
+          "comment": "Underplayed additions and lesser-heard tracks",
+          "all": [
+            {
+              "any": [
+                { "is": { "playCount": 0 } },
+                { "lt": { "playCount": 2 } }
+              ]
+            },
+            { "inTheLast": { "dateAdded": 45 } }
+          ],
+          "sort": "random",
+          "limit": 60
+        }
+      '';
     };
 
     # Scripts
