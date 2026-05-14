@@ -551,7 +551,7 @@ in
       enable = true;
     };
     nyaa = {
-      enable = false;
+      enable = true;
       default_theme = "Dracula";
       # download_client = "RunCommand";
       download_client = "DefaultApp";

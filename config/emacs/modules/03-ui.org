@@ -1,0 +1,157 @@
+#+TITLE: UI Module
+#+AUTHOR: Cylis Dragneel
+#+PROPERTY: header-args:emacs-lisp :tangle yes
+
+* UI
+Visual enhancements: dashboard, modeline, themes, fonts.
+
+** GUI Tweaks
+#+begin_src emacs-lisp
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(global-display-line-numbers-mode 1)
+(global-visual-line-mode t)
+#+end_src
+
+** Dashboard
+#+begin_src emacs-lisp
+(use-package dashboard
+  :ensure t
+  :init
+  (setq initial-buffer-choice 'dashboard-open
+        dashboard-set-heading-icons t
+        dashboard-set-file-icons t
+        dashboard-banner-logo-title "Emacs Is A Goddamn Operating System!"
+        dashboard-startup-banner (expand-file-name "images/emacs-dash.png" user-emacs-directory)
+        dashboard-center-content t
+        dashboard-projects-backend 'projectile
+        dashboard-projects-switch-function 'projectile-switch-project-by-name
+        dashboard-week-agenda t
+        dashboard-agenda-prefix-format "%?-12t% s"
+        dashboard-items '((agenda . 7)
+                          (projects . 5)
+                          (bookmarks . 5)
+                          (registers . 5)
+                          (recents . 5)))
+  :custom
+  (dashboard-modify-heading-icons '((recents . "file-text")
+                                    (bookmarks . "book")))
+  :config
+  (dashboard-setup-startup-hook))
+#+end_src
+
+** Doom Modeline
+#+begin_src emacs-lisp
+(use-package doom-modeline
+  :ensure t
+  :config
+  (setq doom-modeline-height 35
+        doom-modeline-bar-width 5
+        doom-modeline-persp-name t
+        doom-modeline-persp-icon t)
+  (doom-modeline-mode 1))
+#+end_src
+
+** Fonts
+#+begin_src emacs-lisp
+(set-face-attribute 'default nil
+                    :font "Maple Mono NF CN Medium"
+                    :height 110
+                    :weight 'medium)
+(set-face-attribute 'variable-pitch nil
+                    :font "Montserrat"
+                    :height 120
+                    :weight 'medium)
+(set-face-attribute 'fixed-pitch nil
+                    :font "Maple Mono NF CN Medium"
+                    :height 110
+                    :weight 'medium)
+
+(set-fontset-font t 'unicode (font-spec :family "Symbola") nil 'append)
+(setq use-default-font-for-symbols nil)
+(when (member "Noto Color Emoji" (font-family-list))
+  (set-fontset-font t 'symbol (font-spec :family "Noto Color Emoji") nil 'prepend))
+
+(set-face-attribute 'font-lock-comment-face t :slant 'italic)
+(set-face-attribute 'font-lock-keyword-face t :slant 'italic)
+(setq org-src-fontify-natively t)
+
+(add-to-list 'default-frame-alist '(font . "Maple Mono NF CN Medium-11"))
+(setq-default line-spacing 0.12)
+#+end_src
+
+** Ligatures
+#+begin_src emacs-lisp
+(use-package ligature
+  :load-path "path-to-ligature.el"
+  :config
+  (ligature-set-ligatures 'prog-mode
+                          '("www" "**" "***" "**/" "*>" "*/" "\\\\" "\\\\\\"
+                            "{-" "::" ":::" ":=" "!!" "!=" "!==" "-}" "----"
+                            "-->" "->" "->>" "-<" "-<<" "-~" "#{" "#[" "##"
+                            "###" "####" "#(" "#?" "#_" "#_(" ".-" ".=" ".."
+                            "..<" "..." "?=" "??" ";;" "/*" "/**" "/=" "/=="
+                            "/>" "//" "///" "&&" "||" "||=" "|=" "|>" "^="
+                            "$>" "++" "+++" "+>" "=:=" "==" "===" "==>" "=>"
+                            "=>>" "<=" "=<<" "=/=" ">-" ">=" ">=>" ">>" ">>-"
+                            ">>=" ">>>" "<*" "<*>" "<|" "<|>" "<$" "<$>" "<!--"
+                            "<-" "<--" "<->" "<+" "<+>" "<=" "<==" "<=>" "<=<"
+                            "<>" "<<" "<<-" "<<=" "<<<" "<~" "<~~" "</" "</>"
+                            "~@" "~-" "~>" "~~" "~~>" "%%"))
+  (global-ligature-mode t))
+#+end_src
+
+** Zoom
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-=") 'text-scale-increase)
+(global-set-key (kbd "C--") 'text-scale-decrease)
+(global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
+(global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
+#+end_src
+
+** Neotree
+#+begin_src emacs-lisp
+(use-package neotree
+  :config
+  (setq neo-smart-open t
+        neo-show-hidden-files t
+        neo-window-width 55
+        neo-window-fixed-size nil
+        inhibit-compacting-font-caches t
+        projectile-switch-project-action 'neotree-projectile-action)
+  (add-hook 'neo-after-create-hook
+            #'(lambda (_)
+                (with-current-buffer (get-buffer neo-buffer-name)
+                  (setq truncate-lines t
+                        word-wrap nil)
+                  (make-local-variable 'auto-hscroll-mode)
+                  (setq auto-hscroll-mode nil)))))
+#+end_src
+
+** All The Icons
+#+begin_src emacs-lisp
+(use-package all-the-icons
+  :ensure t
+  :if (display-graphic-p))
+(use-package all-the-icons-dired
+  :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
+#+end_src
+
+** Theme
+#+begin_src emacs-lisp
+(add-to-list 'custom-theme-load-path (expand-file-name "themes" user-emacs-directory))
+(use-package doom-themes
+  :config
+  (setq doom-themes-enable-bold t
+        doom-themes-enable-italic t))
+(use-package catppuccin-theme)
+(setq doom-themes-enable-italic t)
+(load-theme 'doom-rose-pine-moon t)
+#+end_src
+
+** Transparency
+#+begin_src emacs-lisp
+(set-frame-parameter nil 'alpha-background 80)
+(add-to-list 'default-frame-alist '(alpha-background . 80))
+#+end_src

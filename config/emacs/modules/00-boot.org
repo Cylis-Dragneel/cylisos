@@ -1,0 +1,43 @@
+#+TITLE: Boot Module
+#+AUTHOR: Cylis Dragneel
+#+PROPERTY: header-args:emacs-lisp :tangle yes
+
+* Boot
+Core Emacs performance and package setup.
+
+** Package Management
+#+begin_src emacs-lisp
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
+(unless package-archive-contents
+  (package-refresh-contents))
+
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
+(eval-and-compile
+  (setq use-package-always-ensure t
+        use-package-expand-minimally t))
+(require 'use-package)
+#+end_src
+
+** GC & Performance
+#+begin_src emacs-lisp
+(use-package emacs
+  :ensure nil
+  :config
+  (setq ring-bell-function #'ignore))
+#+end_src
+
+** Defaults
+#+begin_src emacs-lisp
+(delete-selection-mode 1)
+(electric-pair-mode 1)
+(setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
+
+;; Keep customizations out of Nix store (read-only)
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(when (file-exists-p custom-file)
+  (load custom-file))
+#+end_src

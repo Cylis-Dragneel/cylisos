@@ -11,9 +11,9 @@
    '("ccf8807fba5a78b838307eca7fcded114b6b3b8f13b970628bf775a92d6b1ca7"
      default))
  '(package-selected-packages
-   '(all-the-icons-ivy-rich doom-modeline evil-collection evil-tutor
-			    general ivy-rich org-bullets sudo-edit
-			    toc-org use-package which-key)))
+   '(all-the-icons-ivy-rich doom-modeline general ivy-rich meow
+			    org-bullets sudo-edit toc-org undo-fu
+			    use-package which-key))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

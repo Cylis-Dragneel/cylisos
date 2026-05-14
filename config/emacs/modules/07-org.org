@@ -1,0 +1,76 @@
+#+TITLE: Org Module
+#+AUTHOR: Cylis Dragneel
+#+PROPERTY: header-args:emacs-lisp :tangle yes
+
+* Org Mode
+Literate programming, agenda, and note-taking.
+
+#+begin_src emacs-lisp
+(use-package org
+  :ensure nil
+  :init
+  (setq org-directory "~/Documents/Main/org"
+        org-default-notes-file (expand-file-name "inbox.org" org-directory)
+        org-agenda-files (list (expand-file-name "inbox.org" org-directory)
+                               (expand-file-name "projects.org" org-directory)
+                               (expand-file-name "calendar.org" org-directory))
+        org-log-done 'time
+        org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)" "CANCELLED(c)"))
+        org-capture-templates
+        '(("t" "Todo" entry (file+headline org-default-notes-file "Tasks")
+           "* TODO %?\n  %U\n  %a")
+          ("n" "Note" entry (file+headline org-default-notes-file "Notes")
+           "* %?\n  %U\n  %a"))
+        org-return-follows-link t)
+  :config
+  (unless (file-directory-p org-directory)
+    (make-directory org-directory t))
+  (dolist (file '("inbox.org" "projects.org" "calendar.org"))
+    (let ((path (expand-file-name file org-directory)))
+      (unless (file-exists-p path)
+        (with-temp-buffer
+          (write-file path))))))
+#+end_src
+
+** Org Enhancements
+#+begin_src emacs-lisp
+(use-package toc-org
+  :commands toc-org-enable
+  :init (add-hook 'org-mode-hook 'toc-org-enable))
+
+(add-hook 'org-mode-hook 'org-indent-mode)
+
+(use-package org-bullets)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+#+end_src
+
+** Org Editing Settings
+#+begin_src emacs-lisp
+(electric-indent-mode -1)
+(setq org-edit-src-content-indentation 0)
+(eval-after-load 'org-indent '(diminish 'org-indent-mode))
+(require 'org-tempo)
+#+end_src
+
+** hl-todo for Org
+#+begin_src emacs-lisp
+(use-package hl-todo
+  :hook ((org-mode . hl-todo-mode)
+         (prog-mode . hl-todo-mode))
+  :config
+  (setq hl-todo-highlight-punctuation ":"
+        hl-todo-keyword-faces
+        `(("TODO"       warning bold)
+          ("FIXME"      error bold)
+          ("HACK"       font-lock-constant-face bold)
+          ("REVIEW"     font-lock-keyword-face bold)
+          ("NOTE"       success bold)
+          ("DEPRECATED" font-lock-doc-face bold))))
+#+end_src
+
+** LaTeX
+#+begin_src emacs-lisp
+;; (use-package auctex)
+;; (use-package cdlatex)
+;; (add-hook 'org-mode-hook #'turn-on-org-cdlatex)
+#+end_src

@@ -1,0 +1,118 @@
+#+TITLE: Misc Module
+#+AUTHOR: Cylis Dragneel
+#+PROPERTY: header-args:emacs-lisp :tangle yes
+
+* Miscellaneous
+Clipboard, RSS, perspective, rainbow, and other utilities.
+
+** Clipboard (Wayland)
+#+begin_src emacs-lisp
+(when (executable-find "wl-copy")
+  (setq wl-copy-process nil)
+  (defun wl-copy (text)
+    (when (and wl-copy-process (process-live-p wl-copy-process))
+      (delete-process wl-copy-process))
+    (setq wl-copy-process (make-process :name "wl-copy"
+                                        :buffer nil
+                                        :command '("wl-copy" "-f" "-n")
+                                        :connection-type 'pipe
+                                        :noquery t))
+    (process-send-string wl-copy-process text)
+    (process-send-eof wl-copy-process))
+  (defun wl-paste ()
+    (if (and wl-copy-process (process-live-p wl-copy-process))
+        nil
+      (let ((clip (shell-command-to-string "wl-paste -n 2>/dev/null")))
+        (unless (string-blank-p clip)
+          (replace-regexp-in-string "\r\\'" "" clip)))))
+  (setq interprogram-cut-function 'wl-copy)
+  (setq interprogram-paste-function 'wl-paste))
+#+end_src
+
+** Elcord (Discord Rich Presence)
+#+begin_src emacs-lisp
+(use-package elcord
+  :config
+  (setq elcord-idle-message "Staring into the void"
+        elcord-use-major-mode-as-main-icon t))
+(elcord-mode)
+#+end_src
+
+** Elfeed (RSS Reader)
+#+begin_src emacs-lisp
+(use-package elfeed
+  :config
+  (setq elfeed-search-feed-face ":foreground #ffffff :weight bold"
+        elfeed-feeds (quote
+                       (("https://www.reddit.com/r/linux.rss" reddit linux)
+                        ("https://www.reddit.com/r/commandline.rss" reddit commandline)
+                        ("https://www.reddit.com/r/distrotube.rss" reddit distrotube)
+                        ("https://www.reddit.com/r/emacs.rss" reddit emacs)
+                        ("https://www.gamingonlinux.com/article_rss.php" gaming linux)
+                        ("https://hackaday.com/blog/feed/" hackaday linux)
+                        ("https://opensource.com/feed" opensource linux)
+                        ("https://linux.softpedia.com/backend.xml" softpedia linux)
+                        ("https://itsfoss.com/feed/" itsfoss linux)
+                        ("https://www.phoronix.com/rss.php" phoronix linux)
+                        ("http://feeds.feedburner.com/d0od" omgubuntu linux)
+                        ("https://www.techrepublic.com/rssfeeds/topic/open-source/" techrepublic linux)
+                        ("http://lxer.com/module/newswire/headlines.rss" lxer linux)))))
+
+(use-package elfeed-goodies
+  :config
+  (setq elfeed-goodies/entry-pane-size 0.5))
+
+(dolist (mode '(elfeed-search-mode elfeed-show-mode elfeed-entry-mode))
+  (add-to-list 'meow-mode-state-list `(,mode . motion)))
+#+end_src
+
+** Perspective (Workspaces)
+#+begin_src emacs-lisp
+(use-package perspective
+  :custom
+  (persp-mode-prefix-key (kbd "C-c M-p"))
+  :config
+  (setq persp-state-default-file (expand-file-name "sessions" user-emacs-directory))
+  (persp-mode 1))
+
+(add-hook 'ibuffer-hook
+          (lambda ()
+            (persp-ibuffer-set-filter-groups)
+            (unless (eq ibuffer-sorting-mode 'alphabetic)
+              (ibuffer-do-sort-by-alphabetic))))
+
+(add-hook 'kill-emacs-hook #'persp-state-save)
+#+end_src
+
+** Rainbow
+#+begin_src emacs-lisp
+(use-package rainbow-delimiters
+  :hook ((emacs-lisp-mode . rainbow-delimiters-mode)
+         (clojure-mode . rainbow-delimiters-mode)))
+
+(use-package rainbow-mode
+  :diminish
+  :hook org-mode prog-mode)
+#+end_src
+
+** Wakatime
+#+begin_src emacs-lisp
+(use-package wakatime-mode
+  :config
+  (global-wakatime-mode))
+#+end_src
+
+** TLDR
+#+begin_src emacs-lisp
+(use-package tldr)
+#+end_src
+
+** End
+Final mode activations and settings.
+#+begin_src emacs-lisp
+(add-hook 'org-mode-hook
+          (lambda ()
+            (setq-local electric-pair-inhibit-predicate
+                        `(lambda (c)
+                           (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
+#+end_src

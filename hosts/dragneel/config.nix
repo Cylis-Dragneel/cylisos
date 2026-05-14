@@ -39,12 +39,14 @@
       limine = {
         enable = true;
         enableEditor = true;
+        resolution = "1920x1080";
         style = {
           wallpapers = [
             "/home/${username}/Pictures/Wallpapers/Landscape/wallhaven_gwwvqe.jpg"
-            "/home/${username}/Pictures/Wallpapers/Landscape/wallhaven_g8j113.jpg"
-            "/home/${username}/Pictures/Wallpapers/Landscape/cantarella-14909.jpg"
+            "/home/${username}/Pictures/Wallpapers/Landscape/wallhaven-g8j113.jpg"
+            "/home/${username}/Pictures/Wallpapers/Landscape/cantarella-14909..jpg"
           ];
+          graphicalTerminal.background = lib.mkForce "90000000";
           # backdrop = "1e1e2e";
         };
       };
@@ -326,7 +328,6 @@
       pay-respects # New favorite package
       exercism
       tldr
-      proton-vpn
       spotdl
       screenkey
       radeontop
@@ -350,9 +351,10 @@
       mousam
       freetube
       anup
-      libreoffice
+      # libreoffice
       lutris
       wine64
+      # wineWow64Packages.waylandFul
       xwallpaper
       polybar
       cloudflare-warp
@@ -376,7 +378,7 @@
       pear-desktop
       redshift
       hyprpaper
-      kdePackages.kdenlive
+      # kdePackages.kdenlive
       # aseprite
       # libresprite
       # audacity
@@ -427,9 +429,9 @@
       bluetui
       # maa-assistant-arknights
       # maa-cli
-      grayjay
-      fcast-receiver
-      fcast-client
+      # grayjay
+      # fcast-receiver
+      # fcast-client
       seanime
       opencode
       ytcast
@@ -446,7 +448,7 @@
       maa-assistant-arknights
       maa-cli
       feishin
-      aonsoku
+      # aonsoku
       (callPackage ../../modules/anymex.nix { })
       # android-studio
       (emacsWithPackagesFromUsePackage {
@@ -455,9 +457,68 @@
         alwaysEnsure = true;
         alwaysTangle = true;
         extraEmacsPackages = epkgs: [
+          epkgs.meow
+          epkgs.undo-fu
+          epkgs.general
+          epkgs.dashboard
+          epkgs.doom-modeline
+          epkgs.ligature
+          epkgs.neotree
+          epkgs.all-the-icons
+          epkgs.all-the-icons-dired
+          epkgs.doom-themes
+          epkgs.catppuccin-theme
+          epkgs.ivy
+          epkgs.counsel
+          epkgs.swiper
+          epkgs.ivy-rich
+          epkgs.all-the-icons-ivy-rich
+          epkgs.company
+          epkgs.company-box
+          epkgs.which-key
+          epkgs.diminish
+          epkgs.magit
+          epkgs.git-timemachine
+          epkgs.projectile
+          epkgs.counsel-projectile
+          epkgs.dired-open
+          epkgs.peep-dired
+          epkgs.direnv
+          epkgs.sudo-edit
+          epkgs.pdf-tools
+          epkgs.lua-mode
+          epkgs.nix-mode
+          epkgs.zig-mode
+          epkgs.rust-mode
+          epkgs.go-mode
+          epkgs.lsp-mode
+          epkgs.lsp-ui
+          epkgs.lsp-ivy
+          epkgs.lsp-treemacs
+          epkgs.dap-mode
+          epkgs.flycheck
+          epkgs.toc-org
+          epkgs.org-bullets
+          epkgs.hl-todo
+          epkgs.eshell-toggle
+          epkgs.eshell-syntax-highlighting
+          epkgs.vterm
+          epkgs.vterm-toggle
+          epkgs.elcord
+          epkgs.elfeed
+          epkgs.elfeed-goodies
+          epkgs.perspective
+          epkgs.rainbow-delimiters
+          epkgs.rainbow-mode
+          epkgs.wakatime-mode
+          epkgs.tldr
           # LSP servers and formatters
           pkgs.gofumpt
           pkgs.gopls
+          pkgs.rust-analyzer
+          pkgs.clang-tools
+          pkgs.pyright
+          pkgs.zls
         ];
       })
       #Awesome related
@@ -985,7 +1046,7 @@
         "flakes"
       ];
       substituters = [
-        "https://cache.garnix.io"
+        # "https://cache.garnix.io"
         "https://ghostty.cachix.org"
         "https://niri.cachix.org"
         "https://hyprland.cachix.org"
@@ -994,7 +1055,7 @@
         "https://cosmic.cachix.org/"
       ];
       trusted-public-keys = [
-        "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+        # "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
         "ghostty.cachix.org-1:QB389yTa6gTyneehvqG58y0WnHjQOqgnA+wBnpWWxns="
         "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="

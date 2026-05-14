@@ -1,0 +1,58 @@
+#+TITLE: Shell Module
+#+AUTHOR: Cylis Dragneel
+#+PROPERTY: header-args:emacs-lisp :tangle yes
+
+* Shells & Terminals
+Eshell and Vterm configuration.
+
+** Eshell
+#+begin_src emacs-lisp
+(use-package eshell-toggle
+  :custom
+  (eshell-toggle-size-fraction 3)
+  (eshell-toggle-use-projectile-root t)
+  (eshell-toggle-run-command nil)
+  (eshell-toggle-init-function #'eshell-toggle-init-ansi-term))
+
+(use-package eshell-syntax-highlighting
+  :after esh-mode
+  :config
+  (eshell-syntax-highlighting-global-mode +1))
+
+(setq eshell-rc-script (expand-file-name "eshell/profile" user-emacs-directory)
+      eshell-aliases-file (expand-file-name "eshell/aliases" user-emacs-directory)
+      eshell-history-size 10000
+      eshell-buffer-maximum-lines 10000
+      eshell-hist-ignore-dups t
+      eshell-scroll-to-bottom-on-input t
+      eshell-destroy-buffer-when-process-dies t
+      eshell-visual-commands '("bash" "fish" "htop" "ssh" "top" "zsh"))
+#+end_src
+
+** Vterm
+#+begin_src emacs-lisp
+(use-package vterm
+  :config
+  (setq shell-file-name "/bin/sh"
+        vterm-max-scrollback 10000))
+
+(use-package vterm-toggle
+  :after vterm
+  :config
+  (setq vterm-toggle-fullscreen-p nil
+        vterm-toggle-scope 'project)
+  (add-to-list 'display-buffer-alist
+               '((lambda (buffer-or-name _)
+                   (let ((buffer (get-buffer buffer-or-name)))
+                     (with-current-buffer buffer
+                       (or (equal major-mode 'vterm-mode)
+                           (string-prefix-p vterm-buffer-name (buffer-name))))))
+                 (display-buffer-reuse-window display-buffer-at-bottom)
+                 (reusable-frames . visible)
+                 (window-height . 0.3))))
+#+end_src
+
+** EWW Browser
+#+begin_src emacs-lisp
+;; EWW is built-in, configured via leader keys
+#+end_src

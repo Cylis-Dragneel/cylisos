@@ -1,0 +1,200 @@
+#+TITLE: Keybindings Module
+#+AUTHOR: Cylis Dragneel
+#+PROPERTY: header-args:emacs-lisp :tangle yes
+
+* Keybindings
+Leader key system using general.el with SPC as prefix, inspired by Doom Emacs.
+
+#+begin_src emacs-lisp
+(use-package general
+  :config
+  (general-create-definer cylis/leader-keys
+    :keymaps '(meow-normal-state-keymap meow-motion-state-keymap)
+    :prefix "SPC"
+    :global-prefix "M-SPC")
+
+  (cylis/leader-keys
+    "SPC" '(counsel-M-x :wk "Counsel M-x")
+    "=" '(perspective-map :wk "Perspective")
+    "u" '(universal-argument :wk "Universal argument")
+    "f" '(:ignore t :wk "Files")
+    "f f" '(find-file :wk "Find File")
+    "f n" '(:ignore t :wk "Nix Config")
+    "f n f" '((lambda () (interactive) (find-file "~/cylisos/hosts/dragneel/config.nix")) :wk "Edit Configuration.nix")
+    "f n h" '((lambda () (interactive) (find-file "~/cylisos/hosts/dragneel/home.nix")) :wk "Edit Home.nix")
+    "f n n" '((lambda () (interactive) (find-file "~/cylisos/flake.nix")) :wk "Edit Flake.nix")
+    "f n c" '((lambda () (interactive) (find-file "~/cylisos/config/")) :wk "Edit Home Configurations")
+    "f c" '((lambda () (interactive) (find-file "~/.config/emacs/config.org")) :wk "Edit Emacs Config")
+    "f d" '(find-grep-dired :wk "Search for string in files in DIR")
+    "f g" '(counsel-grep-or-swiper :wk "Search for string current file")
+    "f j" '(counsel-file-jump :wk "Jump to a file below current directory")
+    "f l" '(counsel-locate :wk "Locate a file")
+    "f r" '(counsel-recentf :wk "Find recent files")
+    "f u" '(sudo-edit-find-file :wk "Sudo find file")
+    "f U" '(sudo-edit :wk "Sudo edit file")
+    "c" '(comment-line :wk "Comment Lines"))
+
+  (cylis/leader-keys
+    "b" '(:ignore t :wk "Buffer")
+    "b c" '(clone-indirect-buffer :wk "Create indirect buffer copy in a split")
+    "b C" '(clone-indirect-buffer-other-window :wk "Clone indirect buffer in new window")
+    "b d" '(bookmark-delete :wk "Delete bookmark")
+    "b b" '(switch-to-buffer :wk "Switch Buffer")
+    "b i" '(ibuffer :wk "IBuffer")
+    "b k" '(kill-this-buffer :wk "Kill this Buffer")
+    "b n" '(next-buffer :wk "Next Buffer")
+    "b p" '(previous-buffer :wk "Previous Buffer")
+    "b r" '(revert-buffer :wk "Reload Buffer")
+    "b l" '(list-bookmarks :wk "List bookmarks")
+    "b m" '(bookmark-set :wk "Set bookmark")
+    "b R" '(rename-buffer :wk "Rename buffer")
+    "b s" '(basic-save-buffer :wk "Save buffer")
+    "b S" '(save-some-buffers :wk "Save multiple buffers")
+    "b w" '(bookmark-save :wk "Save current bookmarks to bookmark file"))
+
+  (cylis/leader-keys
+    "d" '(:ignore t :wk "Dired")
+    "d d" '(dired :wk "Open dired")
+    "d j" '(dired-jump :wk "Dired jump to current")
+    "d n" '(neotree-dir :wk "Open directory in neotree")
+    "d p" '(peep-dired :wk "Peep-dired"))
+
+  (cylis/leader-keys
+    "v" '(:ignore t :wk "Evaluate")
+    "v b" '(eval-buffer :wk "Evaluate elisp in Buffer")
+    "v d" '(eval-defun :wk "Evaluate defun containing or after point")
+    "v e" '(eval-expression :wk "Evaluate and elisp expression")
+    "v l" '(eval-last-sexp :wk "Evaluate elisp expression before point")
+    "v r" '(eval-region :wk "Evaluate elisp in region"))
+
+  (cylis/leader-keys
+    "h" '(:ignore t :wk "Help")
+    "h a" '(counsel-apropos :wk "Apropos")
+    "h b" '(describe-bindings :wk "Describe bindings")
+    "h c" '(describe-char :wk "Describe character under cursor")
+    "h d" '(:ignore t :wk "Emacs documentation")
+    "h d a" '(about-emacs :wk "About Emacs")
+    "h d d" '(view-emacs-debugging :wk "View Emacs debugging")
+    "h d f" '(view-emacs-FAQ :wk "View Emacs FAQ")
+    "h d m" '(info-emacs-manual :wk "The Emacs manual")
+    "h d n" '(view-emacs-news :wk "View Emacs news")
+    "h d o" '(describe-distribution :wk "How to obtain Emacs")
+    "h d p" '(view-emacs-problems :wk "View Emacs problems")
+    "h d t" '(view-emacs-todo :wk "View Emacs todo")
+    "h d w" '(describe-no-warranty :wk "Describe no warranty")
+    "h e" '(view-echo-area-messages :wk "View echo area messages")
+    "h f" '(describe-function :wk "Describe function")
+    "h F" '(describe-face :wk "Describe face")
+    "h g" '(describe-gnu-project :wk "Describe GNU Project")
+    "h i" '(info :wk "Info")
+    "h I" '(describe-input-method :wk "Describe input method")
+    "h k" '(describe-key :wk "Describe key")
+    "h l" '(view-lossage :wk "Display recent keystrokes and the commands run")
+    "h L" '(describe-language-environment :wk "Describe language environment")
+    "h m" '(describe-mode :wk "Describe mode")
+    "h t" '(load-theme :wk "Load Themes")
+    "h v" '(describe-variable :wk "Describe variable")
+    "h r r" '((lambda () (interactive) (load-file "~/.config/emacs/config.el")) :wk "Reload emacs config")
+    "h w" '(where-is :wk "Prints keybinding for command if set")
+    "h x" '(describe-command :wk "Display full documentation for command"))
+
+  (cylis/leader-keys
+    "g" '(:ignore t :wk "Git")
+    "g /" '(magit-dispatch :wk "Magit dispatch")
+    "g ." '(magit-file-dispatch :wk "Magit file dispatch")
+    "g b" '(magit-branch-checkout :wk "Switch branch")
+    "g c" '(:ignore t :wk "Create")
+    "g c b" '(magit-branch-and-checkout :wk "Create branch and checkout")
+    "g c c" '(magit-commit-create :wk "Create commit")
+    "g c f" '(magit-commit-fixup :wk "Create fixup commit")
+    "g C" '(magit-clone :wk "Clone repo")
+    "g f" '(:ignore t :wk "Find")
+    "g f c" '(magit-show-commit :wk "Show commit")
+    "g f f" '(magit-find-file :wk "Magit find file")
+    "g f g" '(magit-find-git-config-file :wk "Find gitconfig file")
+    "g F" '(magit-fetch :wk "Git fetch")
+    "g g" '(magit-status :wk "Magit status")
+    "g i" '(magit-init :wk "Initialize git repo")
+    "g l" '(magit-log-buffer-file :wk "Magit buffer log")
+    "g r" '(vc-revert :wk "Git revert file")
+    "g s" '(magit-stage-file :wk "Git stage file")
+    "g t" '(git-timemachine :wk "Git time machine")
+    "g u" '(magit-unstage-file :wk "Git unstage file"))
+
+  (cylis/leader-keys
+    "e" '(:ignore t :wk "Eshell")
+    "e s" '(eshell :wk "Launch Eshell")
+    "e h" '(counsel-esh-history :wk "Eshell History")
+    "e w" '(eww :wk "EWW Emacs Browser")
+    "e r" '(eww-reload :wk "Reload Page in EWW"))
+
+  (cylis/leader-keys
+    "l" '(:ignore t :wk "LSP")
+    "l p" '(lsp-keymap :wk "Keymap"))
+
+  (cylis/leader-keys
+    "o" '(:ignore t :wk "Org")
+    "o a" '(org-agenda :wk "Org agenda")
+    "o c" '(org-capture :wk "Org capture")
+    "o e" '(org-export-dispatch :wk "Org export dispatch")
+    "o i" '(org-toggle-item :wk "Org toggle item")
+    "o o" '((lambda () (interactive) (find-file org-default-notes-file)) :wk "Open inbox")
+    "o p" '((lambda () (interactive) (find-file (expand-file-name "projects.org" org-directory))) :wk "Open projects")
+    "o C" '((lambda () (interactive) (find-file (expand-file-name "calendar.org" org-directory))) :wk "Open calendar")
+    "o r" '(org-mode-restart :wk "Restart Org Mode")
+    "o t" '(org-todo :wk "Org todo")
+    "o B" '(org-babel-tangle :wk "Org babel tangle")
+    "o T" '(org-todo-list :wk "Org todo list")
+    "o b" '(:ignore t :wk "Tables")
+    "o b -" '(org-table-insert-hline :wk "Insert hline in table")
+    "o d" '(:ignore t :wk "Date/deadline")
+    "o d t" '(org-time-stamp :wk "Org time stamp")
+    "o l" '(:ignore t :wk "LaTeX")
+    "o l e" '(org-latex-export-to-pdf :wk "Export as PDF")
+    "o l p" '(org-latex-preview :wk "Preview LaTeX"))
+
+  (cylis/leader-keys
+    "p" '(projectile-command-map :wk "Projectile"))
+
+  (cylis/leader-keys
+    "s" '(:ignore t :wk "Search")
+    "s d" '(dictionary-search :wk "Search dictionary")
+    "s m" '(man :wk "Man pages")
+    "s t" '(tldr :wk "Lookup TLDR docs for a command")
+    "s w" '(woman :wk "Similar to man but doesn't require man"))
+
+  (cylis/leader-keys
+    "t" '(:ignore t :wk "Toggle")
+    "t e" '(eshell-toggle :wk "Toggle eshell")
+    "t f" '(flycheck-mode :wk "Toggle flycheck")
+    "t l" '(display-line-numbers-mode :wk "Toggle line numbers")
+    "t n" '(neotree-toggle :wk "Toggle Neotree File Viewer")
+    "t r" '(rainbow-mode :wk "Toggle rainbow mode")
+    "t t" '(visual-line-mode :wk "Toggle truncated lines")
+    "t v" '(vterm-toggle :wk "Toggle Vterm")
+    "t d" '(dashboard-open :wk "Dashboard")
+    "t s" '(elfeed :wk "Elfeed RSS")
+    "t m" '(make-frame :wk "Open buffer in new frame")
+    "t F" '(select-frame-by-name :wk "Select frame by name"))
+
+  (cylis/leader-keys
+    "w" '(:ignore t :wk "Windows")
+    "w c" '(delete-window :wk "Close window")
+    "w n" '(make-frame :wk "New frame")
+    "w s" '(split-window-below :wk "Horizontal split window")
+    "w v" '(split-window-right :wk "Vertical split window")
+    "w h" '(windmove-left :wk "Window left")
+    "w j" '(windmove-down :wk "Window down")
+    "w k" '(windmove-up :wk "Window up")
+    "w l" '(windmove-right :wk "Window right")
+    "w w" '(other-window :wk "Goto next window")
+    "w H" '(buf-move-left :wk "Buffer move left")
+    "w J" '(buf-move-down :wk "Buffer move down")
+    "w K" '(buf-move-up :wk "Buffer move up")
+    "w L" '(buf-move-right :wk "Buffer move right")))
+#+end_src
+
+** Minibuffer Escape
+#+begin_src emacs-lisp
+(global-set-key [escape] 'keyboard-escape-quit)
+#+end_src

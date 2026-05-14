@@ -1,0 +1,89 @@
+#+TITLE: Completion Module
+#+AUTHOR: Cylis Dragneel
+#+PROPERTY: header-args:emacs-lisp :tangle yes
+
+* Completion
+Ivy, Counsel, Company, and Which-key for comprehensive completion and discovery.
+
+** Ivy & Counsel
+#+begin_src emacs-lisp
+(use-package ivy
+  :diminish
+  :bind (("C-s" . swiper)
+         :map ivy-minibuffer-map
+         ("TAB" . ivy-alt-done)
+         ("C-l" . ivy-alt-done))
+  :custom
+  (ivy-use-virtual-buffers t)
+  (ivy-count-format "(%d/%d)")
+  (enable-recursive-minibuffers t)
+  :config
+  (ivy-mode 1))
+
+(use-package counsel
+  :after ivy
+  :diminish
+  :config (counsel-mode))
+
+(use-package swiper
+  :after ivy)
+
+(use-package ivy-rich
+  :after ivy
+  :ensure t
+  :init (ivy-rich-mode 1)
+  :custom
+  (ivy-virtual-abbreviate 'full
+   ivy-rich-switch-buffer-align-virtual-buffer t
+   ivy-rich-path-style 'abbrev)
+  :config
+  (ivy-set-display-transformer 'ivy-switch-buffer
+                               'ivy-rich-switch-buffer-transformer))
+
+(use-package all-the-icons-ivy-rich
+  :ensure t
+  :config
+  (all-the-icons-ivy-rich-mode 1))
+#+end_src
+
+** Company
+#+begin_src emacs-lisp
+(use-package company
+  :after lsp-mode
+  :hook (after-init . global-company-mode)
+  :diminish
+  :bind (:map company-active-map
+              ("<tab>" . company-complete-selection)
+              ("TAB" . company-complete-selection))
+  :custom
+  (company-begin-commands '(self-insert-command))
+  (company-idle-delay 0.0)
+  (company-minimum-prefix-length 1)
+  (company-tooltip-align-annotations t))
+
+(use-package company-box
+  :after company
+  :diminish
+  :hook (company-mode . company-box-mode))
+#+end_src
+
+** Which-key
+#+begin_src emacs-lisp
+(use-package which-key
+  :init
+  (which-key-mode 1)
+  :diminish
+  :config
+  (setq which-key-side-window-location 'bottom
+        which-key-sort-order #'which-key-key-order-alpha
+        which-key-sort-uppercase-first nil
+        which-key-add-column-padding 1
+        which-key-max-display-columns nil
+        which-key-min-display-lines 6
+        which-key-side-window-slot -10
+        which-key-side-window-max-height 0.25
+        which-key-idle-delay 0.8
+        which-key-max-description-length 25
+        which-key-allow-imprecise-window-fit nil
+        which-key-separator " → "))
+#+end_src

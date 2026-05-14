@@ -1,0 +1,113 @@
+#+TITLE: Editing Module
+#+AUTHOR: Cylis Dragneel
+#+PROPERTY: header-args:emacs-lisp :tangle yes
+
+* Editing
+Modal editing powered by meow (Kakoune/Helix-inspired).
+
+** Meow Modal Editing
+#+begin_src emacs-lisp
+(use-package meow
+  :config
+  (defun cylis/meow-setup ()
+    (meow-define-keys
+     'normal
+     '("1" . meow-digit-argument)
+     '("2" . meow-digit-argument)
+     '("3" . meow-digit-argument)
+     '("4" . meow-digit-argument)
+     '("5" . meow-digit-argument)
+     '("6" . meow-digit-argument)
+     '("7" . meow-digit-argument)
+     '("8" . meow-digit-argument)
+     '("9" . meow-digit-argument)
+     '("0" . meow-digit-argument)
+     '("/" . meow-search)
+     '(":" . meow-keypad-start)
+     '("?" . meow-search-backward)
+     '("C" . meow-save)
+     '("c" . meow-change)
+     '("d" . meow-delete)
+     '("D" . meow-kill)
+     '("f" . meow-find)
+     '("F" . meow-find-backward)
+     '("g" . meow-cancel-selection)
+     '("G" . meow-grab)
+     '("h" . meow-left)
+     '("H" . meow-left-expand)
+     '("i" . meow-insert)
+     '("I" . meow-insert-line)
+     '("j" . meow-next)
+     '("J" . meow-next-expand)
+     '("k" . meow-prev)
+     '("K" . meow-prev-expand)
+     '("l" . meow-right)
+     '("L" . meow-right-expand)
+     '("m" . meow-join)
+     '("n" . meow-search-repeat)
+     '("N" . meow-search-repeat-backward)
+     '("o" . meow-open-below)
+     '("O" . meow-open-above)
+     '("p" . meow-yank)
+     '("P" . meow-yank-pop)
+     '("q" . meow-quit)
+     '("r" . meow-replace)
+     '("R" . meow-overwrite)
+     '("s" . meow-change)
+     '("S" . meow-kill)
+     '("t" . meow-till)
+     '("T" . meow-till-backward)
+     '("u" . undo-fu-only-undo)
+     '("U" . undo-fu-only-redo)
+     '("v" . scroll-up-command)
+     '("V" . scroll-down-command)
+     '("w" . meow-next-word)
+     '("W" . meow-next-word-expand)
+     '("b" . meow-prev-word)
+     '("B" . meow-prev-word-expand)
+     '("x" . meow-delete)
+     '("y" . meow-save)
+     '("Y" . meow-sync-save)
+     '(";" . meow-reverse)
+     '("'" . meow-flip)
+     '("." . meow-repeat)
+     '("," . meow-repeat-inverse)
+     '("RET" . meow-newline)
+     '("TAB" . meow-indent)
+     '("DEL" . meow-backward-char))
+
+    (meow-define-keys
+     'motion
+     '("j" . meow-next)
+     '("k" . meow-prev)
+     '("h" . meow-left)
+     '("l" . meow-right)
+     '("w" . meow-next-word)
+     '("b" . meow-prev-word)
+     '("e" . meow-end-of-word)
+     '("0" . move-beginning-of-line)
+     '("$" . move-end-of-line)
+     '("/" . meow-search)
+     '("n" . meow-search-repeat)
+     '("N" . meow-search-repeat-backward)))
+
+  (meow-global-mode 1)
+  (cylis/meow-setup)
+  (define-key meow-normal-state-keymap (kbd "SPC") nil)
+  (define-key meow-motion-state-keymap (kbd "SPC") nil)
+  (meow-setup-indicator))
+#+end_src
+
+** Undo
+#+begin_src emacs-lisp
+(use-package undo-fu
+  :config
+  (setq undo-fu-allow-undo-after-auto-save t))
+#+end_src
+
+** Scripts
+#+begin_src emacs-lisp
+(add-to-list 'load-path (expand-file-name "scripts" user-emacs-directory))
+(require 'buffer-move)
+(require 'app-launchers)
+#+end_src

@@ -1,0 +1,93 @@
+#+TITLE: Languages Module
+#+AUTHOR: Cylis Dragneel
+#+PROPERTY: header-args:emacs-lisp :tangle yes
+
+* Languages
+Programming language support with LSP integration for Rust, C/C++, Python, Zig, and Go.
+
+** Language Modes
+#+begin_src emacs-lisp
+(use-package lua-mode)
+(use-package nix-mode)
+(use-package zig-mode)
+(use-package rust-mode
+  :mode "\\.rs\\'"
+  :hook (rust-mode . lsp-deferred))
+(use-package go-mode
+  :mode "\\.go\\'"
+  :hook (go-mode . lsp-deferred)
+  :config
+  (setq go-indent-level 2))
+#+end_src
+
+** LSP Mode
+#+begin_src emacs-lisp
+(use-package lsp-mode
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  :hook ((nix-mode . lsp-deferred)
+         (js-mode . lsp-deferred)
+         (go-mode . lsp-deferred)
+         (c-mode . lsp-deferred)
+         (c++-mode . lsp-deferred)
+         (python-mode . lsp-deferred)
+         (zig-mode . lsp-deferred)
+         (rust-mode . lsp-deferred)
+         (lsp-mode . lsp-enable-which-key-integration))
+  :custom
+  (lsp-completion-provider :none)
+  (lsp-rust-analyzer-cargo-load-out-dirs-from-check t)
+  (lsp-rust-analyzer-proc-macro-enable t)
+  (lsp-clients-clangd-args '("-j" "4" "--background-index"))
+  :commands (lsp lsp-deferred)
+  :config
+  (lsp-enable-which-key-integration t)
+  (add-hook 'lsp-completion-mode-hook
+            (lambda ()
+              (setq-local company-backends '(company-capf)))))
+
+(with-eval-after-load 'lsp-mode
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection "nixd")
+                    :major-modes '(nix-mode)
+                    :priority 0
+                    :server-id 'nixd)))
+
+(with-eval-after-load 'lsp-mode
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection "zls")
+                    :major-modes '(zig-mode)
+                    :priority 0
+                    :server-id 'zls)))
+#+end_src
+
+** IDE features
+#+begin_src emacs-lisp
+(use-package lsp-ui
+  :hook (lsp-mode . lsp-ui-mode)
+  :custom
+  (lsp-ui-doc-position 'bottom)
+  :commands (lsp-ui-mode))
+
+(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+
+(use-package lsp-treemacs
+  :after lsp
+  :commands lsp-treemacs-errors-list)
+#+end_src
+
+** Debugging
+#+begin_src emacs-lisp
+(use-package dap-mode
+  :config
+  (require 'dap-ui))
+#+end_src
+
+** Flycheck
+#+begin_src emacs-lisp
+(use-package flycheck
+  :ensure t
+  :diminish
+  :config
+  (global-flycheck-mode 1))
+#+end_src
