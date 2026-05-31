@@ -25,10 +25,8 @@ jobs:
       - name: Build NixOS system closure
         run: |
           nix-build default.nix \
-            -A nixosConfigurations.dragneel.config.system.build.toplevel \
-            -L
+            -A nixosConfigurations.dragneel.config.system.build.toplevel
       - name: Build standalone Home Manager closure
         run: |
           nix-build default.nix \
-            -A homeConfigurations.cylis.activationPackage \
-            -L
+            -A homeConfigurations.cylis.activationPackage
