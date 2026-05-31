@@ -2,12 +2,12 @@
 {
   imports = [
     ./keymaps
-    ./options
     ./plugins
   ];
 
   programs.nixvim = {
     enable = false;
+    plugins.lz-n.enable = true;
     defaultEditor = false;
     viAlias = false;
     vimAlias = false;

@@ -38,63 +38,12 @@ in
     neocord
     copilot-vim
     codecompanion-nvim
-    conform-nvim
-    nvim-cmp
-    cmp-nvim-lsp
-    cmp-buffer
-    luasnip
-    cmp_luasnip
-    friendly-snippets
-    lspkind-nvim
-    nvim-lspconfig
-    vim-wakatime
-    obsidian-nvim
-    nvim-colorizer-lua
-    alpha-nvim
-    auto-session
-    which-key-nvim
-    bufferline-nvim
-    lualine-nvim
-    snacks-nvim
-    indent-blankline-nvim
     fine-cmdline
-    (nvim-treesitter.withPlugins (
-      plugins: with plugins; [
-        bash
-        c
-        go
-        html
-        javascript
-        json
-        lua
-        markdown
-        nix
-        python
-        rust
-        toml
-        typescript
-        vim
-        yaml
-        zig
-      ]
-    ))
     markdown-nvim
     markdown-preview-nvim
     clipboard-image-nvim
-    mini-pairs
-    nvim-web-devicons
-    comment-nvim
-    nvim-ts-context-commentstring
-    fzf-lua
-    todo-comments-nvim
-    oil-nvim
-    vim-tmux-navigator
-    nvim-dap
-    nvim-dap-ui
-    nvim-dap-go
-    nvim-dap-virtual-text
-    persistent-breakpoints-nvim
-    plenary-nvim
-    nui-nvim
+    nvim-colorizer-lua
+    snacks-nvim
+    vim-wakatime
   ];
 }

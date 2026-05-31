@@ -64,6 +64,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     anime-cursors.url = "github:ashuramaruzxc/anime-cursors";
+    aagl = {
+      url = "github:ezKEa/aagl-gtk-on-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    helium = {
+      url = "github:AlvaroParker/helium-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # nixos-cosmic = {
     #   url = "github:lilyinstarlight/nixos-cosmic";
     #   inputs.nixpkgs.follows = "nixpkgs";
@@ -102,23 +110,6 @@
             ./hosts/${host}/config.nix
             inputs.stylix.nixosModules.stylix
             # inputs.nixos-cosmic.nixosModules.default
-            (
-              { pkgs, ... }:
-              {
-                nixpkgs.overlays = [
-                  inputs.emacs.overlay
-                  inputs.niri.overlays.niri
-                  (_: prev: { openldap = prev.openldap.overrideAttrs { doCheck = false; }; })
-                ];
-                environment.systemPackages = [
-                  inputs.zen.packages.${pkgs.stdenv.hostPlatform.system}.twilight
-                  inputs.yt-x.packages.${pkgs.stdenv.hostPlatform.system}.default
-                  inputs.curd.packages.${pkgs.stdenv.hostPlatform.system}.default
-                  inputs.wakatime-ls.packages.${pkgs.stdenv.hostPlatform.system}.default
-                  inputs.ai-tools.packages.${pkgs.stdenv.hostPlatform.system}.crush
-                ];
-              }
-            )
           ];
         };
       };
@@ -134,8 +125,6 @@
             {
               nixpkgs.overlays = [ inputs.niri.overlays.niri ];
               home.packages = [
-                inputs.jerry.packages.${pkgs.stdenv.hostPlatform.system}.default
-                inputs.gazelle.packages.${pkgs.stdenv.hostPlatform.system}.default
               ];
             }
           )

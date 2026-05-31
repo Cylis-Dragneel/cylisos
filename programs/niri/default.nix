@@ -109,7 +109,7 @@ in
           ];
         }
       ];
-      screenshot-path = "~/Pictures/Screenshots/Screenshot from %d-%m-%Y %H-%M-%S.png";
+      # screenshot-path = "~/Pictures/Screenshots/Screenshot from %d-%m-%Y %H-%M-%S.png";
       animations.enable = true;
       window-rules = [
         {

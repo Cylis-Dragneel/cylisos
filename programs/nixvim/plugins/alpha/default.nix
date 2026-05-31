@@ -1,9 +1,12 @@
 {
   programs.nixvim.plugins.alpha = {
     enable = true;
-    lazyLoad.enable = true;
+    lazyLoad = {
+      enable = true;
+      settings.event = "VimEnter";
+    };
     theme = "dashboard";
-    layout = [
+    settings.layout = [
       {
         type = "padding";
         val = 2;

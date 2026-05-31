@@ -1,7 +1,9 @@
 {
   programs.nixvim.colorschemes.rose-pine = {
     enable = true;
-    lazyLoad.enable = true;
+    lazyLoad = {
+      enable = true;
+    };
     settings = {
       variant = "moon";
       dim_inactive_windows = false;
@@ -56,5 +58,4 @@
     };
   };
 
-  programs.nixvim.colorscheme = "rose-pine-moon";
 }

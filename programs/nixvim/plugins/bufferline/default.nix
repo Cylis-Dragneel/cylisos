@@ -1,7 +1,10 @@
 {
   programs.nixvim.plugins.bufferline = {
     enable = true;
-    lazyLoad.enable = true;
+    lazyLoad = {
+      enable = true;
+      settings.event = [ "BufAdd" ];
+    };
     settings = {
       highlights.__raw = "require('rose-pine.plugins.bufferline')";
     };

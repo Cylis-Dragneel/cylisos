@@ -7,7 +7,7 @@
       --fullscreen
       --save-watch-history
       --write-filename-in-watch-later-config
-      ytdl-raw-options=cookies-from-browser=firefox
+      ytdl-raw-options=cookies-from-browser=vivaldi
 
       # --- bonus mpv tips ---
 

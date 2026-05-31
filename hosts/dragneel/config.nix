@@ -173,6 +173,8 @@
   };
 
   programs = {
+    honkers-railway-launcher.enable = true;
+    sleepy-launcher.enable = true;
     kdeconnect.enable = true;
     uwsm = {
       enable = true;
@@ -186,7 +188,7 @@
     };
     nh = {
       enable = true;
-      flake = "/home/${username}/cylisos";
+      # flake = "/home/${username}/cylisos";
       clean = {
         enable = true;
         dates = "weekly";
@@ -238,16 +240,11 @@
     };
   };
 
-  nixpkgs = {
-    config = {
-      allowUnfree = true;
-      permittedInsecurePackages = [ "mbedtls-2.28.10" ];
-    };
-  };
-
   users = {
     mutableUsers = true;
   };
+
+  environment.sessionVariables.NH_FILE = "/home/${username}/cylisos/hosts/${host}/";
 
   environment.systemPackages =
     (with pkgs; [
@@ -352,6 +349,7 @@
       freetube
       anup
       # libreoffice
+      onlyoffice-desktopeditors
       lutris
       wine64
       # wineWow64Packages.waylandFul
@@ -448,8 +446,22 @@
       maa-assistant-arknights
       maa-cli
       feishin
+      ratty
       # aonsoku
-      (callPackage ../../modules/anymex.nix { })
+      python3Packages.msgpack
+      planify
+      tty-solitaire
+      bastet
+      gotop
+      # (callPackage ../../modules/anymex.nix { })
+      inputs.zen.packages.${pkgs.stdenv.hostPlatform.system}.twilight
+      inputs.yt-x.packages.${pkgs.stdenv.hostPlatform.system}.default
+      inputs.curd.packages.${pkgs.stdenv.hostPlatform.system}.default
+      inputs.wakatime-ls.packages.${pkgs.stdenv.hostPlatform.system}.default
+      inputs.ai-tools.packages.${pkgs.stdenv.hostPlatform.system}.crush
+      inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.default
+      inputs.jerry.packages.${pkgs.stdenv.hostPlatform.system}.default
+      inputs.gazelle.packages.${pkgs.stdenv.hostPlatform.system}.default
       # android-studio
       (emacsWithPackagesFromUsePackage {
         package = pkgs.emacs-unstable;
@@ -582,8 +594,23 @@
     ];
   };
 
+  environment.etc."opencl/vendors/rocm.icd".text = ''
+    libamdocl64.so
+  '';
+
   # Services to start
   services = {
+    suwayomi-server = {
+      enable = true;
+      group = "media";
+      settings = {
+        server = {
+          downloadAsCbz = true;
+          port = 4567;
+          extensionRepos = [ "https://raw.githubusercontent.com/keiyoushi/extensions/repo/index.min.json" ];
+        };
+      };
+    };
     audiobookshelf.enable = true;
     resolved = {
       enable = true;
@@ -873,15 +900,15 @@
     xserver = {
       enable = true;
       videoDrivers = [ "amdgpu" ];
-      displayManager.startx.enable = true;
+      displayManager.startx.enable = false;
       desktopManager = {
         xfce = {
-          enable = true;
+          enable = false;
           enableXfwm = false;
           noDesktop = true;
         };
       };
-      windowManager.i3.enable = true;
+      windowManager.i3.enable = false;
       xkb = {
         layout = "us,jp";
         options = "grp:win_shift_space_toggle";
@@ -941,6 +968,8 @@
     };
   };
   systemd.services = {
+    sonarr.serviceConfig.ProtectHome = lib.mkForce false;
+    navidrome.serviceConfig.ProtectHome = lib.mkForce false;
     kmonad-main = {
       serviceConfig.User = lib.mkForce "root";
     };
@@ -1046,7 +1075,7 @@
         "flakes"
       ];
       substituters = [
-        # "https://cache.garnix.io"
+        "https://cylis.cachix.org"
         "https://ghostty.cachix.org"
         "https://niri.cachix.org"
         "https://hyprland.cachix.org"
@@ -1055,7 +1084,7 @@
         "https://cosmic.cachix.org/"
       ];
       trusted-public-keys = [
-        # "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+        "cylis.cachix.org-1:Aiv3XMfUHh7SiYNBXCM4b3nVfjbPwM2s4x9NBKA+5Nc="
         "ghostty.cachix.org-1:QB389yTa6gTyneehvqG58y0WnHjQOqgnA+wBnpWWxns="
         "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="

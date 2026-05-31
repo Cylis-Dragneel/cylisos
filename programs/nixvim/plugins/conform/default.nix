@@ -1,7 +1,10 @@
 {
   programs.nixvim.plugins.conform-nvim = {
     enable = true;
-    lazyLoad.enable = true;
+    lazyLoad = {
+      enable = true;
+      settings.event = [ "BufWritePre" ];
+    };
     settings = {
       formatters_by_ft = {
         lua = [ "stylua" ];

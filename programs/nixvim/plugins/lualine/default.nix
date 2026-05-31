@@ -1,7 +1,10 @@
 {
   programs.nixvim.plugins.lualine = {
     enable = true;
-    lazyLoad.enable = true;
+    lazyLoad = {
+      enable = true;
+      settings.event = [ "VimEnter" ];
+    };
     settings = {
       icons_enabled = true;
       sections = {

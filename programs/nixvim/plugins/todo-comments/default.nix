@@ -1,7 +1,10 @@
 {
   programs.nixvim.plugins.todo-comments = {
     enable = true;
-    lazyLoad.enable = true;
+    lazyLoad = {
+      enable = true;
+      settings.event = [ "BufReadPost" ];
+    };
   };
 
   programs.nixvim.extraConfigLua = ''

@@ -353,6 +353,7 @@
   services = {
     cloudflare-warp.enable = true;
     power-profiles-daemon.enable = false;
+    upower.enable = true;
     tlp = {
       enable = true;
       settings = {
@@ -366,10 +367,11 @@
         CPU_MAX_PERF_ON_AC = 100;
         CPU_MIN_PERF_ON_BAT = 0;
         CPU_MAX_PERF_ON_BAT = 20;
-        START_CHARGE_THRESH_BAT0 = 25; # 25 and bellow it starts to charge
+        START_CHARGE_THRESH_BAT0 = 40; # 25 and bellow it starts to charge
         STOP_CHARGE_THRESH_BAT0 = 80; # 80 and above it stops charging
       };
     };
+    thermald.enable = true;
     kanata = {
       enable = true;
       keyboards = {

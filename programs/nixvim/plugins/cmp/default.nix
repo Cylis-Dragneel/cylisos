@@ -1,7 +1,10 @@
 {
   programs.nixvim.plugins.cmp = {
     enable = true;
-    lazyLoad.enable = true;
+    lazyLoad = {
+      enable = true;
+      settings.event = [ "InsertEnter" "CmdlineEnter" ];
+    };
     autoEnableSources = true;
     settings = {
       completion.completeopt = "menu,menuone,preview,noselect";
@@ -31,41 +34,59 @@
         { name = "path"; }
         { name = "buffer"; }
       ];
-      formatting.format.__raw = ''
-        require("lspkind").cmp_format({
-          mode = "symbol",
-          maxwidth = 50,
-          ellipsis_char = "...",
-          symbol_map = { Codecompanion = "" },
-        })
-      '';
     };
   };
 
   programs.nixvim.plugins.cmp_luasnip = {
     enable = true;
-    lazyLoad.enable = true;
+    lazyLoad = {
+      enable = true;
+      settings.event = [ "InsertEnter" ];
+    };
   };
-
   programs.nixvim.plugins.cmp-buffer = {
     enable = true;
-    lazyLoad.enable = true;
+    lazyLoad = {
+      enable = true;
+      settings.event = [ "InsertEnter" ];
+    };
   };
-
   programs.nixvim.plugins.cmp-nvim-lsp = {
     enable = true;
-    lazyLoad.enable = true;
+    lazyLoad = {
+      enable = true;
+      settings.event = [ "InsertEnter" ];
+    };
   };
-
   programs.nixvim.plugins.luasnip = {
     enable = true;
-    lazyLoad.enable = true;
-    fromVscode = [ { } ];
+    lazyLoad = {
+      enable = true;
+      settings.event = [ "InsertEnter" ];
+    };
+    fromVscode = [
+      {
+        lazyLoad = true;
+      }
+    ];
   };
-
   programs.nixvim.plugins.lspkind = {
     enable = true;
-    lazyLoad.enable = true;
+    lazyLoad = {
+      enable = true;
+      settings.event = [ "InsertEnter" ];
+    };
+    settings = {
+      symbol_map = {
+        Codecompanion = "";
+      };
+      cmp = {
+        enable = true;
+        max_width = 50;
+        ellipsis_char = "...";
+        mode = "symbol";
+      };
+    };
   };
 
   programs.nixvim.extraConfigLua = ''

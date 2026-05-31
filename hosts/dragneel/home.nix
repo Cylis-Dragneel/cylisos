@@ -619,4 +619,9 @@ in
       ExecStart = "${pkgs.seanime}/bin/seanime";
     };
   };
+
+  home.activation.navidromePlaylistDirs = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    mkdir -p /home/${username}/Music/.navidrome/playlists
+  '';
+
 }
